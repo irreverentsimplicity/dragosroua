@@ -1,0 +1,233 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SubstackSubscribe from '../components/SubstackSubscribe.astro';
+import { makeLinksRelative } from '../lib/utils';
+
+interface Props {
+  post: any;
+}
+
+const { post } = Astro.props;
+
+const seo = post.seo || {};
+const title = seo.title || post.title;
+const description = seo.metaDesc || post.content?.replace(/<[^>]*>/g, '').substring(0, 160) || '';
+const ogImage = seo.opengraphImage?.sourceUrl || post.featuredImage?.node?.sourceUrl;
+const canonical = seo.canonical || `https://dragosroua.com${post.uri}`;
+const schema = seo.schema?.raw || null;
+
+const processedContent = makeLinksRelative(post.content);
+const heroImage = post.featuredImage?.node?.sourceUrl;
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  ogImage={ogImage}
+  canonical={canonical}
+  schema={schema}
+>
+  <article class="post">
+    <h1 set:html={post.title} />
+    
+    <div class="post-meta">
+      <time datetime={post.date}>
+        {new Date(post.date).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })}
+      </time>
+    </div>
+    
+    {heroImage && (
+      <img 
+        src={heroImage} 
+        alt={post.featuredImage.node.altText || post.title}
+        class="hero-image"
+        width={post.featuredImage.node.mediaDetails?.width}
+        height={post.featuredImage.node.mediaDetails?.height}
+        loading="eager"
+      />
+    )}
+    
+    <!-- iOS App Ad -->
+    <div class="app-promo-box">
+      <div class="app-promo-grid">
+        <!-- Column 1: Image -->
+        <div class="app-image-col">
+          <img 
+            src="https://www.dragosroua.com/wp-content/uploads/2025/10/blog-box-promo.png" 
+            alt="addTaskManager App Screenshot"
+            class="app-screenshot"
+          />
+        </div>
+        
+        <!-- Column 2: Text -->
+        <div class="app-text-col">
+          <h4 class="app-title">😌 addTaskManager: My answer to years of GTD frustration</h4>
+          <p class="app-desc">From someone who has been there: stop adapting to their systems. Start using one built for you.</p>
+          <p class="app-desc">Instant syncing between iPhone / iPad / Mac.</p>
+          <p class="app-desc">CloudKit sharing for seamless collaboration, built-in native AI support.</p>
+        </div>
+      </div>
+      
+      <!-- Row 2: Button spanning both columns -->
+      <div class="app-button-row">
+        <a 
+          href="https://itunes.apple.com/app/apple-store/id1492487688?mt=8" 
+          class="app-store-button" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          <svg class="apple-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          </svg>
+          Download on the App Store
+        </a>
+      </div>
+    </div>
+    
+    <div class="wp-content" set:html={processedContent} />
+    
+    <SubstackSubscribe />
+  </article>
+</BaseLayout>
+
+<style>
+  .post-meta {
+    color: #666;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+  }
+  
+  /* App Promo Box */
+  .app-promo-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 30px 0;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+  }
+  
+  /* Grid: 2 columns */
+  .app-promo-grid {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  /* Column 1: Image */
+  .app-image-col {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .app-screenshot {
+    width: 120px;
+    height: 180px;
+    object-fit: contain;
+    border-radius: 18px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Column 2: Text */
+  .app-text-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .app-title {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    line-height: 1.3;
+  }
+  
+  .app-desc {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 14px;
+    margin: 0 0 8px 0;
+    line-height: 1.5;
+  }
+  
+  .app-desc:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* Row 2: Button (spans both columns, centered) */
+  .app-button-row {
+    display: flex;
+    justify-content: center;
+    padding-top: 8px;
+  }
+  
+  .app-store-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #000000;
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: none;
+    cursor: pointer;
+  }
+  
+  .app-store-button:hover {
+    background: #1a1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+  }
+  
+  .apple-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+  
+  /* Mobile responsive */
+  @media (max-width: 600px) {
+    .app-promo-box {
+      padding: 20px;
+    }
+    
+    .app-promo-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      text-align: center;
+    }
+    
+    .app-image-col {
+      justify-content: center;
+    }
+    
+    .app-screenshot {
+      width: 100px;
+      height: 150px;
+    }
+    
+    .app-title {
+      font-size: 16px;
+    }
+    
+    .app-desc {
+      font-size: 13px;
+    }
+    
+    .app-store-button {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+  }
+</style>

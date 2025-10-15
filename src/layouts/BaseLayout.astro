@@ -1,0 +1,168 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  canonical?: string;
+  schema?: any;
+}
+
+const { title, description, ogImage, canonical, schema } = Astro.props;
+const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
+const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO -->
+  <title>{title}</title>
+  {description && <meta name="description" content={description}>}
+  <link rel="canonical" href={canonicalURL}>
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={canonicalURL}>
+  <meta property="og:title" content={title}>
+  {description && <meta property="og:description" content={description}>}
+  <meta property="og:image" content={ogImageURL}>
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content={canonicalURL}>
+  <meta name="twitter:title" content={title}>
+  {description && <meta name="twitter:description" content={description}>}
+  <meta name="twitter:image" content={ogImageURL}>
+  
+  <!-- Schema.org -->
+  {schema && (
+    <script type="application/ld+json" set:html={schema} />
+  )}
+  
+  <style is:global>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        /* NO display property here! */
+    }
+    
+    
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+                   'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+    
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      min-height: 60vh;
+    }
+    
+    h1 { 
+      font-size: 2.5rem; 
+      margin: 0 0 1rem;
+      line-height: 1.2;
+    }
+    
+    h2 { 
+      font-size: 1.8rem; 
+      margin: 2rem 0 1rem;
+    }
+    
+    h3 {
+      font-size: 1.4rem;
+      margin: 1.5rem 0 0.5rem;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    .hero-image {
+      width: 100%;
+      height: auto;
+      margin: 2rem 0;
+      border-radius: 8px;
+    }
+    
+    /* WordPress content styling */
+    .wp-content p {
+      margin-bottom: 1em;
+    }
+    
+    .wp-content ul,
+    .wp-content ol {
+      margin: 1em 0 1em 1.5em;
+    }
+    
+    .wp-content li {
+      margin-bottom: 0.5em;
+    }
+    
+    .wp-content blockquote {
+      border-left: 4px solid #667eea;
+      padding-left: 1em;
+      margin: 1.5em 0;
+      font-style: italic;
+      color: #666;
+    }
+    
+    .wp-content a {
+      color: #667eea;
+    }
+    
+    .wp-content a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Tables (for product pages) */
+    .wp-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2em 0;
+      overflow-x: auto;
+      display: block;
+    }
+    
+    .wp-content th,
+    .wp-content td {
+      padding: 0.75em;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    
+    .wp-content th {
+      background: #f5f5f5;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 640px) {
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.5rem; }
+      main { padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <Header />
+  
+  <main>
+    <slot />
+  </main>
+  
+  <Footer />
+</body>
+</html>

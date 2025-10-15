@@ -1,0 +1,106 @@
+---
+// No props needed
+---
+
+<header class="site-header">
+  <div class="header-content">
+    <div class="header-top">
+      <img src="/images/dragos-hat.png" alt="Dragos Roua" class="header-image" />
+      <div class="header-text">
+        <h1><a href="/">Dragos Roua</a></h1>
+        <p class="subtitle">Building addTaskManager, the best iOS productivity app for ADHD minds</p>
+      </div>
+    </div>
+    
+    <nav class="main-nav">
+      <a href="/">Home</a>
+      <a href="/productivity-apps/">App</a>
+      <a href="/blog/">Blog</a>
+      <a href="/about-me/">About</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background: white;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  
+  .header-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem 0;
+  }
+  
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .header-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .header-text h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  
+  .header-text h1 a {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .subtitle {
+    margin: 0.5rem 0 0;
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+  
+  .main-nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem 0;
+    border-top: 1px solid #e5e5e5;
+  }
+  
+  .main-nav a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  
+  .main-nav a:hover {
+    color: #667eea;
+  }
+  
+  @media (max-width: 640px) {
+    .header-top {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .header-text h1 {
+      font-size: 1.5rem;
+    }
+    
+    .subtitle {
+      font-size: 0.9rem;
+    }
+    
+    .main-nav {
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+  }
+</style>

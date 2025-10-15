@@ -1,0 +1,65 @@
+---
+import PostLayout from '../layouts/PostLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllPosts, getAllPages, getSlugFromUri } from '../lib/wordpress';
+import { makeLinksRelative } from '../lib/utils';
+
+export async function getStaticPaths() {
+  console.log('\n🔨 Building all content...\n');
+  
+  const [posts, pages] = await Promise.all([
+    getAllPosts(),
+    getAllPages()
+  ]);
+  
+  // Filter out the homepage from pages (we handle it separately)
+  const pagesWithoutHome = pages.filter(page => page.slug !== '22416-2');
+  
+  const allContent = [...posts, ...pagesWithoutHome];
+  
+  console.log(`\n📄 Generating ${allContent.length} static pages\n`);
+  
+  return allContent.map(item => {
+    const slug = getSlugFromUri(item.uri);
+    const isPost = posts.some(p => p.id === item.id);
+    
+    console.log(`  → /${slug} (${isPost ? 'post' : 'page'})`);
+    
+    return {
+      params: { slug: slug || undefined },
+      props: { content: item, isPost }
+    };
+  });
+}
+
+const { content, isPost } = Astro.props;
+
+// Use PostLayout for posts (includes iOS ad + Substack)
+// Use BaseLayout for pages (cleaner, for product tables)
+---
+
+{isPost ? (
+  <PostLayout post={content} />
+) : (
+  <BaseLayout 
+    title={content.seo?.title || content.title}
+    description={content.seo?.metaDesc || ''}
+    ogImage={content.seo?.opengraphImage?.sourceUrl || content.featuredImage?.node?.sourceUrl}
+    canonical={content.seo?.canonical || `https://dragosroua.com${content.uri}`}
+    schema={content.seo?.schema?.raw}
+  >
+    <article class="page">
+      <h1 set:html={content.title} />
+      
+      {content.featuredImage?.node?.sourceUrl && (
+        <img 
+          src={content.featuredImage.node.sourceUrl} 
+          alt={content.featuredImage.node.altText || content.title}
+          class="hero-image"
+        />
+      )}
+      
+      <div class="wp-content" set:html={makeLinksRelative(content.content)} />
+    </article>
+  </BaseLayout>
+)}

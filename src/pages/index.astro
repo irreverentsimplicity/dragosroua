@@ -1,11 +1,34 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllPages } from '../lib/wordpress';
+import iOSAppAd from '../components/iOSAppAd.astro'; 
+import { makeLinksRelative } from '../lib/utils';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Get the specific homepage by slug
+const pages = await getAllPages();
+const homepage = pages.find(page => page.slug === '22416-2');
+
+if (!homepage) {
+  throw new Error('Homepage not found! Check if page with slug "22416-2" exists.');
+}
+
+const seo = homepage.seo || {};
+const title = seo.title || homepage.title || 'Dragos Roua';
+const description = seo.metaDesc || homepage.content?.replace(/<[^>]*>/g, '').substring(0, 160) || '';
+const ogImage = seo.opengraphImage?.sourceUrl || homepage.featuredImage?.node?.sourceUrl;
+const schema = seo.schema?.raw || null;
+
+const pageContent = makeLinksRelative(homepage.content);
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout 
+  title={title}
+  description={description}
+  ogImage={ogImage}
+  canonical="https://dragosroua.com/"
+  schema={schema}
+>
+ <!-- Test: Add component here -->
+  <iOSAppAd />
+  <div class="homepage-content wp-content" set:html={pageContent} />
+</BaseLayout>

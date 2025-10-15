@@ -1,0 +1,60 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-content">
+    <nav class="footer-nav">
+      <a href="/books/">Books</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+    
+    <p class="copyright">
+      Copyright, Dragos Roua 2006 - {currentYear}.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: white;
+    border-top: 1px solid #e5e5e5;
+    padding: 2rem 1rem;
+    margin-top: 4rem;
+  }
+  
+  .footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .footer-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-nav a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .footer-nav a:hover {
+    color: #333;
+  }
+  
+  .copyright {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  
+  @media (max-width: 640px) {
+    .footer-nav {
+      justify-content: center;
+    }
+  }
+</style>
