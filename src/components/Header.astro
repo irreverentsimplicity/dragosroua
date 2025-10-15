@@ -1,5 +1,5 @@
 ---
-// No props needed
+// Full-width black header
 ---
 
 <header class="site-header">
@@ -23,8 +23,10 @@
 
 <style>
   .site-header {
-    background: white;
-    border-bottom: 1px solid #e5e5e5;
+    background: #000000;
+    color: white;
+    width: 100%;
+    border-bottom: 1px solid #333;
   }
   
   .header-content {
@@ -41,10 +43,10 @@
   }
   
   .header-image {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: contain;
   }
   
   .header-text h1 {
@@ -54,13 +56,13 @@
   }
   
   .header-text h1 a {
-    color: #333;
+    color: #ffffff;
     text-decoration: none;
   }
   
   .subtitle {
     margin: 0.5rem 0 0;
-    color: #666;
+    color: #cccccc;
     font-size: 1rem;
     line-height: 1.4;
   }
@@ -70,11 +72,11 @@
     justify-content: center;
     gap: 2rem;
     padding: 1rem 0;
-    border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #333;
   }
   
   .main-nav a {
-    color: #333;
+    color: #ffffff;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
