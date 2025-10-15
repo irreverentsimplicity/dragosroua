@@ -30,23 +30,23 @@ const schema = seo.schema?.raw || null;
     <h1 class="atm-hero-title">addTaskManager</h1>
     
     <div class="atm-hero-grid">
-      <!-- Left Column: Text -->
-      <div class="atm-text-col">
-        <h3 class="atm-subtitle">My Answer to Years of GTD Frustration</h3>
-        <p class="atm-desc">From someone who has been there: stop adapting to their systems. Start using one built for you.</p>
-        <p class="atm-desc">Instant syncing between iPhone / iPad / Mac.</p>
-        <p class="atm-desc">CloudKit sharing for seamless collaboration, built-in native AI support.</p>
-      </div>
-      
-      <!-- Right Column: Image -->
-      <div class="atm-image-col">
-        <img 
-          src="https://www.dragosroua.com/wp-content/uploads/2025/10/blog-box-promo.png" 
-          alt="addTaskManager App Screenshot"
-          class="atm-hero-image"
-        />
-      </div>
-    </div>
+  <!-- Left Column: Text -->
+  <div class="atm-text-col">
+    <h3 class="atm-subtitle">My Answer to Years of GTD Frustration</h3>
+    <p class="atm-desc">From someone who has been there: stop adapting to their systems. Start using one built for you.</p>
+    <p class="atm-desc">Instant syncing between iPhone / iPad / Mac.</p>
+    <p class="atm-desc">CloudKit sharing for seamless collaboration, built-in native AI support.</p>
+  </div>
+  
+  <!-- Right Column: Landscape Image -->
+  <div class="atm-image-col">
+    <img 
+      src="/images/addTaskManager-hero.png" 
+      alt="addTaskManager App Screenshot"
+      class="atm-hero-image"
+    />
+  </div>
+</div>
     
     <!-- Row 2: Buttons (centered, side by side) -->
     <div class="atm-buttons">
@@ -120,6 +120,7 @@ const schema = seo.schema?.raw || null;
 </BaseLayout>
 
 <style>
+  <style>
   /* addTaskManager Hero Section */
   .atm-hero {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -130,20 +131,23 @@ const schema = seo.schema?.raw || null;
   }
   
   .atm-hero-title {
-    color: #ffffff;
+    color: #000000;
     font-size: 3rem;
     font-weight: 800;
     margin: 0 0 30px 0;
     text-align: center;
   }
   
+  /* Grid: 2 EQUAL columns */
   .atm-hero-grid {
     display: grid;
-    grid-template-columns: 1fr 200px;
+    grid-template-columns: 1fr 1fr;
     gap: 30px;
     margin-bottom: 30px;
+    align-items: center;
   }
   
+  /* Left Column: Text */
   .atm-text-col {
     display: flex;
     flex-direction: column;
@@ -151,7 +155,7 @@ const schema = seo.schema?.raw || null;
   }
   
   .atm-subtitle {
-    color: #ffffff;
+    color: #010101;
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0 0 16px 0;
@@ -159,7 +163,7 @@ const schema = seo.schema?.raw || null;
   }
   
   .atm-desc {
-    color: rgba(255, 255, 255, 0.95);
+    color: rgba(0, 0, 0, 0.95);
     font-size: 1rem;
     margin: 0 0 12px 0;
     line-height: 1.6;
@@ -169,6 +173,7 @@ const schema = seo.schema?.raw || null;
     margin-bottom: 0;
   }
   
+  /* Right Column: Landscape Image */
   .atm-image-col {
     display: flex;
     align-items: center;
@@ -176,10 +181,9 @@ const schema = seo.schema?.raw || null;
   }
   
   .atm-hero-image {
-    width: 180px;
+    width: 100%;
+    max-width: 350px;
     height: auto;
-    max-height: 270px;
-    object-fit: contain;
     border-radius: 20px;
     border: 3px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -319,8 +323,7 @@ const schema = seo.schema?.raw || null;
     }
     
     .atm-hero-image {
-      width: 150px;
-      max-height: 225px;
+      max-width: 280px;
     }
     
     .atm-button {
