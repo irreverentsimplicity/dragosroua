@@ -2,7 +2,7 @@ import { getCached } from './cache.js';
 
 const WP_GRAPHQL_URL = 'https://dragosroua.com/graphql';
 const IS_DEV = import.meta.env.DEV;
-const DEV_POST_LIMIT = 50; // Only fetch 50 posts in dev mode
+const DEV_POST_LIMIT = 500; // Only fetch 50 posts in dev mode
 
 async function fetchGraphQL(query, variables = {}) {
   console.log('🔍 Fetching from GraphQL...');
@@ -70,37 +70,51 @@ export async function getAllPosts() {
               endCursor
             }
             nodes {
-              id
-              databaseId
-              title
-              slug
-              uri
-              content
-              date
-              modified
-              featuredImage {
-                node {
-                  sourceUrl
-                  altText
-                  mediaDetails {
-                    width
-                    height
-                  }
-                }
-              }
-              seo {
+                id
+                databaseId
                 title
-                metaDesc
-                canonical
-                opengraphTitle
-                opengraphDescription
-                opengraphImage {
-                  sourceUrl
+                slug
+                uri
+                content
+                date
+                modified
+                featuredImage {
+                    node {
+                    sourceUrl
+                    altText
+                    mediaDetails {
+                        width
+                        height
+                    }
+                    }
                 }
-                schema {
-                  raw
+                seo {
+                    title
+                    metaDesc
+                    canonical
+                    opengraphTitle
+                    opengraphDescription
+                    opengraphImage {
+                    sourceUrl
+                    }
+                    schema {
+                    raw
+                    }
                 }
-              }
+                tags {
+                    nodes {
+                    id
+                    name
+                    slug
+                    }
+                }
+                categories {
+                    nodes {
+                    id
+                    name
+                    slug
+                    }
+                }
             }
           }
         }
@@ -207,4 +221,102 @@ export async function getAllPages() {
 export function getSlugFromUri(uri) {
   // Remove leading slash, keep structure
   return uri.replace(/^\//, '');
+}
+
+// Get all tags
+export async function getAllTags() {
+  return getCached('all-tags', async () => {
+    let allTags = [];
+    let hasNextPage = true;
+    let endCursor = null;
+
+    console.log('🏷️  Fetching all tags...\n');
+
+    while (hasNextPage) {
+      const query = `
+        query GetAllTags($after: String) {
+          tags(first: 100, after: $after, where: {hideEmpty: true}) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            nodes {
+              id
+              name
+              slug
+              count
+              description
+            }
+          }
+        }
+      `;
+
+      const data = await fetchGraphQL(query, { after: endCursor });
+      
+      allTags = [...allTags, ...data.tags.nodes];
+      hasNextPage = data.tags.pageInfo.hasNextPage;
+      endCursor = data.tags.pageInfo.endCursor;
+    }
+
+    console.log(`✓ Fetched ${allTags.length} tags\n`);
+    return allTags;
+  });
+}
+
+// Get all categories
+export async function getAllCategories() {
+  return getCached('all-categories', async () => {
+    let allCategories = [];
+    let hasNextPage = true;
+    let endCursor = null;
+
+    console.log('📁 Fetching all categories...\n');
+
+    while (hasNextPage) {
+      const query = `
+        query GetAllCategories($after: String) {
+          categories(first: 100, after: $after, where: {hideEmpty: true}) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            nodes {
+              id
+              name
+              slug
+              count
+              description
+            }
+          }
+        }
+      `;
+
+      const data = await fetchGraphQL(query, { after: endCursor });
+      
+      allCategories = [...allCategories, ...data.categories.nodes];
+      hasNextPage = data.categories.pageInfo.hasNextPage;
+      endCursor = data.categories.pageInfo.endCursor;
+    }
+
+    console.log(`✓ Fetched ${allCategories.length} categories\n`);
+    return allCategories;
+  });
+}
+
+// Get posts by tag slug
+export async function getPostsByTag(tagSlug) {
+  const posts = await getAllPosts();
+  // We'll need to add tags to post query first
+  return posts.filter(post => 
+    post.tags?.nodes?.some(tag => tag.slug === tagSlug)
+  );
+}
+
+// Get posts by category slug
+export async function getPostsByCategory(categorySlug) {
+  const posts = await getAllPosts();
+  // We'll need to add categories to post query first
+  return posts.filter(post => 
+    post.categories?.nodes?.some(cat => cat.slug === categorySlug)
+  );
 }
