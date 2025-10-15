@@ -1,6 +1,24 @@
 ---
 // Paste your actual Substack embed code below
 ---
+<script>
+  // Load Substack iframe only when in viewport
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const iframe = entry.target;
+          iframe.src = iframe.dataset.src;
+          observer.unobserve(iframe);
+        }
+      });
+    });
+    
+    document.querySelectorAll('iframe[data-src]').forEach(iframe => {
+      observer.observe(iframe);
+    });
+  }
+</script>
 
 <div class="substack-subscribe">
   <h3>Let's stay in touch</h3>

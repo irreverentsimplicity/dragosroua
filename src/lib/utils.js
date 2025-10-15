@@ -60,3 +60,71 @@ export function generateExcerpt(content, maxWords = 20) {
   // Add ellipsis if truncated
   return words.length > maxWords ? excerpt + ' [...]' : excerpt;
 }
+
+// Get optimized image size from WordPress media
+// Get optimized image size from WordPress media
+export function getOptimizedImage(featuredImage, targetWidth = 300) {
+  if (!featuredImage?.node) return null;
+  
+  const node = featuredImage.node;
+  const fullUrl = node.sourceUrl;
+  const sizes = node.mediaDetails?.sizes || [];
+  
+  // First try: Use GraphQL sizes if available
+  const suitableSize = sizes.find(size => 
+    size.width >= targetWidth && size.width <= targetWidth * 1.5
+  );
+  
+  if (suitableSize) {
+    return {
+      url: suitableSize.sourceUrl,
+      alt: node.altText || '',
+      width: suitableSize.width,
+      height: suitableSize.height
+    };
+  }
+  
+  // Second try: Construct WordPress sized URL
+  if (node.mediaDetails?.width && node.mediaDetails?.height) {
+    const originalWidth = node.mediaDetails.width;
+    const originalHeight = node.mediaDetails.height;
+    
+    // Skip if image is already smaller than target
+    if (originalWidth <= targetWidth) {
+      return {
+        url: fullUrl,
+        alt: node.altText || '',
+        width: originalWidth,
+        height: originalHeight
+      };
+    }
+    
+    // Calculate proportional height
+    const targetHeight = Math.round((originalHeight / originalWidth) * targetWidth);
+    
+    // Parse URL and handle WordPress patterns
+    // Example: image-scaled.jpg or image.jpg
+    const urlMatch = fullUrl.match(/^(.+\/)([^\/]+?)(-scaled)?(\.[^.]+)$/);
+    
+    if (urlMatch) {
+      const [, basePath, filename, , extension] = urlMatch;
+      // Construct: basePath + filename + -300x200 + extension
+      const optimizedUrl = `${basePath}${filename}-${targetWidth}x${targetHeight}${extension}`;
+      
+      return {
+        url: optimizedUrl,
+        alt: node.altText || '',
+        width: targetWidth,
+        height: targetHeight
+      };
+    }
+  }
+  
+  // Fallback: use original
+  return {
+    url: fullUrl,
+    alt: node.altText || '',
+    width: node.mediaDetails?.width || 300,
+    height: node.mediaDetails?.height || 200
+  };
+}

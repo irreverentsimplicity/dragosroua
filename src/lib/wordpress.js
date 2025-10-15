@@ -174,8 +174,18 @@ export async function getAllPages() {
               modified
               featuredImage {
                 node {
-                  sourceUrl
-                  altText
+                    sourceUrl          # Full size
+                    altText
+                    mediaDetails {
+                    width
+                    height
+                    sizes {
+                        sourceUrl
+                        name
+                        width
+                        height
+                    }
+                    }
                 }
               }
               seo {
