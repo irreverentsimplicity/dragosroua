@@ -45,6 +45,15 @@ const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
     <script type="application/ld+json" set:html={schema} />
   )}
   
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L2YHBQ9ZSL"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L2YHBQ9ZSL');
+  </script>
+  
   <style is:global>
     * {
         margin: 0;
