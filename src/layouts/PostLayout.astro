@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import SubstackSubscribe from '../components/SubstackSubscribe.astro';
+import EmailSignup from '../components/EmailSignup.astro';
 import { makeLinksRelative } from '../lib/utils';
 
 interface Props {
@@ -130,7 +131,7 @@ const tags = post.tags?.nodes || [];
       )}
     </div>
     
-    <SubstackSubscribe />
+    <EmailSignup />
   </article>
 </BaseLayout>
 

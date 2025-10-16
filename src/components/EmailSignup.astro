@@ -1,0 +1,79 @@
+<div class="email-signup">
+  <h3>Let's stay in touch</h3>
+  <p>Get my best content on productivity, mindfulness, and digital nomading.</p>
+  
+  <form 
+    action="https://dragosroua.substack.com/api/v1/free" 
+    method="post"
+    class="signup-form"
+  >
+    <input 
+      type="email" 
+      name="email" 
+      placeholder="Enter your email"
+      required
+      class="email-input"
+    />
+    <button type="submit" class="submit-btn">Subscribe</button>
+  </form>
+</div>
+
+<style>
+  .email-signup {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 3rem 0;
+    text-align: center;
+    color: white;
+  }
+  
+  .email-signup h3 {
+    font-size: 1.8rem;
+    margin: 0 0 0.75rem;
+    color: white;
+  }
+  
+  .email-signup p {
+    font-size: 1rem;
+    margin: 0 0 1.5rem;
+    opacity: 0.95;
+  }
+  
+  .signup-form {
+    display: flex;
+    gap: 0.5rem;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  
+  .email-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  
+  .submit-btn {
+    padding: 0.75rem 1.5rem;
+    background: #000;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .submit-btn:hover {
+    background: #1a1a1a;
+  }
+  
+  @media (max-width: 600px) {
+    .signup-form {
+      flex-direction: column;
+    }
+  }
+</style>

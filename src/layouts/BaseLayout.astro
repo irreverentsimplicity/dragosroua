@@ -29,6 +29,13 @@ const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
   <title>{title}</title>
   {description && <meta name="description" content={description}>}
   <link rel="canonical" href={canonicalURL}>
+  <!-- Preload critical images (homepage only) -->
+    {Astro.url.pathname === '/' && (
+    <>
+        <link rel="preload" as="image" href="/images/addTaskManager-hero.webp" fetchpriority="high">
+        <link rel="preload" as="image" href="/images/dragos-avatar.webp">
+    </>
+    )}
   
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -49,14 +56,21 @@ const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
     <script type="application/ld+json" set:html={schema} />
   )}
   
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L2YHBQ9ZSL"></script>
-  <script is:inline>
+  <!-- Google Analytics - Ultra Deferred -->
+<script>
+  // Load GA only after page is fully interactive
+  window.addEventListener('load', function() {
+    var script = document.createElement('script');
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-L2YHBQ9ZSL';
+    script.async = true;
+    document.head.appendChild(script);
+    
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-L2YHBQ9ZSL');
-  </script>
+  });
+</script>
   
   <style is:global>
     * {

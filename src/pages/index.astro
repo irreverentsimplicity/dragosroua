@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SubstackSubscribe from '../components/SubstackSubscribe.astro';
+import EmailSignup from '../components/EmailSignup.astro';
 import { getAllPages } from '../lib/wordpress';
 
 // Get the specific homepage by slug for SEO data
@@ -41,7 +41,7 @@ const schema = seo.schema?.raw || null;
   <!-- Right Column: Landscape Image -->
   <div class="atm-image-col">
     <img 
-      src="/images/addTaskManager-hero.png" 
+      src="/images/addTaskManager-hero.webp" 
       alt="addTaskManager App Screenshot"
       class="atm-hero-image"
     />
@@ -77,7 +77,7 @@ const schema = seo.schema?.raw || null;
       <!-- Avatar Image (left aligned) -->
       <div class="about-avatar">
         <img 
-          src="/images/dragos-about.png" 
+          src="/images/dragos-about.webp" 
           alt="Dragos Roua"
           class="avatar-image"
         />
@@ -118,8 +118,7 @@ const schema = seo.schema?.raw || null;
     </div>
   </section>
 
-  <!-- Substack Subscribe Box -->
-  <SubstackSubscribe />
+	<EmailSignup />
 
 </BaseLayout>
 

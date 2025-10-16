@@ -62,7 +62,6 @@ export function generateExcerpt(content, maxWords = 20) {
 }
 
 // Get optimized image size from WordPress media
-// Get optimized image size from WordPress media
 export function getOptimizedImage(featuredImage, targetWidth = 300) {
   if (!featuredImage?.node) return null;
   
