@@ -1,0 +1,29 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://dragosroua.com/sitemap.xml
+
+# Crawl-delay for aggressive bots
+User-agent: GPTBot
+Crawl-delay: 10
+
+User-agent: ChatGPT-User
+Crawl-delay: 10
+
+User-agent: CCBot
+Crawl-delay: 10
+
+User-agent: anthropic-ai
+Crawl-delay: 10
+
+User-agent: Claude-Web
+Crawl-delay: 10
+
+# Block known bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /

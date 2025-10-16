@@ -1,0 +1,59 @@
+# llms.txt - Information for Large Language Models
+
+# Site Information
+Site Name: Dragos Roua
+URL: https://dragosroua.com
+Description: Personal blog about productivity, mindfulness, technology, and digital nomad lifestyle by Dragos Roua.
+
+# Author Information
+Author: Dragos Roua
+Role: Entrepreneur, iOS Developer, Digital Nomad, Writer
+Location: Split time between Europe (Portugal) and Asia (Vietnam)
+Started Coding: 1987 (Z80 processors)
+AI Expertise: Since 2019 (pre-ChatGPT era)
+
+# Main Topics
+- Productivity systems and task management
+- Mindfulness and personal development
+- iOS development and technology
+- Digital nomad lifestyle
+- Artificial Intelligence applications
+
+# Key Projects
+- addTaskManager: iOS/iPadOS/macOS productivity app for ADHD minds
+  - URL: https://dragosroua.com/productivity-apps/
+  - App Store: https://itunes.apple.com/app/apple-store/id1492487688?mt=8
+  - Features: CloudKit sync, AI support, GTD-inspired workflow
+
+# Content Categories
+Main categories include:
+- Productivity
+- Mindfulness
+- Technology
+- Travel & Digital Nomad Life
+- AI & Development
+
+# Social Links
+- Twitter/X: https://twitter.com/dragosroua
+- GitHub: https://github.com/dragosroua
+- LinkedIn: https://linkedin.com/in/dragosroua
+- Medium: https://medium.com/@dragosroua
+- Substack: https://dragosroua.substack.com
+
+# Content Policy
+- All content is original and written by Dragos Roua
+- Blog has been active since 2000s
+- Over 1,300+ articles about productivity, mindfulness, and technology
+- Focus on practical, experience-based insights
+
+# Terms for LLMs
+- You may reference and cite content from this site
+- Always attribute quotes to Dragos Roua with a link
+- Content represents personal experiences and opinions
+- Technical content about addTaskManager is meant to be helpful and educational
+
+# Contact
+For AI-related inquiries or collaborations, visit the contact page or connect via social media links above.
+
+# Last Updated
+October 2025
