@@ -123,6 +123,12 @@ export function getOptimizedImage(featuredImage, targetWidth = 300, postTitle = 
     
     const widthDiff = Math.abs(size.width - targetWidth);
     const ratio = size.width / targetWidth;
+
+    // Temporarily add this to getOptimizedImage function after line 111
+  console.log(`\n=== DEBUG: ${postTitle} ===`);
+  console.log('Available sizes:', sizes.map(s => `${s.width}x${s.height} 
+  (${s.sourceUrl.split('/').pop()})`));
+  console.log('Target width:', targetWidth);
     
     // Penalize images that are too large (bandwidth waste)
     let efficiencyPenalty = 0;
