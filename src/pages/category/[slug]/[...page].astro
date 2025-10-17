@@ -1,8 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import OptimizedImage from '../../../components/OptimizedImage.astro';
 import { getAllPosts, getAllCategories } from '../../../lib/wordpress';
-import { generateExcerpt, getFeaturedImageData } from '../../../lib/utils';
+import { generateExcerpt, getOptimizedImage } from '../../../lib/utils';
 
 export async function getStaticPaths({ paginate }) {
   const [posts, categories] = await Promise.all([
@@ -53,21 +52,20 @@ const { category } = Astro.props;
 
   <div class="posts-grid">
     {page.data.map(post => {
-      const imageData = getFeaturedImageData(post.featuredImage, post.title);
+      const optimizedImage = getOptimizedImage(post.featuredImage, 300, post.title);
       
       return (
         <article class="post-card">
-          {imageData && (
+          {optimizedImage && (
             <a href={post.uri} class="post-image-link" aria-label={`Read article: ${post.title.replace(/<[^>]*>/g, '').trim()}`}>
-              <OptimizedImage 
-                src={imageData.src}
-                alt={imageData.alt}
-                width={300}
-                height={220}
+              <img 
+                src={optimizedImage.url}
+                alt={optimizedImage.alt}
                 class="post-image"
+                width={optimizedImage.width}
+                height={optimizedImage.height}
                 loading="lazy"
-                sizes="300px"
-                widths={[300, 400]}
+                decoding="async"
               />
             </a>
           )}

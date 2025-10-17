@@ -85,6 +85,12 @@ export async function getAllPosts() {
                     mediaDetails {
                         width
                         height
+                        sizes {
+                            sourceUrl
+                            name
+                            width
+                            height
+                        }
                     }
                     }
                 }
