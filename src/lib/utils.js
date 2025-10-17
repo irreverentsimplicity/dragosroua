@@ -61,13 +61,39 @@ export function generateExcerpt(content, maxWords = 20) {
   return words.length > maxWords ? excerpt + ' [...]' : excerpt;
 }
 
+// Generate descriptive alt text for featured images
+function generateImageAltText(node, postTitle) {
+  // If WordPress has alt text, use it
+  if (node.altText && node.altText.trim()) {
+    return node.altText.trim();
+  }
+  
+  // Extract filename without extension for descriptive fallback
+  const filename = node.sourceUrl?.split('/').pop()?.split('.')[0] || '';
+  
+  // Create descriptive alt text based on post title
+  if (postTitle) {
+    const cleanTitle = postTitle.replace(/<[^>]*>/g, '').trim();
+    return `Featured image for: ${cleanTitle}`;
+  }
+  
+  // Fallback to filename if available
+  if (filename) {
+    return `Featured image: ${filename.replace(/[-_]/g, ' ')}`;
+  }
+  
+  // Last resort
+  return 'Featured image for blog post';
+}
+
 // Get optimized image size from WordPress media
-export function getOptimizedImage(featuredImage, targetWidth = 300) {
+export function getOptimizedImage(featuredImage, targetWidth = 300, postTitle = '') {
   if (!featuredImage?.node) return null;
   
   const node = featuredImage.node;
   const fullUrl = node.sourceUrl;
   const sizes = node.mediaDetails?.sizes || [];
+  const altText = generateImageAltText(node, postTitle);
   
   // First try: Use GraphQL sizes if available
   const suitableSize = sizes.find(size => 
@@ -77,7 +103,7 @@ export function getOptimizedImage(featuredImage, targetWidth = 300) {
   if (suitableSize) {
     return {
       url: suitableSize.sourceUrl,
-      alt: node.altText || '',
+      alt: altText,
       width: suitableSize.width,
       height: suitableSize.height
     };
@@ -92,7 +118,7 @@ export function getOptimizedImage(featuredImage, targetWidth = 300) {
     if (originalWidth <= targetWidth) {
       return {
         url: fullUrl,
-        alt: node.altText || '',
+        alt: altText,
         width: originalWidth,
         height: originalHeight
       };
@@ -112,7 +138,7 @@ export function getOptimizedImage(featuredImage, targetWidth = 300) {
       
       return {
         url: optimizedUrl,
-        alt: node.altText || '',
+        alt: altText,
         width: targetWidth,
         height: targetHeight
       };
@@ -122,7 +148,7 @@ export function getOptimizedImage(featuredImage, targetWidth = 300) {
   // Fallback: use original
   return {
     url: fullUrl,
-    alt: node.altText || '',
+    alt: altText,
     width: node.mediaDetails?.width || 300,
     height: node.mediaDetails?.height || 200
   };

@@ -52,12 +52,12 @@ const { tag } = Astro.props;
 
   <div class="posts-grid">
     {page.data.map(post => {
-      const optimizedImage = getOptimizedImage(post.featuredImage, 300);
+      const optimizedImage = getOptimizedImage(post.featuredImage, 300, post.title);
       
       return (
         <article class="post-card">
           {optimizedImage && (
-            <a href={post.uri} class="post-image-link">
+            <a href={post.uri} class="post-image-link" aria-label={`Read article: ${post.title.replace(/<[^>]*>/g, '').trim()}`}>
               <img 
                 src={optimizedImage.url}
                 alt={optimizedImage.alt}
