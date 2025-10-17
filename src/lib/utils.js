@@ -62,7 +62,7 @@ export function generateExcerpt(content, maxWords = 20) {
 }
 
 // Generate descriptive alt text for featured images
-function generateImageAltText(node, postTitle) {
+export function generateImageAltText(node, postTitle) {
   // If WordPress has alt text, use it
   if (node.altText && node.altText.trim()) {
     return node.altText.trim();
@@ -84,6 +84,21 @@ function generateImageAltText(node, postTitle) {
   
   // Last resort
   return 'Featured image for blog post';
+}
+
+// Get featured image data for local optimization
+export function getFeaturedImageData(featuredImage, postTitle = '') {
+  if (!featuredImage?.node) return null;
+  
+  const node = featuredImage.node;
+  const altText = generateImageAltText(node, postTitle);
+  
+  return {
+    src: node.sourceUrl,
+    alt: altText,
+    width: node.mediaDetails?.width || 1200,
+    height: node.mediaDetails?.height || 675
+  };
 }
 
 // Get optimized image size from WordPress media

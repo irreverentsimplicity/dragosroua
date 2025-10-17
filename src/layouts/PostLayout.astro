@@ -2,7 +2,8 @@
 import BaseLayout from './BaseLayout.astro';
 import SubstackSubscribe from '../components/SubstackSubscribe.astro';
 import EmailSignup from '../components/EmailSignup.astro';
-import { makeLinksRelative } from '../lib/utils';
+import OptimizedImage from '../components/OptimizedImage.astro';
+import { makeLinksRelative, getFeaturedImageData } from '../lib/utils';
 
 interface Props {
   post: any;
@@ -18,7 +19,7 @@ const canonical = seo.canonical || `https://dragosroua.com${post.uri}`;
 const schema = seo.schema?.raw || null;
 
 const processedContent = makeLinksRelative(post.content);
-const heroImage = post.featuredImage?.node?.sourceUrl;
+const heroImage = getFeaturedImageData(post.featuredImage, post.title);
 
 // Get categories and tags
 const categories = post.categories?.nodes || [];
@@ -46,13 +47,15 @@ const tags = post.tags?.nodes || [];
     </div>
     
     {heroImage && (
-      <img 
-        src={heroImage} 
-        alt={post.featuredImage.node.altText || post.title}
+      <OptimizedImage 
+        src={heroImage.src}
+        alt={heroImage.alt}
+        width={Math.min(heroImage.width, 800)}
+        height={Math.round((Math.min(heroImage.width, 800) / heroImage.width) * heroImage.height)}
         class="hero-image"
-        width={post.featuredImage.node.mediaDetails?.width}
-        height={post.featuredImage.node.mediaDetails?.height}
         loading="eager"
+        sizes="(max-width: 768px) 100vw, 800px"
+        widths={[400, 600, 800]}
       />
     )}
     
@@ -140,6 +143,12 @@ const tags = post.tags?.nodes || [];
     color: #666;
     margin-bottom: 2rem;
     font-size: 0.9rem;
+  }
+  
+  .hero-image {
+    margin: 2rem auto;
+    display: block;
+    max-width: 800px;
   }
   
   /* iOS App Ad Styles */

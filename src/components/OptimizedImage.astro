@@ -1,0 +1,86 @@
+---
+import { getImage } from 'astro:assets';
+
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  sizes?: string;
+  widths?: number[];
+}
+
+const { 
+  src, 
+  alt, 
+  width = 800, 
+  height, 
+  class: className = '', 
+  loading = 'lazy',
+  sizes = '(max-width: 768px) 100vw, 800px',
+  widths = [400, 600, 800, 1200]
+} = Astro.props;
+
+// Calculate height if not provided (maintain aspect ratio)
+const calculatedHeight = height || Math.round(width * 0.6);
+
+let optimizedImage;
+let srcSet = '';
+
+try {
+  // Generate the main optimized image
+  optimizedImage = await getImage({
+    src: src,
+    width: width,
+    height: calculatedHeight,
+    format: 'webp',
+    quality: 85
+  });
+
+  // Generate srcset for responsive images
+  const srcSetPromises = widths
+    .filter(w => w <= width * 1.5) // Don't upscale too much
+    .map(async (w) => {
+      const h = Math.round((calculatedHeight / width) * w);
+      const img = await getImage({
+        src: src,
+        width: w,
+        height: h,
+        format: 'webp',
+        quality: 85
+      });
+      return `${img.src} ${w}w`;
+    });
+
+  const srcSetArray = await Promise.all(srcSetPromises);
+  srcSet = srcSetArray.join(', ');
+
+} catch (error) {
+  console.warn(`Failed to optimize image ${src}:`, error.message);
+  // Fallback to original image
+  optimizedImage = { src: src };
+}
+---
+
+<img 
+  src={optimizedImage.src}
+  srcset={srcSet || optimizedImage.src}
+  sizes={sizes}
+  alt={alt}
+  width={width}
+  height={calculatedHeight}
+  class={className}
+  loading={loading}
+  decoding="async"
+/>
+
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+</style>
