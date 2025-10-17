@@ -110,21 +110,59 @@ export function getOptimizedImage(featuredImage, targetWidth = 300, postTitle = 
   const sizes = node.mediaDetails?.sizes || [];
   const altText = generateImageAltText(node, postTitle);
   
-  // First try: Use GraphQL sizes if available
-  const suitableSize = sizes.find(size => 
-    size.width >= targetWidth && size.width <= targetWidth * 1.5
-  );
+  // Smart size selection - find the best available thumbnail
+  let bestSize = null;
+  let bestScore = Infinity;
   
-  if (suitableSize) {
+  for (const size of sizes) {
+    // Calculate score based on:
+    // 1. How close to target width
+    // 2. Efficiency penalty for oversized images
+    // 3. Quality penalty for undersized images
+    // 4. Bonus for common WordPress sizes
+    
+    const widthDiff = Math.abs(size.width - targetWidth);
+    const ratio = size.width / targetWidth;
+    
+    // Penalize images that are too large (bandwidth waste)
+    let efficiencyPenalty = 0;
+    if (ratio > 2.5) efficiencyPenalty = 2000; // Very oversized
+    else if (ratio > 2) efficiencyPenalty = 1000; // Moderately oversized
+    else if (ratio > 1.5) efficiencyPenalty = 200; // Slightly oversized
+    
+    // Penalize images that are too small (quality loss)
+    let qualityPenalty = 0;
+    if (ratio < 0.6) qualityPenalty = 500; // Too small
+    else if (ratio < 0.8) qualityPenalty = 100; // Somewhat small
+    
+    // Bonus for common WordPress sizes (more likely to be optimized)
+    let sizeBonus = 0;
+    if ([150, 300, 600, 768, 1024].includes(size.width)) sizeBonus = -50;
+    
+    const score = widthDiff + efficiencyPenalty + qualityPenalty + sizeBonus;
+    
+    // Only consider sizes that are at least 60% of target (avoid too small images)
+    if (score < bestScore && size.width >= targetWidth * 0.6) {
+      bestScore = score;
+      bestSize = size;
+    }
+  }
+  
+  if (bestSize) {
+    // Optional: Log the selection for debugging (remove in production)
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`Image optimization for "${postTitle}": Using ${bestSize.width}x${bestSize.height} (target: ${targetWidth}px)`);
+    }
+    
     return {
-      url: suitableSize.sourceUrl,
+      url: bestSize.sourceUrl,
       alt: altText,
-      width: suitableSize.width,
-      height: suitableSize.height
+      width: bestSize.width,
+      height: bestSize.height
     };
   }
   
-  // Second try: Construct WordPress sized URL
+  // Fallback: Construct WordPress sized URL (for images without generated thumbnails)
   if (node.mediaDetails?.width && node.mediaDetails?.height) {
     const originalWidth = node.mediaDetails.width;
     const originalHeight = node.mediaDetails.height;
@@ -160,7 +198,7 @@ export function getOptimizedImage(featuredImage, targetWidth = 300, postTitle = 
     }
   }
   
-  // Fallback: use original
+  // Last resort: use original image
   return {
     url: fullUrl,
     alt: altText,
