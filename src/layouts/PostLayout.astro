@@ -2,7 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import SubstackSubscribe from '../components/SubstackSubscribe.astro';
 import EmailSignup from '../components/EmailSignup.astro';
-import { makeLinksRelative, getOptimizedImage } from '../lib/utils';
+import { makeLinksRelative, getOptimizedImage, updateWordPressImageUrls } from '../lib/utils';
 
 interface Props {
   post: any;
@@ -13,7 +13,7 @@ const { post } = Astro.props;
 const seo = post.seo || {};
 const title = seo.title || post.title;
 const description = seo.metaDesc || post.content?.replace(/<[^>]*>/g, '').substring(0, 160) || '';
-const ogImage = seo.opengraphImage?.sourceUrl || post.featuredImage?.node?.sourceUrl;
+const ogImage = updateWordPressImageUrls(seo.opengraphImage?.sourceUrl || post.featuredImage?.node?.sourceUrl);
 const canonical = seo.canonical || `https://dragosroua.com${post.uri}`;
 const schema = seo.schema?.raw || null;
 
@@ -63,7 +63,7 @@ const tags = post.tags?.nodes || [];
       <div class="app-promo-grid">
         <div class="app-image-col">
           <img 
-            src="https://www.dragosroua.com/wp-content/uploads/2025/10/blog-box-promo.png" 
+            src="https://wp.dragosroua.com/wp-content/uploads/2025/10/blog-box-promo.png" 
             alt="addTaskManager App Screenshot"
             class="app-screenshot"
           />

@@ -8,6 +8,16 @@ export function makeLinksRelative(content) {
     .replace(/href=["']https?:\/\/www\.dragosroua\.com\//g, 'href="/');
 }
 
+// Convert WordPress image URLs to new subdomain
+export function updateWordPressImageUrls(url) {
+  if (!url) return url;
+  
+  // Convert old WordPress domain to new subdomain for images
+  return url
+    .replace(/https?:\/\/dragosroua\.com\/wp-content\//g, 'https://wp.dragosroua.com/wp-content/')
+    .replace(/https?:\/\/www\.dragosroua\.com\/wp-content\//g, 'https://wp.dragosroua.com/wp-content/');
+}
+
 // Decode HTML entities
 function decodeHTMLEntities(text) {
   const entities = {
@@ -94,7 +104,7 @@ export function getFeaturedImageData(featuredImage, postTitle = '') {
   const altText = generateImageAltText(node, postTitle);
   
   return {
-    src: node.sourceUrl,
+    src: updateWordPressImageUrls(node.sourceUrl),
     alt: altText,
     width: node.mediaDetails?.width || 1200,
     height: node.mediaDetails?.height || 675
@@ -106,7 +116,7 @@ export function getOptimizedImage(featuredImage, targetWidth = 300, postTitle = 
   if (!featuredImage?.node) return null;
   
   const node = featuredImage.node;
-  const fullUrl = node.sourceUrl;
+  const fullUrl = updateWordPressImageUrls(node.sourceUrl);
   const sizes = node.mediaDetails?.sizes || [];
   const altText = generateImageAltText(node, postTitle);
   
@@ -124,11 +134,6 @@ export function getOptimizedImage(featuredImage, targetWidth = 300, postTitle = 
     const widthDiff = Math.abs(size.width - targetWidth);
     const ratio = size.width / targetWidth;
 
-    // Temporarily add this to getOptimizedImage function after line 111
-  console.log(`\n=== DEBUG: ${postTitle} ===`);
-  console.log('Available sizes:', sizes.map(s => `${s.width}x${s.height} 
-  (${s.sourceUrl.split('/').pop()})`));
-  console.log('Target width:', targetWidth);
     
     // Penalize images that are too large (bandwidth waste)
     let efficiencyPenalty = 0;
@@ -161,7 +166,7 @@ export function getOptimizedImage(featuredImage, targetWidth = 300, postTitle = 
     }
     
     return {
-      url: bestSize.sourceUrl,
+      url: updateWordPressImageUrls(bestSize.sourceUrl),
       alt: altText,
       width: bestSize.width,
       height: bestSize.height

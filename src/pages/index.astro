@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import { getAllPages } from '../lib/wordpress';
+import { updateWordPressImageUrls } from '../lib/utils';
 
 // Get the specific homepage by slug for SEO data
 const pages = await getAllPages();
@@ -14,7 +15,7 @@ if (!homepage) {
 const seo = homepage.seo || {};
 const title = seo.title || 'Dragos Roua';
 const description = seo.metaDesc || 'Building addTaskManager, the best iOS productivity app for ADHD minds';
-const ogImage = seo.opengraphImage?.sourceUrl;
+const ogImage = updateWordPressImageUrls(seo.opengraphImage?.sourceUrl);
 const schema = seo.schema?.raw || null;
 ---
 
