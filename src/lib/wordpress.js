@@ -1,6 +1,6 @@
 import { getCached } from './cache.js';
 
-const WP_GRAPHQL_URL = 'https://dragosroua.com/graphql';
+const WP_GRAPHQL_URL = 'https://wp.dragosroua.com/graphql';
 const IS_DEV = import.meta.env.DEV;
 const DEV_POST_LIMIT = 500; // Only fetch 50 posts in dev mode
 
