@@ -336,3 +336,44 @@ export async function getPostsByCategory(categorySlug) {
     post.categories?.nodes?.some(cat => cat.slug === categorySlug)
   );
 }
+
+// Get specific posts by URIs
+export async function getPostsByUris(uris) {
+  const query = `
+    query GetPostsByUris($uris: [String!]) {
+      posts(where: {nameIn: $uris}) {
+        nodes {
+          id
+          databaseId
+          title
+          slug
+          uri
+          content
+          date
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+              mediaDetails {
+                width
+                height
+                sizes {
+                  sourceUrl
+                  name
+                  width
+                  height
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  
+  // Extract slugs from URIs
+  const slugs = uris.map(uri => uri.replace(/^\//, '').replace(/\/$/, ''));
+  
+  const data = await fetchGraphQL(query, { uris: slugs });
+  return data.posts.nodes;
+}

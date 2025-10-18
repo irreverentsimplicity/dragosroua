@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const lastUpdated = new Date().toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<BaseLayout 
+  title="Privacy Policy | Dragos Roua"
+  description="Privacy Policy for dragosroua.com. Learn how we collect, use, and protect your personal information."
+  canonical="https://dragosroua.com/privacy-policy/"
+>
+  <article class="legal-page">
+    <h1>Privacy Policy</h1>
+    <p class="last-updated">Last updated: {lastUpdated}</p>
+
+    <section>
+      <h2>Introduction</h2>
+      <p>Welcome to dragosroua.com ("we," "our," or "us"). We respect your privacy and are committed to protecting your personal data. This privacy policy explains how we collect, use, and safeguard your information when you visit our website.</p>
+    </section>
+
+    <section>
+      <h2>Information We Collect</h2>
+      
+      <h3>Information You Provide</h3>
+      <ul>
+        <li><strong>Email Address:</strong> When you subscribe to our newsletter or contact us</li>
+        <li><strong>Name:</strong> If provided when subscribing or commenting</li>
+        <li><strong>Comments:</strong> Any comments you leave on blog posts</li>
+      </ul>
+
+      <h3>Information Automatically Collected</h3>
+      <ul>
+        <li><strong>Log Data:</strong> IP address, browser type, operating system, referring URLs, and pages visited</li>
+        <li><strong>Cookies:</strong> We use minimal cookies for analytics and site functionality</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>How We Use Your Information</h2>
+      <p>We use the collected information for:</p>
+      <ul>
+        <li>Sending newsletter updates (only if you've subscribed)</li>
+        <li>Responding to your inquiries</li>
+        <li>Improving our website and content</li>
+        <li>Analyzing website traffic and usage patterns</li>
+        <li>Complying with legal obligations</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Third-Party Services</h2>
+      <p>We use the following third-party services:</p>
+      <ul>
+        <li><strong>Cloudflare:</strong> For website hosting and security</li>
+        <li><strong>Google Analytics:</strong> For website analytics (anonymized IP addresses)</li>
+        <li><strong>Substack:</strong> For newsletter management (if you subscribe)</li>
+      </ul>
+      <p>These services have their own privacy policies governing the use of your information.</p>
+    </section>
+
+    <section>
+      <h2>Data Security</h2>
+      <p>We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction.</p>
+    </section>
+
+    <section>
+      <h2>Your Rights</h2>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Access the personal data we hold about you</li>
+        <li>Request correction of inaccurate data</li>
+        <li>Request deletion of your data</li>
+        <li>Opt-out of marketing communications</li>
+        <li>Object to processing of your data</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Children's Privacy</h2>
+      <p>Our website is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13.</p>
+    </section>
+
+    <section>
+      <h2>Changes to This Policy</h2>
+      <p>We may update this privacy policy from time to time. Any changes will be posted on this page with an updated revision date.</p>
+    </section>
+
+    <section>
+      <h2>Contact Us</h2>
+      <p>If you have questions about this privacy policy or our privacy practices, please contact us:</p>
+      <ul>
+        <li>Email: contact@dragosroua.com</li>
+        <li>Twitter: <a href="https://twitter.com/dragosroua" target="_blank" rel="noopener noreferrer">@dragosroua</a></li>
+      </ul>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    line-height: 1.6;
+  }
+
+  .legal-page h1 {
+    color: #2d3748;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .last-updated {
+    color: #718096;
+    font-size: 0.95rem;
+    margin-bottom: 3rem;
+  }
+
+  .legal-page section {
+    margin-bottom: 2.5rem;
+  }
+
+  .legal-page h2 {
+    color: #2d3748;
+    font-size: 1.75rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .legal-page h3 {
+    color: #4a5568;
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .legal-page p {
+    color: #4a5568;
+    margin-bottom: 1rem;
+  }
+
+  .legal-page ul {
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .legal-page li {
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+  }
+
+  .legal-page a {
+    color: #667eea;
+    text-decoration: none;
+  }
+
+  .legal-page a:hover {
+    color: #5568d3;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .legal-page {
+      padding: 1rem;
+    }
+
+    .legal-page h1 {
+      font-size: 2rem;
+    }
+
+    .legal-page h2 {
+      font-size: 1.5rem;
+    }
+  }
+</style>

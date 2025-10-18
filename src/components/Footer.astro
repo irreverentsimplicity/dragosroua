@@ -11,6 +11,12 @@ const currentYear = new Date().getFullYear();
     <p class="copyright">
       Copyright, Dragos Roua 2006 - {currentYear}.
     </p>
+    
+    <p class="legal-links">
+      <a href="/privacy-policy/">Privacy Policy</a>
+      <span class="separator">|</span>
+      <a href="/terms-of-service/">Terms of Service</a>
+    </p>
   </div>
 </footer>
 
@@ -49,6 +55,29 @@ const currentYear = new Date().getFullYear();
     color: #666;
     font-size: 0.9rem;
     margin: 0;
+  }
+  
+  .legal-links {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0.5rem 0 0;
+  }
+  
+  .legal-links a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .legal-links a:hover {
+    color: #333;
+    text-decoration: underline;
+  }
+  
+  .legal-links .separator {
+    margin: 0 0.5rem;
+    color: #999;
   }
   
   @media (max-width: 640px) {

@@ -1,0 +1,165 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="500 - Server Error | Dragos Roua"
+  description="Something went wrong on our end. Please try again later."
+  canonical="https://dragosroua.com/500/"
+>
+  <div class="error-page">
+    <div class="error-hero">
+      <h1 class="error-code">500</h1>
+      <h2 class="error-message">Oops! Something went wrong.</h2>
+      <p class="error-description">We're experiencing technical difficulties. Please try again in a moment.</p>
+    </div>
+
+    <div class="error-actions">
+      <a href="/" class="btn-primary">Go to Homepage</a>
+      <a href="/blog/" class="btn-secondary">Browse Blog</a>
+    </div>
+
+    <div class="error-help">
+      <p>If this problem persists, please contact me on <a href="https://twitter.com/dragosroua" target="_blank" rel="noopener noreferrer">Twitter</a>.</p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .error-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 4rem 1rem;
+    text-align: center;
+  }
+
+  .error-hero {
+    margin-bottom: 3rem;
+  }
+
+  .error-code {
+    font-size: 8rem;
+    font-weight: 900;
+    color: #e53e3e;
+    margin: 0;
+    line-height: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .error-message {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 2rem 0 1rem;
+    line-height: 1.3;
+  }
+
+  .error-description {
+    font-size: 1.2rem;
+    color: #4a5568;
+    margin: 0 0 3rem;
+    line-height: 1.6;
+  }
+
+  .error-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .btn-primary {
+    background: #e53e3e;
+    color: white;
+    border-color: #e53e3e;
+  }
+
+  .btn-primary:hover {
+    background: #c53030;
+    border-color: #c53030;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: #e53e3e;
+    border-color: #e53e3e;
+  }
+
+  .btn-secondary:hover {
+    background: #e53e3e;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+  }
+
+  .error-help {
+    color: #718096;
+    font-size: 0.95rem;
+  }
+
+  .error-help a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .error-help a:hover {
+    color: #5568d3;
+    text-decoration: underline;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .error-page {
+      padding: 2rem 1rem;
+    }
+
+    .error-code {
+      font-size: 6rem;
+    }
+
+    .error-message {
+      font-size: 1.5rem;
+    }
+
+    .error-description {
+      font-size: 1rem;
+    }
+
+    .error-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .error-code {
+      font-size: 4rem;
+    }
+
+    .error-message {
+      font-size: 1.25rem;
+    }
+  }
+</style>
