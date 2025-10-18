@@ -19,27 +19,55 @@ export async function getStaticPaths() {
   
   console.log(`\n📄 Generating ${allContent.length} static pages\n`);
   
+  // Sort posts by date for navigation (newest first)
+  const sortedPosts = posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  
   return allContent.map(item => {
     const slug = getSlugFromUri(item.uri);
     const isPost = posts.some(p => p.id === item.id);
+    
+    // Calculate next/previous posts for blog posts only
+    let nextPost = null;
+    let previousPost = null;
+    
+    if (isPost) {
+      const currentIndex = sortedPosts.findIndex(p => p.id === item.id);
+      if (currentIndex > 0) {
+        nextPost = {
+          title: sortedPosts[currentIndex - 1].title,
+          uri: sortedPosts[currentIndex - 1].uri
+        };
+      }
+      if (currentIndex < sortedPosts.length - 1) {
+        previousPost = {
+          title: sortedPosts[currentIndex + 1].title,
+          uri: sortedPosts[currentIndex + 1].uri
+        };
+      }
+    }
     
     console.log(`  → /${slug} (${isPost ? 'post' : 'page'})`);
     
     return {
       params: { slug: slug || undefined },
-      props: { content: item, isPost }
+      props: { 
+        content: item, 
+        isPost,
+        nextPost,
+        previousPost
+      }
     };
   });
 }
 
-const { content, isPost } = Astro.props;
+const { content, isPost, nextPost, previousPost } = Astro.props;
 
 // Use PostLayout for posts (includes iOS ad + Substack)
 // Use BaseLayout for pages (cleaner, for product tables)
 ---
 
 {isPost ? (
-  <PostLayout post={content} />
+  <PostLayout post={content} nextPost={nextPost} previousPost={previousPost} />
 ) : (
   <BaseLayout 
     title={content.seo?.title || content.title}

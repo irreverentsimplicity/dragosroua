@@ -7,9 +7,11 @@ import { makeLinksRelative, getOptimizedImage, updateWordPressImageUrls } from '
 
 interface Props {
   post: any;
+  nextPost?: { title: string; uri: string } | null;
+  previousPost?: { title: string; uri: string } | null;
 }
 
-const { post } = Astro.props;
+const { post, nextPost, previousPost } = Astro.props;
 
 const seo = post.seo || {};
 const title = seo.title || post.title;
@@ -148,6 +150,25 @@ const tags = post.tags?.nodes || [];
         </div>
       )}
     </div>
+    
+    <!-- Post Navigation -->
+    {(nextPost || previousPost) && (
+      <div class="post-navigation">
+        {previousPost && (
+          <a href={previousPost.uri} class="nav-card nav-previous">
+            <span class="nav-direction">Previous</span>
+            <h3 class="nav-title" set:html={previousPost.title} />
+          </a>
+        )}
+        
+        {nextPost && (
+          <a href={nextPost.uri} class="nav-card nav-next">
+            <span class="nav-direction">Next</span>
+            <h3 class="nav-title" set:html={nextPost.title} />
+          </a>
+        )}
+      </div>
+    )}
     
     <EmailSignup />
   </article>
@@ -307,6 +328,71 @@ const tags = post.tags?.nodes || [];
     font-size: 0.9rem;
   }
   
+  /* Post Navigation */
+  .post-navigation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 3rem 0 2rem;
+  }
+  
+  .nav-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  .nav-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: #cbd5e0;
+  }
+  
+  .nav-direction {
+    color: #667eea;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  .nav-title {
+    color: #2d3748;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .nav-card:hover .nav-title {
+    color: #1a202c;
+  }
+  
+  /* Single navigation item takes full width */
+  .post-navigation:has(.nav-card:only-child) .nav-card {
+    grid-column: 1 / -1;
+    max-width: 50%;
+  }
+  
+  .nav-next {
+    text-align: right;
+  }
+  
+  .nav-previous {
+    text-align: left;
+  }
+  
   /* Mobile responsive */
   @media (max-width: 600px) {
     .app-promo-box {
@@ -335,6 +421,26 @@ const tags = post.tags?.nodes || [];
     
     .taxonomy-section {
       font-size: 0.9rem;
+    }
+    
+    /* Navigation mobile styles */
+    .post-navigation {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin: 2rem 0 1.5rem;
+    }
+    
+    .nav-card {
+      padding: 1.25rem;
+      text-align: left !important;
+    }
+    
+    .nav-title {
+      font-size: 1.125rem;
+    }
+    
+    .post-navigation:has(.nav-card:only-child) .nav-card {
+      max-width: 100%;
     }
   }
 </style>
