@@ -13,7 +13,7 @@ const { post } = Astro.props;
 const seo = post.seo || {};
 const title = seo.title || post.title;
 const description = seo.metaDesc || post.content?.replace(/<[^>]*>/g, '').substring(0, 160) || '';
-const ogImage = updateWordPressImageUrls(seo.opengraphImage?.sourceUrl || post.featuredImage?.node?.sourceUrl);
+const ogImage = updateWordPressImageUrls(seo.opengraphImage?.sourceUrl || post.featuredImage?.node?.sourceUrl) || '/images/default-featured-1200-630.png';
 const canonical = seo.canonical || `https://dragosroua.com${post.uri}`;
 const schema = seo.schema?.raw || null;
 

@@ -2,7 +2,7 @@
 import PostLayout from '../layouts/PostLayout.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getAllPosts, getAllPages, getSlugFromUri } from '../lib/wordpress';
-import { makeLinksRelative, getOptimizedImage } from '../lib/utils';
+import { makeLinksRelative, getOptimizedImage, updateWordPressImageUrls } from '../lib/utils';
 
 export async function getStaticPaths() {
   console.log('\n🔨 Building all content...\n');
@@ -44,7 +44,7 @@ const { content, isPost } = Astro.props;
   <BaseLayout 
     title={content.seo?.title || content.title}
     description={content.seo?.metaDesc || ''}
-    ogImage={content.seo?.opengraphImage?.sourceUrl || content.featuredImage?.node?.sourceUrl}
+    ogImage={updateWordPressImageUrls(content.seo?.opengraphImage?.sourceUrl || content.featuredImage?.node?.sourceUrl) || '/images/default-featured-1200-630.png'}
     canonical={content.seo?.canonical || `https://dragosroua.com${content.uri}`}
     schema={content.seo?.schema?.raw}
   >

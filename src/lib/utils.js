@@ -98,7 +98,15 @@ export function generateImageAltText(node, postTitle) {
 
 // Get featured image data for local optimization
 export function getFeaturedImageData(featuredImage, postTitle = '') {
-  if (!featuredImage?.node) return null;
+  // Return default post image if no featured image
+  if (!featuredImage?.node) {
+    return {
+      src: '/images/default-featured-1200-630.png',
+      alt: 'Dragos Roua - Default featured image',
+      width: 1200,
+      height: 630
+    };
+  }
   
   const node = featuredImage.node;
   const altText = generateImageAltText(node, postTitle);
@@ -113,7 +121,15 @@ export function getFeaturedImageData(featuredImage, postTitle = '') {
 
 // Get optimized image size from WordPress media
 export function getOptimizedImage(featuredImage, targetWidth = 300, postTitle = '') {
-  if (!featuredImage?.node) return null;
+  // Return default card image if no featured image
+  if (!featuredImage?.node) {
+    return {
+      url: '/images/default-featured-300-250.png',
+      alt: 'Dragos Roua - Default featured image',
+      width: 300,
+      height: 250
+    };
+  }
   
   const node = featuredImage.node;
   const fullUrl = updateWordPressImageUrls(node.sourceUrl);

@@ -15,7 +15,7 @@ if (!homepage) {
 const seo = homepage.seo || {};
 const title = seo.title || 'Dragos Roua';
 const description = seo.metaDesc || 'Building addTaskManager, the best iOS productivity app for ADHD minds';
-const ogImage = updateWordPressImageUrls(seo.opengraphImage?.sourceUrl);
+const ogImage = updateWordPressImageUrls(seo.opengraphImage?.sourceUrl) || '/images/default-featured-1200-630.png';
 const schema = seo.schema?.raw || null;
 ---
 
