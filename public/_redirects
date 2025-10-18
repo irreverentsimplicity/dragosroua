@@ -1,3 +1,7 @@
+# IMPORTANT: Redirect www to non-www
+https://www.dragosroua.com/* https://dragosroua.com/:splat 301
+http://www.dragosroua.com/* https://dragosroua.com/:splat 301
+
 # WordPress Redirects - Cleaned and Updated
 # Total: 60 active redirects (removed 21 dead/outdated links)
 # Generated: October 16, 2025
