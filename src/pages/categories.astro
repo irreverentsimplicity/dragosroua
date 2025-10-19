@@ -1,0 +1,366 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllCategories } from '../lib/wordpress';
+
+// Fetch all categories with post counts
+const allCategories = await getAllCategories();
+
+// Filter categories to only show those with 10+ posts
+const categories = allCategories.filter(category => category.count >= 10);
+
+// Define category groupings - handle both "and" and "&" variations
+const coreTopicsOrder = [
+  'Personal Development',
+  'Motivation and Inspiration', 
+  'Location Independence',
+  'Financial Resilience',
+  'Meaningful Relationships',
+  'Digital Tools',
+  'Productivity and Effectiveness',
+  'Productivity & Effectiveness', // Alternative with &
+  'Getting Things Done',
+  'Travel and Fun',
+  'Travel & Fun', // Alternative with &
+  'Success',
+  'Wellness'
+];
+
+// Separate categories into core and exploration groups
+const coreTopics = [];
+const explorationTopics = [];
+
+categories.forEach(category => {
+  if (coreTopicsOrder.includes(category.name)) {
+    coreTopics.push(category);
+  } else {
+    explorationTopics.push(category);
+  }
+});
+
+// Sort core topics by the predefined order
+coreTopics.sort((a, b) => {
+  return coreTopicsOrder.indexOf(a.name) - coreTopicsOrder.indexOf(b.name);
+});
+
+// Sort exploration topics by post count then alphabetically
+explorationTopics.sort((a, b) => {
+  if (b.count !== a.count) {
+    return b.count - a.count;
+  }
+  return a.name.localeCompare(b.name);
+});
+
+// Category descriptions - shortened for cards
+const categoryDescriptions = {
+  'Personal Development': 'Growing without the guru nonsense',
+  'Motivation and Inspiration': 'Fuel for when you need it most',
+  'Location Independence': 'Living and working from anywhere',
+  'Financial Resilience': 'Real talk about money and wealth building',
+  'Meaningful Relationships': 'Thoughts on human connection in a digital world',
+  'Digital Tools': 'Tools that actually earn their place',
+  'Productivity and Effectiveness': 'Battle-tested productivity strategies',
+  'Productivity & Effectiveness': 'Battle-tested productivity strategies',
+  'Getting Things Done': 'GTD deep dives from a long-time practitioner',
+  'Travel and Fun': 'Adventures, mishaps, and random discoveries',
+  'Travel & Fun': 'Adventures, mishaps, and random discoveries',
+  'GTD Tips': 'Practical Getting Things Done strategies',
+  'Money and Wealth': 'Real talk about money and wealth building',
+  'Technology': 'Tech talk without the hype',
+  'Running': 'Running stories from a guy who started at 40',
+  'Programming Bits': 'Code snippets, dev thoughts, and programming adventures',
+  'Time Management': 'Making peace with the clock',
+  'iPhone': 'iPhone tips from a productivity app developer',
+  'Health and Fitness': 'Staying healthy when your office is everywhere',
+  'Blogging': '15+ years of blogging lessons learned',
+  'Mind Mapping': 'Visual thinking for messy minds',
+  'Software Reviews': 'Real reviews of apps and tools',
+  'Spirituality and Beliefs': 'Exploring the bigger questions without the woo-woo',
+  'Movie Reviews': 'Movies through the lens of a productivity geek',
+  'Relationship and Society': 'Thoughts on human connection',
+  'Science Fiction': 'Sci-fi thoughts from a tech entrepreneur\'s brain',
+  'Guest Posts': 'Thoughts and insights from fellow writers',
+  'Parenting': 'Dad thoughts from the entrepreneurial trenches',
+  'Wellness': 'Wellness that fits real life',
+  'Success': 'Redefining success on your own terms',
+  'Astrology and Esotericism': 'When logic meets the mystical'
+};
+
+// Default description for categories not in the list
+const getDescription = (categoryName) => {
+  return categoryDescriptions[categoryName] || `Insights and thoughts on ${categoryName.toLowerCase()}`;
+};
+---
+
+<BaseLayout 
+  title="All Categories | Dragos Roua"
+  description="Explore content across 35+ categories - from productivity and programming to mindfulness and marathons. Over 1,300 posts organized for easy browsing."
+  canonical="https://dragosroua.com/categories/"
+>
+  <div class="categories-page">
+    <header class="page-header">
+      <h1>Explore All Topics</h1>
+      <p class="page-description">
+        Discover content across {categories.length} categories, from productivity and programming 
+        to mindfulness and marathons. Over 1,300 posts organized for easy browsing.
+      </p>
+    </header>
+
+    <!-- Core Topics Section -->
+    <section class="category-section">
+      <div class="section-header">
+        <h2>Core Topics</h2>
+        <p>The heart of what I write about - life design, productivity, and building meaningful systems</p>
+      </div>
+      <div class="categories-grid">
+        {coreTopics.map((category) => (
+          <a href={`/category/${category.slug}/`} class="category-card">
+            <div class="category-content">
+              <h3 class="category-name">{category.name}</h3>
+              <p class="category-description">{getDescription(category.name)}</p>
+              <div class="category-meta">
+                <span class="post-count">{category.count}</span>
+                <span class="post-label">{category.count === 1 ? 'post' : 'posts'}</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Exploration Topics Section -->
+    <section class="category-section">
+      <div class="section-header">
+        <h2>Exploration Topics</h2>
+        <p>Random thoughts, experiments, and explorations - from sci-fi to spirituality to code snippets</p>
+      </div>
+      <div class="categories-grid">
+        {explorationTopics.map((category) => (
+          <a href={`/category/${category.slug}/`} class="category-card">
+            <div class="category-content">
+              <h3 class="category-name">{category.name}</h3>
+              <p class="category-description">{getDescription(category.name)}</p>
+              <div class="category-meta">
+                <span class="post-count">{category.count}</span>
+                <span class="post-label">{category.count === 1 ? 'post' : 'posts'}</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <p>Can't find what you're looking for? Try <a href="/blog/">browsing all posts</a> or use the search.</p>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .categories-page {
+    max-width: 2000px; /* Much wider for spacious card display */
+    margin: 0 auto;
+    padding: 2rem 3rem; /* More padding on sides */
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    margin-bottom: 1rem;
+  }
+
+  .page-description {
+    font-size: 1.1rem;
+    color: #4a5568;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .category-section {
+    margin-bottom: 4rem;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-header h2 {
+    font-size: 2rem;
+    color: #2d3748;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .section-header p {
+    font-size: 1.1rem;
+    color: #4a5568;
+    margin: 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* Fix width distribution */
+    gap: 2rem;
+  }
+
+  .category-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 2rem;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    height: 100%; /* Equal height cards */
+  }
+
+  .category-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: #cbd5e0;
+  }
+
+  .category-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .category-name {
+    color: #2d3748;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    line-height: 1.3;
+  }
+
+  .category-card:hover .category-name {
+    color: #1a202c;
+  }
+
+  .category-description {
+    color: #4a5568;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0 0 1.5rem 0;
+    flex-grow: 1;
+  }
+
+  .category-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-top: auto;
+  }
+
+  .post-count {
+    color: #667eea;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .post-label {
+    color: #718096;
+    font-size: 0.9rem;
+  }
+
+  .page-footer {
+    text-align: center;
+    padding: 2rem 0;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .page-footer p {
+    color: #4a5568;
+    margin: 0;
+  }
+
+  .page-footer a {
+    color: #667eea;
+    text-decoration: none;
+  }
+
+  .page-footer a:hover {
+    color: #5568d3;
+    text-decoration: underline;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1800px) {
+    .categories-page {
+      max-width: 1600px;
+      padding: 2rem 2rem;
+    }
+  }
+
+  @media (max-width: 1400px) {
+    .categories-page {
+      max-width: 1400px;
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .categories-page {
+      max-width: 1200px;
+      padding: 2rem 1rem;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .categories-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .categories-page {
+      padding: 1rem;
+    }
+
+    .page-header h1 {
+      font-size: 2rem;
+    }
+
+    .page-description {
+      font-size: 1rem;
+    }
+
+    .categories-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .category-card {
+      padding: 1.5rem;
+    }
+
+    .category-name {
+      font-size: 1.25rem;
+    }
+
+    .category-description {
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .categories-grid {
+      margin-bottom: 2rem;
+    }
+  }
+</style>
