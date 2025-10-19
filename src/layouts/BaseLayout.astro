@@ -73,6 +73,16 @@ const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
 </script>
   
   <style is:global>
+    /* WCAG AA Compliant Color Variables */
+    :root {
+      --color-primary: #4c63d2;        /* Darker blue for better contrast */
+      --color-primary-hover: #3d4fd1;  /* Even darker on hover */
+      --color-text-primary: #1a202c;   /* Very dark gray for headings */
+      --color-text-secondary: #2d3748; /* Dark gray for body text */
+      --color-text-muted: #4a5568;     /* Medium gray for meta text */
+      --color-text-light: #718096;     /* Light gray for labels */
+    }
+
     * {
         margin: 0;
         padding: 0;
@@ -80,14 +90,59 @@ const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
         /* NO display property here! */
     }
     
-    
-    
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
                    'Helvetica Neue', Arial, sans-serif;
       line-height: 1.6;
-      color: #333;
+      color: var(--color-text-secondary);
       background: #fff;
+    }
+
+    /* Accessibility: Better link contrast and distinction */
+    a {
+      color: var(--color-primary);
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--color-primary-hover);
+    }
+
+    /* Exception: Header and Footer navigation keep their own styles */
+    .main-nav a {
+      color: #ffffff !important;
+    }
+
+    .main-nav a:hover {
+      color: #ffffff !important;
+    }
+
+    .footer-nav a {
+      color: #666 !important;
+    }
+
+    .footer-nav a:hover {
+      color: #333 !important;
+    }
+
+    /* Add underlines to content links for better distinction */
+    .wp-content a,
+    article p a,
+    .page-footer a {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+
+    .wp-content a:hover,
+    article p a:hover,
+    .page-footer a:hover {
+      text-decoration-thickness: 2px;
+    }
+
+    /* Ensure sufficient contrast for headings */
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--color-text-primary);
     }
     
     main {

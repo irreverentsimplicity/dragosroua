@@ -43,11 +43,14 @@ const currentYear = new Date().getFullYear();
   .footer-nav a {
     color: #666;
     text-decoration: none;
-    transition: color 0.2s;
+    transition: all 0.2s;
   }
   
   .footer-nav a:hover {
-    color: #333;
+    color: #333; /* Keep current darker gray */
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
   }
   
   .copyright {
