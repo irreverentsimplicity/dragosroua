@@ -3,8 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import SubstackSubscribe from '../components/SubstackSubscribe.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import ShareButtons from '../components/ShareButtons.astro';
-import OptimizedImage from '../components/OptimizedImage.astro';
-import { makeLinksRelative, generateImageAltText, updateWordPressImageUrls } from '../lib/utils';
+import { makeLinksRelative, getResponsiveImage, updateWordPressImageUrls } from '../lib/utils';
 
 interface Props {
   post: any;
@@ -22,6 +21,7 @@ const canonical = seo.canonical || `https://dragosroua.com${post.uri}`;
 const schema = seo.schema?.raw || null;
 
 const processedContent = makeLinksRelative(post.content);
+const heroImage = getResponsiveImage(post.featuredImage, post.title);
 
 // Get categories and tags
 const categories = post.categories?.nodes || [];
@@ -49,15 +49,16 @@ const tags = post.tags?.nodes || [];
     </div>
     
     {post.featuredImage?.node?.sourceUrl && (
-      <OptimizedImage
-        src={updateWordPressImageUrls(post.featuredImage.node.sourceUrl)}
-        alt={generateImageAltText(post.featuredImage.node, post.title)}
-        width={800}
-        height={533}
+      <img 
+        src={heroImage.src}
+        srcset={heroImage.srcset}
+        sizes={heroImage.sizes}
+        alt={heroImage.alt}
         class="hero-image"
+        width={heroImage.width}
+        height={heroImage.height}
         loading="eager"
-        sizes="(max-width: 768px) 100vw, 800px"
-        widths={[380, 600, 800, 1200]}
+        decoding="async"
       />
     )}
     

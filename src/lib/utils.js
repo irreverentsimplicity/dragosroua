@@ -119,6 +119,75 @@ export function getFeaturedImageData(featuredImage, postTitle = '') {
   };
 }
 
+// Get responsive image data for WordPress images
+export function getResponsiveImage(featuredImage, postTitle = '') {
+  // Return default responsive images if no featured image
+  if (!featuredImage?.node) {
+    return {
+      src: '/images/default-featured-1200-630.png',
+      alt: 'Dragos Roua - Default featured image',
+      srcset: '/images/default-featured-300-250.png 300w, /images/default-featured-1200-630.png 1200w',
+      sizes: '(max-width: 768px) 100vw, 800px',
+      width: 800,
+      height: 533
+    };
+  }
+  
+  const node = featuredImage.node;
+  const sizes = node.mediaDetails?.sizes || [];
+  const altText = generateImageAltText(node, postTitle);
+  const fullUrl = updateWordPressImageUrls(node.sourceUrl);
+  
+  // Build srcset from available WordPress sizes
+  const srcsetEntries = [];
+  const targetWidths = [380, 600, 800, 1200]; // Mobile-first responsive breakpoints
+  
+  // Find best matching WordPress thumbnail for each target width
+  targetWidths.forEach(targetWidth => {
+    let bestSize = null;
+    let bestScore = Infinity;
+    
+    for (const size of sizes) {
+      const widthDiff = Math.abs(size.width - targetWidth);
+      const ratio = size.width / targetWidth;
+      
+      // Prefer sizes that are close to target, not too small or too large
+      let score = widthDiff;
+      if (ratio < 0.7) score += 1000; // Too small penalty
+      if (ratio > 2.0) score += 500;  // Too large penalty
+      
+      if (score < bestScore && size.width >= targetWidth * 0.7) {
+        bestScore = score;
+        bestSize = size;
+      }
+    }
+    
+    if (bestSize) {
+      srcsetEntries.push(`${updateWordPressImageUrls(bestSize.sourceUrl)} ${bestSize.width}w`);
+    }
+  });
+  
+  // Always include original as fallback
+  const originalWidth = node.mediaDetails?.width || 800;
+  if (originalWidth >= 800 && !srcsetEntries.some(entry => entry.includes(`${originalWidth}w`))) {
+    srcsetEntries.push(`${fullUrl} ${originalWidth}w`);
+  }
+  
+  // Find best default src (prefer ~800px)
+  const defaultSrc = sizes.find(s => s.width >= 600 && s.width <= 900)?.sourceUrl || 
+                     sizes.find(s => s.width >= 400)?.sourceUrl || 
+                     node.sourceUrl;
+  
+  return {
+    src: updateWordPressImageUrls(defaultSrc),
+    alt: altText,
+    srcset: srcsetEntries.length > 1 ? srcsetEntries.join(', ') : '',
+    sizes: '(max-width: 768px) 100vw, 800px',
+    width: 800,
+    height: 533
+  };
+}
+
 // Get optimized image size from WordPress media
 export function getOptimizedImage(featuredImage, targetWidth = 300, postTitle = '') {
   // Return default card image if no featured image

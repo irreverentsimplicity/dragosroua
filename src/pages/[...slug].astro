@@ -1,9 +1,8 @@
 ---
 import PostLayout from '../layouts/PostLayout.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import OptimizedImage from '../components/OptimizedImage.astro';
 import { getAllPosts, getAllPages, getSlugFromUri } from '../lib/wordpress';
-import { makeLinksRelative, generateImageAltText, updateWordPressImageUrls } from '../lib/utils';
+import { makeLinksRelative, getResponsiveImage, updateWordPressImageUrls } from '../lib/utils';
 
 export async function getStaticPaths() {
   console.log('\n🔨 Building all content...\n');
@@ -80,18 +79,22 @@ const { content, isPost, nextPost, previousPost } = Astro.props;
     <article class="page">
       <h1 set:html={content.title} />
       
-      {content.featuredImage?.node?.sourceUrl && (
-        <OptimizedImage
-          src={updateWordPressImageUrls(content.featuredImage.node.sourceUrl)}
-          alt={generateImageAltText(content.featuredImage.node, content.title)}
-          width={800}
-          height={533}
-          class="hero-image"
-          loading="eager"
-          sizes="(max-width: 768px) 100vw, 800px"
-          widths={[380, 600, 800, 1200]}
-        />
-      )}
+      {content.featuredImage?.node?.sourceUrl && (() => {
+        const heroImage = getResponsiveImage(content.featuredImage, content.title);
+        return (
+          <img 
+            src={heroImage.src}
+            srcset={heroImage.srcset}
+            sizes={heroImage.sizes}
+            alt={heroImage.alt}
+            class="hero-image"
+            width={heroImage.width}
+            height={heroImage.height}
+            loading="eager"
+            decoding="async"
+          />
+        );
+      })()}
       
       <div class="wp-content" set:html={makeLinksRelative(content.content)} />
     </article>
