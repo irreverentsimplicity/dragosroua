@@ -6,7 +6,7 @@ import { updateWordPressImageUrls } from '../lib/utils';
 
 // Get the specific homepage by slug for SEO data
 const pages = await getAllPages();
-const homepage = pages.find(page => page.slug === '22416-2');
+const homepage = pages.find((page: { slug: string; }) => page.slug === '22416-2');
 
 if (!homepage) {
   throw new Error('Homepage not found! Check if page with slug "22416-2" exists.');
