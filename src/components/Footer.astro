@@ -3,91 +3,153 @@ const currentYear = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="footer-content">
-    <nav class="footer-nav">
+  <nav class="footer-nav">
+    <div class="footer-nav-content">
       <a href="/work-with-me/">Work With Me</a>
       <a href="/categories/">Explore All Topics</a>
       <a href="/advertise/">Advertise</a>
-    </nav>
-    
-    <p class="copyright">
-      Copyright, Dragos Roua 2006 - {currentYear}.
-    </p>
-    
-    <p class="legal-links">
-      <a href="/privacy-policy/">Privacy Policy</a>
-      <span class="separator">|</span>
-      <a href="/terms-of-service/">Terms of Service</a>
-    </p>
+    </div>
+  </nav>
+  
+  <div class="footer-bottom">
+    <div class="footer-bottom-content">
+      <p class="copyright">
+        Copyright, Dragos Roua 2006 - {currentYear}.
+      </p>
+      
+      <p class="legal-links">
+        <a href="/privacy-policy/">Privacy Policy</a>
+        <span class="separator">|</span>
+        <a href="/terms-of-service/">Terms of Service</a>
+      </p>
+    </div>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    background: white;
     border-top: 1px solid #e5e5e5;
-    padding: 2rem 1rem;
     margin-top: 4rem;
   }
   
-  .footer-content {
+  /* Navigation section with light gray background - full width */
+  .footer-nav {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .footer-nav-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 2rem;
+  }
+  
+  .footer-nav-content a {
+    color: #0066cc; /* Hard blue color */
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+    padding: 0.25rem 0;
+  }
+  
+  .footer-nav-content a:hover {
+    color: #0052a3; /* Darker blue on hover */
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  
+  .footer-nav-content a:focus {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  
+  /* Copyright and legal section with black background */
+  .footer-bottom {
+    background: #000;
+    color: #fff;
+  }
+  
+  .footer-bottom-content {
     max-width: 800px;
     margin: 0 auto;
   }
   
-  .footer-nav {
-    display: flex;
-    justify-content: flex-end;
-    gap: 2rem;
-    margin-bottom: 1rem;
+  .copyright,
+  .legal-links {
+    text-align: center;
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 1rem 2rem;
   }
   
-  .footer-nav a {
-    color: #666;
+  .copyright {
+    padding-bottom: 0.5rem;
+  }
+  
+  .legal-links {
+    padding-top: 0.5rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .legal-links a {
+    color: #fff;
     text-decoration: none;
+    font-weight: 400;
     transition: all 0.2s;
+    padding: 0.25rem 0;
   }
   
-  .footer-nav a:hover {
-    color: #333; /* Keep current darker gray */
+  .legal-links a:hover {
+    color: #e6e6e6;
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 2px;
   }
   
-  .copyright {
-    text-align: center;
-    color: #666;
-    font-size: 0.9rem;
-    margin: 0;
-  }
-  
-  .legal-links {
-    text-align: center;
-    color: #666;
-    font-size: 0.9rem;
-    margin: 0.5rem 0 0;
-  }
-  
-  .legal-links a {
-    color: #666;
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  
-  .legal-links a:hover {
-    color: #333;
-    text-decoration: underline;
+  .legal-links a:focus {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+    border-radius: 2px;
   }
   
   .legal-links .separator {
-    margin: 0 0.5rem;
-    color: #999;
+    margin: 0 0.75rem;
+    color: #ccc;
   }
   
   @media (max-width: 640px) {
     .footer-nav {
       justify-content: center;
+      padding: 1.25rem 1rem;
+      gap: 1.5rem;
+    }
+    
+    .copyright,
+    .legal-links {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    .footer-nav a,
+    .legal-links a {
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .footer-nav {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+    
+    .legal-links .separator {
+      margin: 0 0.5rem;
     }
   }
 </style>
