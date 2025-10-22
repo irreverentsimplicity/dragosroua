@@ -141,7 +141,7 @@ const tags = post.tags?.nodes || [];
                 aria-label={`View all posts tagged with ${tag.name}`}
                 title={`Browse posts about ${tag.name}`}
               >
-                {tag.name.length <= 3 ? `${tag.name} topics` : tag.name}
+                {tag.name.length <= 3 ? tag.name + " topics" : tag.name}
               </a>
               {index < Math.min(7, tags.length - 1) && <span>, </span>}
             </Fragment>
