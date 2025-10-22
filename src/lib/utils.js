@@ -218,6 +218,16 @@ export function updateWordPressImageUrls(url) {
     .replace(/https?:\/\/www\.dragosroua\.com\/wp-content\//g, 'https://wp.dragosroua.com/wp-content/');
 }
 
+// Clean canonical URLs to use correct domain
+export function cleanCanonicalUrl(url) {
+  if (!url) return url;
+  
+  // Convert wp.dragosroua.com and www.dragosroua.com to dragosroua.com
+  return url
+    .replace(/https?:\/\/wp\.dragosroua\.com\//g, 'https://dragosroua.com/')
+    .replace(/https?:\/\/www\.dragosroua\.com\//g, 'https://dragosroua.com/');
+}
+
 // Decode HTML entities
 function decodeHTMLEntities(text) {
   const entities = {
