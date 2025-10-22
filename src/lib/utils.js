@@ -190,7 +190,9 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     'on-living-a-better-life-screwing-up-and-everything-in-between',
     'running-for-my-life',
     'downloads',
-    'wordpress-plugin-blog-audit'
+    'wordpress-plugin-blog-audit',
+    'the-first-6-months-of-blogging-writing',
+    'being-a-digital-nomad-the-workshop'
   ];
   
   orphanedPages.forEach(page => {
