@@ -124,7 +124,63 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     }
   );
   
-  // 4. LEGACY OPTIMIZATION: Convert any remaining absolute internal links to relative
+  // Handle contact-2 links (redirect to about-me)
+  optimizedContent = optimizedContent.replace(
+    /href=["']\/contact-2\/?["']/g,
+    (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting relative contact-2 link: ${match} → href="/about-me/"`);
+      return 'href="/about-me/"';
+    }
+  );
+  
+  optimizedContent = optimizedContent.replace(
+    /href=["']https?:\/\/(?:www\.)?dragosroua\.com\/contact-2\/?["']/g,
+    (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting absolute contact-2 link: ${match} → href="/about-me/"`);
+      return 'href="/about-me/"';
+    }
+  );
+  
+  // 4. ORPHANED PAGE REDIRECTS: Redirect orphaned pages to advertise
+  const orphanedPages = [
+    '1250-ideas-for-your-bucket-list',
+    '100-days-challenge',
+    '100-days-challenge-thanks',
+    'cart',
+    'checkout', 
+    'pricing',
+    'black-friday-2013',
+    'december-2012-bundle',
+    'build-reputation-download',
+    'build-reputation-landing',
+    'thanks',
+    'thank-help',
+    'thank-you-for-subscribing',
+    'test',
+    'uncopyright'
+  ];
+  
+  orphanedPages.forEach(page => {
+    // Relative links
+    const relativePattern = new RegExp(`href=["']\/${page}\/?["']`, 'g');
+    optimizedContent = optimizedContent.replace(relativePattern, (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting orphaned page: ${match} → href="/advertise/"`);
+      return 'href="/advertise/"';
+    });
+    
+    // Absolute links with domain
+    const absolutePattern = new RegExp(`href=["']https?:\\/\\/(?:www\\.)?dragosroua\\.com\\/${page}\\/?["']`, 'g');
+    optimizedContent = optimizedContent.replace(absolutePattern, (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting orphaned page: ${match} → href="/advertise/"`);
+      return 'href="/advertise/"';
+    });
+  });
+  
+  // 5. LEGACY OPTIMIZATION: Convert any remaining absolute internal links to relative
   optimizedContent = optimizedContent.replace(
     /href=["']https?:\/\/dragosroua\.com\//g, 
     'href="/'
