@@ -37,7 +37,7 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
   
   // 1. LINK OPTIMIZATION: Remove www from internal dragosroua.com links
   optimizedContent = optimizedContent.replace(
-    /href=["']https?:\/\/www\.dragosroua\.com\/((?:[^"']*)?)/g, 
+    /href=["']https?:\/\/www\.dragosroua\.com\/?([^"']*)/g, 
     (match, path) => {
       localLinksOptimized++;
       return `href="https://dragosroua.com/${path}`;
@@ -45,6 +45,15 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
   );
   
   // 2. IMAGE OPTIMIZATION: Ensure all dragosroua.com images use wp subdomain
+  // Special case: Replace blog-box-promo.png with local WebP version
+  optimizedContent = optimizedContent.replace(
+    /src=["']https?:\/\/wp\.dragosroua\.com\/wp-content\/uploads\/[^"']*blog-box-promo\.png["']/g,
+    (match) => {
+      localImagesOptimized++;
+      return `src="/images/blog-box-promo.webp"`;
+    }
+  );
+  
   // Match image sources that point to main domain
   optimizedContent = optimizedContent.replace(
     /src=["']https?:\/\/(?:www\.)?dragosroua\.com\/(wp-content\/[^"']*)/g,
