@@ -2,6 +2,34 @@
 https://www.dragosroua.com/* https://dragosroua.com/:splat 301
 http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 
+# ORPHANED PAGES REDIRECTS - To Work With Me page
+# Added: October 22, 2025
+# About/Contact redirects
+/about/  /about-me/  301
+/contact/  /about-me/  301
+/contact-2/  /about-me/  301
+
+# Orphaned utility/marketing pages
+/1250-ideas-for-your-bucket-list/  /work-with-me/  301
+/100-days-challenge/  /work-with-me/  301
+/100-days-challenge-thanks/  /work-with-me/  301
+/cart/  /work-with-me/  301
+/checkout/  /work-with-me/  301
+/pricing/  /work-with-me/  301
+/black-friday-2013/  /work-with-me/  301
+/december-2012-bundle/  /work-with-me/  301
+/build-reputation-download/  /work-with-me/  301
+/build-reputation-landing/  /work-with-me/  301
+/thanks/  /work-with-me/  301
+/thank-help/  /work-with-me/  301
+/thank-you-for-subscribing/  /work-with-me/  301
+/test/  /work-with-me/  301
+/uncopyright/  /work-with-me/  301
+/donate/  /work-with-me/  301
+/on-living-a-better-life-screwing-up-and-everything-in-between/  /work-with-me/  301
+/running-for-my-life/  /work-with-me/  301
+/downloads/  /work-with-me/  301
+
 # WordPress Redirects - Cleaned and Updated
 # Total: 60 active redirects (removed 21 dead/outdated links)
 # Generated: October 16, 2025

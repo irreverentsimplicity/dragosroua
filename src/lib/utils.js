@@ -171,16 +171,16 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     const relativePattern = new RegExp(`href=["']\/${page}\/?["']`, 'g');
     optimizedContent = optimizedContent.replace(relativePattern, (match) => {
       localLinksOptimized++;
-      console.log(`🔀 Redirecting orphaned page: ${match} → href="/advertise/"`);
-      return 'href="/advertise/"';
+      console.log(`🔀 Redirecting orphaned page: ${match} → href="/work-with-me/"`);
+      return 'href="/work-with-me/"';
     });
     
     // Absolute links with domain
     const absolutePattern = new RegExp(`href=["']https?:\\/\\/(?:www\\.)?dragosroua\\.com\\/${page}\\/?["']`, 'g');
     optimizedContent = optimizedContent.replace(absolutePattern, (match) => {
       localLinksOptimized++;
-      console.log(`🔀 Redirecting orphaned page: ${match} → href="/advertise/"`);
-      return 'href="/advertise/"';
+      console.log(`🔀 Redirecting orphaned page: ${match} → href="/work-with-me/"`);
+      return 'href="/work-with-me/"';
     });
   });
   
