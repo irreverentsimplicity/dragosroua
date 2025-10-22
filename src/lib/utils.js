@@ -1,11 +1,101 @@
-// Convert absolute WordPress URLs to relative paths
-export function makeLinksRelative(content) {
-  if (!content) return '';
+// Global optimization statistics tracking
+let optimizationStats = {
+  linksOptimized: 0,
+  imagesOptimized: 0,
+  postsProcessed: 0,
+  reset() {
+    this.linksOptimized = 0;
+    this.imagesOptimized = 0;
+    this.postsProcessed = 0;
+  },
+  log() {
+    console.log(`\n📊 Link & Image Optimization Results:`);
+    console.log(`   📝 Posts processed: ${this.postsProcessed}`);
+    console.log(`   🔗 Links optimized: ${this.linksOptimized}`);
+    console.log(`   🖼️  Images optimized: ${this.imagesOptimized}`);
+    console.log(`   ✅ Total optimizations: ${this.linksOptimized + this.imagesOptimized}\n`);
+  }
+};
+
+// Export stats for access from build process
+export function getOptimizationStats() {
+  return optimizationStats;
+}
+
+// Reset stats at start of build
+export function resetOptimizationStats() {
+  optimizationStats.reset();
+}
+
+// Comprehensive content optimization with detailed logging
+export function optimizeContentLinksAndImages(content, postTitle = '') {
+  if (!content) return content;
   
-  return content
-    // Fix internal links (not images)
-    .replace(/href=["']https?:\/\/dragosroua\.com\//g, 'href="/')
-    .replace(/href=["']https?:\/\/www\.dragosroua\.com\//g, 'href="/');
+  let optimizedContent = content;
+  let localLinksOptimized = 0;
+  let localImagesOptimized = 0;
+  
+  // 1. LINK OPTIMIZATION: Remove www from internal dragosroua.com links
+  optimizedContent = optimizedContent.replace(
+    /href=["']https?:\/\/www\.dragosroua\.com\/((?:[^"']*)?)/g, 
+    (match, path) => {
+      localLinksOptimized++;
+      return `href="https://dragosroua.com/${path}`;
+    }
+  );
+  
+  // 2. IMAGE OPTIMIZATION: Ensure all dragosroua.com images use wp subdomain
+  // Match image sources that point to main domain
+  optimizedContent = optimizedContent.replace(
+    /src=["']https?:\/\/(?:www\.)?dragosroua\.com\/(wp-content\/[^"']*)/g,
+    (match, wpPath) => {
+      localImagesOptimized++;
+      return `src="https://wp.dragosroua.com/${wpPath}`;
+    }
+  );
+  
+  // Also handle srcset attributes for responsive images
+  optimizedContent = optimizedContent.replace(
+    /srcset=["']([^"']*)/g,
+    (match, srcsetValue) => {
+      let originalSrcset = srcsetValue;
+      let modifiedSrcset = srcsetValue.replace(
+        /https?:\/\/(?:www\.)?dragosroua\.com\/(wp-content\/[^,\s]*)/g,
+        (imgMatch, wpPath) => {
+          localImagesOptimized++;
+          return `https://wp.dragosroua.com/${wpPath}`;
+        }
+      );
+      
+      if (originalSrcset !== modifiedSrcset) {
+        return `srcset="${modifiedSrcset}`;
+      }
+      return match;
+    }
+  );
+  
+  // 3. LEGACY OPTIMIZATION: Convert any remaining absolute internal links to relative
+  optimizedContent = optimizedContent.replace(
+    /href=["']https?:\/\/dragosroua\.com\//g, 
+    'href="/'
+  );
+  
+  // Update global stats
+  optimizationStats.linksOptimized += localLinksOptimized;
+  optimizationStats.imagesOptimized += localImagesOptimized;
+  optimizationStats.postsProcessed++;
+  
+  // Log if optimizations were made for this post
+  if (localLinksOptimized > 0 || localImagesOptimized > 0) {
+    console.log(`🔧 Optimized "${postTitle || 'content'}": ${localLinksOptimized} links, ${localImagesOptimized} images`);
+  }
+  
+  return optimizedContent;
+}
+
+// Legacy function for backward compatibility - now uses new optimization
+export function makeLinksRelative(content) {
+  return optimizeContentLinksAndImages(content);
 }
 
 // Convert WordPress image URLs to new subdomain

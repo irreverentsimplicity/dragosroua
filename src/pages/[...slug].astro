@@ -2,10 +2,13 @@
 import PostLayout from '../layouts/PostLayout.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getAllPosts, getAllPages, getSlugFromUri } from '../lib/wordpress';
-import { makeLinksRelative, getResponsiveImage, updateWordPressImageUrls } from '../lib/utils';
+import { optimizeContentLinksAndImages, getResponsiveImage, updateWordPressImageUrls, resetOptimizationStats, getOptimizationStats } from '../lib/utils';
 
 export async function getStaticPaths() {
   console.log('\n🔨 Building all content...\n');
+  
+  // Initialize optimization statistics
+  resetOptimizationStats();
   
   const [posts, pages] = await Promise.all([
     getAllPosts(),
@@ -22,7 +25,7 @@ export async function getStaticPaths() {
   // Sort posts by date for navigation (newest first)
   const sortedPosts = posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   
-  return allContent.map(item => {
+  const staticPaths = allContent.map(item => {
     const slug = getSlugFromUri(item.uri);
     const isPost = posts.some(p => p.id === item.id);
     
@@ -58,6 +61,14 @@ export async function getStaticPaths() {
       }
     };
   });
+  
+  // Log optimization stats after processing all content
+  setTimeout(() => {
+    const stats = getOptimizationStats();
+    stats.log();
+  }, 100);
+  
+  return staticPaths;
 }
 
 const { content, isPost, nextPost, previousPost } = Astro.props;
@@ -96,7 +107,7 @@ const { content, isPost, nextPost, previousPost } = Astro.props;
         );
       })()}
       
-      <div class="wp-content" set:html={makeLinksRelative(content.content)} />
+      <div class="wp-content" set:html={optimizeContentLinksAndImages(content.content, content.title)} />
     </article>
   </BaseLayout>
 )}
