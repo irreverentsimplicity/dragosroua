@@ -9,7 +9,13 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 /contact/  /about-me/  301
 /contact-2/  /about-me/  301
 
-# Orphaned utility/marketing pages
+# Book pages - redirect to /books/
+/100-ways-to-screw-up-your-life-the-book/  /books/  301
+/100-ways-to-improve-your-life-the-book/  /books/  301
+/the-7-ages-of-an-online-business-the-book/  /books/  301
+/brilliantly-better-the-ebook-the-soft-launch/  /books/  301
+
+# Orphaned utility/marketing pages - redirect to /work-with-me/
 /1250-ideas-for-your-bucket-list/  /work-with-me/  301
 /100-days-challenge/  /work-with-me/  301
 /100-days-challenge-thanks/  /work-with-me/  301
@@ -29,6 +35,7 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 /on-living-a-better-life-screwing-up-and-everything-in-between/  /work-with-me/  301
 /running-for-my-life/  /work-with-me/  301
 /downloads/  /work-with-me/  301
+/wordpress-plugin-blog-audit/  /work-with-me/  301
 
 # WordPress Redirects - Cleaned and Updated
 # Total: 60 active redirects (removed 21 dead/outdated links)

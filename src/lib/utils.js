@@ -143,7 +143,33 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     }
   );
   
-  // 4. ORPHANED PAGE REDIRECTS: Redirect orphaned pages to advertise
+  // 4. BOOK PAGE REDIRECTS: Redirect book pages to /books/
+  const bookPages = [
+    '100-ways-to-screw-up-your-life-the-book',
+    '100-ways-to-improve-your-life-the-book',
+    'the-7-ages-of-an-online-business-the-book',
+    'brilliantly-better-the-ebook-the-soft-launch'
+  ];
+  
+  bookPages.forEach(page => {
+    // Relative links
+    const relativePattern = new RegExp(`href=["']\/${page}\/?["']`, 'g');
+    optimizedContent = optimizedContent.replace(relativePattern, (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting book page: ${match} → href="/books/"`);
+      return 'href="/books/"';
+    });
+    
+    // Absolute links with domain
+    const absolutePattern = new RegExp(`href=["']https?:\\/\\/(?:www\\.)?dragosroua\\.com\\/${page}\\/?["']`, 'g');
+    optimizedContent = optimizedContent.replace(absolutePattern, (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting book page: ${match} → href="/books/"`);
+      return 'href="/books/"';
+    });
+  });
+  
+  // 5. ORPHANED PAGE REDIRECTS: Redirect orphaned pages to work-with-me
   const orphanedPages = [
     '1250-ideas-for-your-bucket-list',
     '100-days-challenge',
@@ -163,7 +189,8 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     'donate',
     'on-living-a-better-life-screwing-up-and-everything-in-between',
     'running-for-my-life',
-    'downloads'
+    'downloads',
+    'wordpress-plugin-blog-audit'
   ];
   
   orphanedPages.forEach(page => {
@@ -184,7 +211,7 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     });
   });
   
-  // 5. LEGACY OPTIMIZATION: Convert any remaining absolute internal links to relative
+  // 6. LEGACY OPTIMIZATION: Convert any remaining absolute internal links to relative
   optimizedContent = optimizedContent.replace(
     /href=["']https?:\/\/dragosroua\.com\//g, 
     'href="/'
