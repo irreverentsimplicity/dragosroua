@@ -83,7 +83,48 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     }
   );
   
-  // 3. LEGACY OPTIMIZATION: Convert any remaining absolute internal links to relative
+  // 3. LINK REDIRECTS: Redirect about and contact pages to about-me
+  // Handle relative about links
+  optimizedContent = optimizedContent.replace(
+    /href=["']\/about\/?["']/g,
+    (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting relative about link: ${match} → href="/about-me/"`);
+      return 'href="/about-me/"';
+    }
+  );
+  
+  // Handle absolute about links with domain
+  optimizedContent = optimizedContent.replace(
+    /href=["']https?:\/\/(?:www\.)?dragosroua\.com\/about\/?["']/g,
+    (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting absolute about link: ${match} → href="/about-me/"`);
+      return 'href="/about-me/"';
+    }
+  );
+  
+  // Handle relative contact links
+  optimizedContent = optimizedContent.replace(
+    /href=["']\/contact\/?["']/g,
+    (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting relative contact link: ${match} → href="/about-me/"`);
+      return 'href="/about-me/"';
+    }
+  );
+  
+  // Handle absolute contact links with domain
+  optimizedContent = optimizedContent.replace(
+    /href=["']https?:\/\/(?:www\.)?dragosroua\.com\/contact\/?["']/g,
+    (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting absolute contact link: ${match} → href="/about-me/"`);
+      return 'href="/about-me/"';
+    }
+  );
+  
+  // 4. LEGACY OPTIMIZATION: Convert any remaining absolute internal links to relative
   optimizedContent = optimizedContent.replace(
     /href=["']https?:\/\/dragosroua\.com\//g, 
     'href="/'
