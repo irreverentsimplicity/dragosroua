@@ -159,7 +159,11 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     'thank-help',
     'thank-you-for-subscribing',
     'test',
-    'uncopyright'
+    'uncopyright',
+    'donate',
+    'on-living-a-better-life-screwing-up-and-everything-in-between',
+    'running-for-my-life',
+    'downloads'
   ];
   
   orphanedPages.forEach(page => {
