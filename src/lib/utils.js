@@ -148,7 +148,8 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     '100-ways-to-screw-up-your-life-the-book',
     '100-ways-to-improve-your-life-the-book',
     'the-7-ages-of-an-online-business-the-book',
-    'brilliantly-better-the-ebook-the-soft-launch'
+    'brilliantly-better-the-ebook-the-soft-launch',
+    'free-books-pay-like'
   ];
   
   bookPages.forEach(page => {
@@ -192,7 +193,32 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     });
   });
   
-  // 6. ORPHANED PAGE REDIRECTS: Redirect orphaned pages to work-with-me
+  // 6. HUB PAGE REDIRECTS: Redirect hub pages to categories
+  const hubPages = [
+    { page: 'financial-resilience', target: '/category/financial-resilience/' },
+    { page: 'location-independence', target: '/category/location-independence/' },
+    { page: 'meaningful-relationships', target: '/category/meaningful-relationships/' }
+  ];
+  
+  hubPages.forEach(({ page, target }) => {
+    // Relative links
+    const relativePattern = new RegExp(`href=["']\/${page}\/?["']`, 'g');
+    optimizedContent = optimizedContent.replace(relativePattern, (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting hub page: ${match} → href="${target}"`);
+      return `href="${target}"`;
+    });
+    
+    // Absolute links with domain
+    const absolutePattern = new RegExp(`href=["']https?:\\/\\/(?:www\\.)?dragosroua\\.com\\/${page}\\/?["']`, 'g');
+    optimizedContent = optimizedContent.replace(absolutePattern, (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting hub page: ${match} → href="${target}"`);
+      return `href="${target}"`;
+    });
+  });
+  
+  // 7. ORPHANED PAGE REDIRECTS: Redirect orphaned pages to work-with-me
   const orphanedPages = [
     '1250-ideas-for-your-bucket-list',
     '100-days-challenge',

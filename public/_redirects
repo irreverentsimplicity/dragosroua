@@ -14,6 +14,7 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 /100-ways-to-improve-your-life-the-book/  /books/  301
 /the-7-ages-of-an-online-business-the-book/  /books/  301
 /brilliantly-better-the-ebook-the-soft-launch/  /books/  301
+/free-books-pay-like/  /books/  301
 
 # Orphaned utility/marketing pages - redirect to /work-with-me/
 /1250-ideas-for-your-bucket-list/  /work-with-me/  301
@@ -42,6 +43,11 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 
 # Top posts redirect to categories
 /top-posts-total/  /categories/  301
+
+# Hub pages redirect to categories
+/financial-resilience/  /category/financial-resilience/  301
+/location-independence/  /category/location-independence/  301
+/meaningful-relationships/  /category/meaningful-relationships/  301
 
 # WordPress Redirects - Cleaned and Updated
 # Total: 60 active redirects (removed 21 dead/outdated links)
