@@ -5,9 +5,9 @@ const currentYear = new Date().getFullYear();
 <footer class="site-footer">
   <nav class="footer-nav">
     <div class="footer-nav-content">
-      <a href="/work-with-me/">Work With Me</a>
-      <a href="/categories/">Explore All Topics</a>
-      <a href="/advertise/">Advertise</a>
+      <a href="/work-with-me/" aria-current={Astro.url.pathname.startsWith('/work-with-me') ? 'page' : undefined}>Work With Me</a>
+      <a href="/categories/" aria-current={Astro.url.pathname.startsWith('/categories') ? 'page' : undefined}>Explore All Topics</a>
+      <a href="/advertise/" aria-current={Astro.url.pathname.startsWith('/advertise') ? 'page' : undefined}>Advertise</a>
     </div>
   </nav>
   
@@ -68,6 +68,15 @@ const currentYear = new Date().getFullYear();
     border-radius: 2px;
   }
   
+  .footer-nav-content a[aria-current="page"],
+  .footer-nav-content a.active {
+    color: #0052a3;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    font-weight: 600;
+  }
+  
   /* Copyright and legal section with black background */
   .footer-bottom {
     background: #000;
@@ -123,7 +132,7 @@ const currentYear = new Date().getFullYear();
   }
   
   @media (max-width: 640px) {
-    .footer-nav {
+    .footer-nav-content {
       justify-content: center;
       padding: 1.25rem 1rem;
       gap: 1.5rem;
@@ -135,14 +144,14 @@ const currentYear = new Date().getFullYear();
       padding-right: 1rem;
     }
     
-    .footer-nav a,
+    .footer-nav-content a,
     .legal-links a {
       font-size: 0.9rem;
     }
   }
   
   @media (max-width: 480px) {
-    .footer-nav {
+    .footer-nav-content {
       flex-direction: column;
       gap: 1rem;
       text-align: center;

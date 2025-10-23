@@ -11,15 +11,17 @@
         <p class="subtitle">Building addTaskManager, the best iOS productivity app for ADHD minds</p>
       </div>
     </div>
-    
-    <nav class="main-nav">
-      <a href="/" aria-label="Go to homepage">Home</a>
-      <a href="/blog/" aria-label="Read blog posts">Blog</a>
-      <a href="/productivity-apps/" aria-label="Learn about addTaskManager app">App</a>
-      <a href="/books/" aria-label="Browse books by Dragos Roua">Books</a>
-      <a href="/about-me/" aria-label="Learn about Dragos Roua">About</a>
-    </nav>
   </div>
+  
+  <nav class="main-nav">
+    <div class="nav-content">
+      <a href="/" aria-label="Go to homepage" aria-current={Astro.url.pathname === '/' ? 'page' : undefined}>Home</a>
+      <a href="/blog/" aria-label="Read blog posts" aria-current={Astro.url.pathname.startsWith('/blog') || (!Astro.url.pathname.startsWith('/category') && !Astro.url.pathname.startsWith('/tag') && !['/', '/categories/', '/work-with-me/', '/advertise/', '/privacy-policy/', '/terms-of-service/', '/about-me/', '/books/', '/productivity-apps/'].includes(Astro.url.pathname)) ? 'page' : undefined}>Blog</a>
+      <a href="/productivity-apps/" aria-label="Learn about addTaskManager app" aria-current={Astro.url.pathname.startsWith('/productivity-apps') ? 'page' : undefined}>App</a>
+      <a href="/books/" aria-label="Browse books by Dragos Roua" aria-current={Astro.url.pathname.startsWith('/books') ? 'page' : undefined}>Books</a>
+      <a href="/about-me/" aria-label="Learn about Dragos Roua" aria-current={Astro.url.pathname.startsWith('/about-me') ? 'page' : undefined}>About</a>
+    </div>
+  </nav>
 </header>
 
 <style>
@@ -27,20 +29,18 @@
     background: #000000;
     color: white;
     width: 100%;
-    border-bottom: 1px solid #333;
   }
   
   .header-content {
     max-width: 800px;
     margin: 0 auto;
-    padding: 2rem 1rem 0;
+    padding: 2rem 1rem 1.5rem;
   }
   
   .header-top {
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    margin-bottom: 1.5rem;
   }
   
   .header-image {
@@ -69,25 +69,48 @@
   }
   
   .main-nav {
+    background: #f8f9fa; /* Light gray background like footer */
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .nav-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
     display: flex;
     justify-content: center;
     gap: 2rem;
-    padding: 1rem 0;
-    border-top: 1px solid #333;
   }
   
-  .main-nav a {
-    color: #ffffff;
+  .nav-content a {
+    color: #0066cc !important; /* Hard blue like footer */
     text-decoration: none;
     font-weight: 500;
     transition: all 0.2s;
+    padding: 0.25rem 0;
   }
   
-  .main-nav a:hover {
-    color: #ffffff; /* Keep white color */
+  .nav-content a:hover {
+    color: #0052a3 !important; /* Darker blue on hover */
     text-decoration: underline;
     text-decoration-thickness: 2px;
-    text-underline-offset: 4px;
+    text-underline-offset: 3px;
+  }
+  
+  .nav-content a:focus {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  
+  .nav-content a[aria-current="page"],
+  .nav-content a.active {
+    color: #0052a3 !important;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    font-weight: 600;
   }
   
   @media (max-width: 640px) {
@@ -104,9 +127,10 @@
       font-size: 0.9rem;
     }
     
-    .main-nav {
+    .nav-content {
       gap: 1rem;
       flex-wrap: wrap;
+      padding: 1rem;
     }
   }
 </style>
