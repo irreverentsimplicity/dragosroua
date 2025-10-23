@@ -83,6 +83,16 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     }
   );
   
+  // Fix wp-content href links (click-to-enlarge functionality)
+  optimizedContent = optimizedContent.replace(
+    /href=["']\/wp-content\/uploads\/([^"']*)/g,
+    (match, wpPath) => {
+      localLinksOptimized++;
+      console.log(`🔗 Fixing wp-content href link: ${match} → href="https://wp.dragosroua.com/wp-content/uploads/${wpPath}"`);
+      return `href="https://wp.dragosroua.com/wp-content/uploads/${wpPath}`;
+    }
+  );
+  
   // 3. LINK REDIRECTS: Redirect about and contact pages to about-me
   // Handle relative about links
   optimizedContent = optimizedContent.replace(
