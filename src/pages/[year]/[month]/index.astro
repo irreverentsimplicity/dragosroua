@@ -1,0 +1,282 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getAllPosts } from '../../../lib/wordpress';
+import { generateExcerpt, getOptimizedImage } from '../../../lib/utils';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const dateGroups = new Map();
+  
+  // Group posts by year/month
+  posts.forEach(post => {
+    const date = new Date(post.date);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const key = `${year}/${month}`;
+    
+    if (!dateGroups.has(key)) {
+      dateGroups.set(key, []);
+    }
+    dateGroups.get(key).push(post);
+  });
+  
+  // Generate static paths for each month that has posts
+  return Array.from(dateGroups.entries()).map(([dateKey, monthPosts]) => {
+    const [year, month] = dateKey.split('/');
+    
+    // Sort posts by date, newest first
+    const sortedPosts = monthPosts.sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+    
+    return {
+      params: { 
+        year: year.toString(), 
+        month: month 
+      },
+      props: { 
+        posts: sortedPosts,
+        year: parseInt(year),
+        month: parseInt(month),
+        monthName: new Date(year, month - 1).toLocaleDateString('en-US', { month: 'long' })
+      }
+    };
+  });
+}
+
+const { posts, year, month, monthName } = Astro.props;
+const archiveTitle = `${monthName} ${year}`;
+---
+
+<BaseLayout 
+  title={`Archive: ${archiveTitle} - Dragos Roua`}
+  description={`Blog posts from ${archiveTitle} - ${posts.length} posts about personal development, financial resilience, and meaningful relationships`}
+  canonical={`https://dragosroua.com/${year}/${month.toString().padStart(2, '0')}/`}
+>
+  <div class="archive-header">
+    <h1>Archive: {archiveTitle}</h1>
+    <p class="archive-count">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+  </div>
+
+  <div class="posts-grid">
+    {posts.map(post => {
+      const optimizedImage = getOptimizedImage(post.featuredImage, 300, post.title);
+      
+      return (
+        <article class="post-card">
+          {optimizedImage && (
+            <a href={post.uri} class="post-image-link" aria-label={`Read article: ${post.title.replace(/<[^>]*>/g, '').trim()}`}>
+              <img 
+                src={optimizedImage.url}
+                alt={optimizedImage.alt}
+                class="post-image"
+                width={optimizedImage.width}
+                height={optimizedImage.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+          )}
+          
+          <div class="post-card-content">
+            <h2 class="post-card-title">
+              <a href={post.uri} set:html={post.title} />
+            </h2>
+            
+            <time class="post-date" datetime={post.date}>
+              {new Date(post.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </time>
+            
+            {post.categories?.nodes && post.categories.nodes.length > 0 && (
+              <div class="post-categories">
+                <span class="category-label">Published in:</span>
+                {post.categories.nodes.slice(0, 3).map((category, index) => (
+                  <Fragment>
+                    <a href={`/category/${category.slug}/`} class="category-link">
+                      {category.name}
+                    </a>
+                    {index < Math.min(2, post.categories.nodes.length - 1) && <span>, </span>}
+                  </Fragment>
+                ))}
+                {post.categories.nodes.length > 3 && (
+                  <span class="category-more"> and {post.categories.nodes.length - 3} more</span>
+                )}
+              </div>
+            )}
+            
+            <p class="post-excerpt">
+              {post.seo?.metaDesc ? generateExcerpt(post.seo.metaDesc, 20) : generateExcerpt(post.content, 20)}
+            </p>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+
+  <!-- Month Navigation -->
+  <nav class="month-navigation" aria-label="Month navigation">
+    <div class="nav-info">
+      <a href="/archives/" class="archive-link">← Back to Archives</a>
+    </div>
+  </nav>
+</BaseLayout>
+
+<style>
+  .archive-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #e5e5e5;
+  }
+  
+  .archive-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .archive-count {
+    color: #999;
+    font-size: 0.95rem;
+  }
+  
+  .posts-grid {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .post-card {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: #f9f9f9;
+    border-radius: 12px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .post-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post-image-link {
+    display: block;
+  }
+  
+  .post-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .post-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .post-card-title {
+    margin: 0 0 0.75rem;
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+  
+  .post-card-title a {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .post-card-title a:hover {
+    color: #667eea;
+  }
+
+  .post-date {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  .post-categories {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+  
+  .category-label {
+    color: #666;
+    margin-right: 0.25rem;
+  }
+  
+  .category-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .category-link:hover {
+    text-decoration: underline;
+  }
+  
+  .category-more {
+    color: #999;
+    font-style: italic;
+  }
+  
+  .post-excerpt {
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+  }
+  
+  .month-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+    border-top: 2px solid #e5e5e5;
+  }
+  
+  .nav-info {
+    text-align: center;
+  }
+  
+  .archive-link {
+    padding: 0.75rem 1.5rem;
+    background: #667eea;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+  
+  .archive-link:hover {
+    background: #5568d3;
+  }
+  
+  @media (max-width: 768px) {
+    .archive-header h1 {
+      font-size: 2rem;
+    }
+    
+    .post-card {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    .post-image {
+      height: 200px;
+    }
+    
+    .post-card-title {
+      font-size: 1.3rem;
+    }
+  }
+</style>

@@ -273,7 +273,43 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     });
   });
   
-  // 7. LEGACY OPTIMIZATION: Convert any remaining absolute internal links to relative
+  // 8. WORDPRESS ARCHIVE LINKS: Convert WordPress archive links to static site
+  // Fix WordPress category archive links to static category pages
+  optimizedContent = optimizedContent.replace(
+    /href=["']https?:\/\/wp\.dragosroua\.com\/category\/([^\/]+)\/?["']/g,
+    (match, categorySlug) => {
+      localLinksOptimized++;
+      console.log(`🗂️  Fixing WordPress category link: ${match} → href="/category/${categorySlug}/"`);
+      return `href="/category/${categorySlug}/"`;
+    }
+  );
+  
+  // Fix WordPress date archive links to static date archive pages
+  optimizedContent = optimizedContent.replace(
+    /href=["']https?:\/\/wp\.dragosroua\.com\/(20[0-9][0-9])\/([0-1][0-9])\/?["']/g,
+    (match, year, month) => {
+      localLinksOptimized++;
+      console.log(`📅 Fixing WordPress date archive link: ${match} → href="/${year}/${month}/"`);
+      return `href="/${year}/${month}/"`;
+    }
+  );
+  
+  // 9. WORDPRESS POST/PAGE LINKS: Convert WordPress post/page links to static site
+  // This catches any remaining WordPress content links (posts, pages, etc.)
+  optimizedContent = optimizedContent.replace(
+    /href=["']https?:\/\/wp\.dragosroua\.com\/([^"']*?)["']/g,
+    (match, path) => {
+      // Skip if it's already a wp-content/uploads link (images)
+      if (path.includes('wp-content/uploads')) {
+        return match;
+      }
+      localLinksOptimized++;
+      console.log(`📝 Fixing WordPress content link: ${match} → href="/${path}"`);
+      return `href="/${path}"`;
+    }
+  );
+
+  // 10. LEGACY OPTIMIZATION: Convert any remaining absolute internal links to relative
   optimizedContent = optimizedContent.replace(
     /href=["']https?:\/\/dragosroua\.com\//g, 
     'href="/'
@@ -340,7 +376,7 @@ function decodeHTMLEntities(text) {
   }
   
   // Handle numeric entities
-  decoded = decoded.replace(/&#(\d+);/g, (match, dec) => 
+  decoded = decoded.replace(/&#(\d+);/g, (_, dec) => 
     String.fromCharCode(dec)
   );
   
