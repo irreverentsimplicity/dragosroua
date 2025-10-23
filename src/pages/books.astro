@@ -2,15 +2,90 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProductGrid from '../components/ProductGrid.astro';
 
-const seoData = {
-  title: 'Books I Wrote - Dragos Roua',
-  description: 'A list of the most popular books I wrote since I started this blog. Topics: personal development, productivity, and even a small sci fi novel.',
-  canonical: 'https://dragosroua.com/books/',
-  ogImage: '/images/default-featured-1200-630.png'
+const title = 'Books I Wrote - Dragos Roua';
+const description = 'A list of the most popular books I wrote since I started this blog. Topics: personal development, productivity, and even a small sci fi novel.';
+const canonical = 'https://dragosroua.com/books/';
+const ogImage = 'https://dragosroua.com/images/default-featured-1200-630.png';
+
+// Schema.org structured data for the books page
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://dragosroua.com/books/",
+      "url": "https://dragosroua.com/books/",
+      "name": title,
+      "isPartOf": {
+        "@id": "https://dragosroua.com/#website"
+      },
+      "datePublished": "2019-12-14T22:22:02+00:00",
+      "dateModified": new Date().toISOString(),
+      "description": description,
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": ["https://dragosroua.com/books/"]
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://dragosroua.com/#website",
+      "url": "https://dragosroua.com/",
+      "name": "Dragos Roua",
+      "description": "Building addTaskManager, the best iOS productivity app for ADHD minds",
+      "publisher": {
+        "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2"
+      },
+      "potentialAction": [
+        {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://dragosroua.com/?s={search_term_string}"
+          },
+          "query-input": {
+            "@type": "PropertyValueSpecification",
+            "valueRequired": true,
+            "valueName": "search_term_string"
+          }
+        }
+      ],
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": ["Person", "Organization"],
+      "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2",
+      "name": "Dragos Roua",
+      "image": {
+        "@type": "ImageObject",
+        "inLanguage": "en-US",
+        "@id": "https://dragosroua.com/#/schema/person/image/",
+        "url": "https://dragosroua.com/images/dragos-hat.png",
+        "contentUrl": "https://dragosroua.com/images/dragos-hat.png",
+        "width": 94,
+        "height": 65,
+        "caption": "Dragos Roua"
+      },
+      "logo": {
+        "@id": "https://dragosroua.com/#/schema/person/image/"
+      },
+      "description": "Story-teller, geek, light seeker and ultra-runner. Not necessarily in that order.",
+      "sameAs": ["http://dragosroua.com"]
+    }
+  ]
 };
 ---
 
-<BaseLayout seoData={seoData}>
+<BaseLayout 
+  title={title}
+  description={description}
+  canonical={canonical}
+  ogImage={ogImage}
+  schema={schema}
+>
   <main>
     <article class="page">
       <h1>Books I Wrote</h1>
