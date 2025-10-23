@@ -159,7 +159,8 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     '100-ways-to-improve-your-life-the-book',
     'the-7-ages-of-an-online-business-the-book',
     'brilliantly-better-the-ebook-the-soft-launch',
-    'free-books-pay-like'
+    'free-books-pay-like',
+    'downloads/audio'
   ];
   
   bookPages.forEach(page => {

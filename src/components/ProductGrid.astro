@@ -1,0 +1,50 @@
+---
+import ProductCard from './ProductCard.astro';
+import gumroadProducts from '../data/gumroad-products.json';
+
+// Optional: filter or sort products if needed
+const products = gumroadProducts;
+---
+
+<div class="products-grid">
+  {products.map((product) => (
+    <ProductCard
+      id={product.id}
+      title={product.title}
+      price={product.price}
+      image={product.image}
+      description={product.description}
+      url={product.url}
+    />
+  ))}
+</div>
+
+<style>
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+/* Ensure consistent heights for product cards */
+.products-grid > * {
+  height: 100%;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+}
+
+/* For exactly 3 items, ensure nice layout */
+@media (min-width: 900px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+</style>

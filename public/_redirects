@@ -16,6 +16,9 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 /brilliantly-better-the-ebook-the-soft-launch/  /books/  301
 /free-books-pay-like/  /books/  301
 
+# Audio downloads redirect to books
+/downloads/audio/  /books/  301
+
 # Orphaned utility/marketing pages - redirect to /work-with-me/
 /1250-ideas-for-your-bucket-list/  /work-with-me/  301
 /100-days-challenge/  /work-with-me/  301

@@ -1,0 +1,170 @@
+---
+export interface Props {
+  id: string;
+  title: string;
+  price: string;
+  image?: string;
+  description?: string;
+  url: string;
+}
+
+const { id, title, price, image, description, url } = Astro.props;
+---
+
+<div class="product-card" data-product-id={id}>
+  {image && (
+    <div class="product-image">
+      <img src={image} alt={title} loading="lazy" />
+    </div>
+  )}
+  
+  <div class="product-content">
+    <h3 class="product-title">{title}</h3>
+    
+    {description && (
+      <p class="product-description">{description}</p>
+    )}
+    
+    <div class="product-footer">
+      <span class="product-price">{price}</span>
+      <a href={url} class="buy-button" target="_blank" rel="noopener noreferrer">
+        Buy Now
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+.product-card {
+  background: #fff;
+  border: 1px solid #e1e5e9;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: #c1c7cd;
+}
+
+.product-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  color: #1a1a1a;
+  line-height: 1.4;
+}
+
+.product-description {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 1.5rem 0;
+  flex: 1;
+}
+
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.product-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a73e8;
+}
+
+.buy-button {
+  background: #1a73e8;
+  color: white;
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.buy-button:hover {
+  background: #1557b0;
+  text-decoration: none;
+}
+
+.buy-button:focus {
+  outline: 2px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .product-card {
+    background: #1a1a1a;
+    border-color: #333;
+    color: #e0e0e0;
+  }
+  
+  .product-title {
+    color: #fff;
+  }
+  
+  .product-description {
+    color: #b0b0b0;
+  }
+  
+  .product-card:hover {
+    border-color: #555;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .product-content {
+    padding: 1rem;
+  }
+  
+  .product-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .buy-button {
+    text-align: center;
+    justify-content: center;
+  }
+}
+</style>

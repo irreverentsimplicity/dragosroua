@@ -210,6 +210,54 @@ const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
       text-decoration: underline;
     }
     
+    /* WordPress Columns Layout */
+    .wp-block-columns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .wp-block-column {
+      flex: 1;
+      min-width: 0; /* Prevents overflow */
+    }
+    
+    /* 3-column responsive layout */
+    .wp-block-columns .wp-block-column {
+      flex-basis: calc(33.333% - 1.333rem);
+    }
+    
+    /* WordPress embeds in columns */
+    .wp-block-column iframe {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      min-height: 400px;
+    }
+    
+    /* Responsive design for columns */
+    @media (max-width: 1024px) {
+      .wp-block-columns .wp-block-column {
+        flex-basis: calc(50% - 1rem);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .wp-block-columns {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      
+      .wp-block-column {
+        flex-basis: 100%;
+      }
+      
+      .wp-block-column iframe {
+        min-height: 350px;
+      }
+    }
+
     /* Tables (for product pages) */
     .wp-content table {
       width: 100%;
