@@ -169,7 +169,30 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     });
   });
   
-  // 5. ORPHANED PAGE REDIRECTS: Redirect orphaned pages to work-with-me
+  // 5. REDIRECT TO CATEGORIES: Redirect top-posts to categories
+  const topPostsPattern = [
+    'top-posts-total'
+  ];
+  
+  topPostsPattern.forEach(page => {
+    // Relative links
+    const relativePattern = new RegExp(`href=["']\/${page}\/?["']`, 'g');
+    optimizedContent = optimizedContent.replace(relativePattern, (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting top posts page: ${match} → href="/categories/"`);
+      return 'href="/categories/"';
+    });
+    
+    // Absolute links with domain
+    const absolutePattern = new RegExp(`href=["']https?:\\/\\/(?:www\\.)?dragosroua\\.com\\/${page}\\/?["']`, 'g');
+    optimizedContent = optimizedContent.replace(absolutePattern, (match) => {
+      localLinksOptimized++;
+      console.log(`🔀 Redirecting top posts page: ${match} → href="/categories/"`);
+      return 'href="/categories/"';
+    });
+  });
+  
+  // 6. ORPHANED PAGE REDIRECTS: Redirect orphaned pages to work-with-me
   const orphanedPages = [
     '1250-ideas-for-your-bucket-list',
     '100-days-challenge',
@@ -192,7 +215,8 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     'downloads',
     'wordpress-plugin-blog-audit',
     'the-first-6-months-of-blogging-writing',
-    'being-a-digital-nomad-the-workshop'
+    'being-a-digital-nomad-the-workshop',
+    'lets-do-this'
   ];
   
   orphanedPages.forEach(page => {
@@ -213,7 +237,7 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     });
   });
   
-  // 6. LEGACY OPTIMIZATION: Convert any remaining absolute internal links to relative
+  // 7. LEGACY OPTIMIZATION: Convert any remaining absolute internal links to relative
   optimizedContent = optimizedContent.replace(
     /href=["']https?:\/\/dragosroua\.com\//g, 
     'href="/'
