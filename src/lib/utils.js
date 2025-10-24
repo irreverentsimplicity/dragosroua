@@ -44,6 +44,16 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     }
   );
   
+  // Convert all HTTP internal links to HTTPS
+  optimizedContent = optimizedContent.replace(
+    /href=["']http:\/\/dragosroua\.com\/?([^"']*)/g,
+    (match, path) => {
+      localLinksOptimized++;
+      console.log(`🔒 Converting HTTP to HTTPS: ${match} → href="https://dragosroua.com/${path}"`);
+      return `href="https://dragosroua.com/${path}`;
+    }
+  );
+  
   // 2. IMAGE OPTIMIZATION: Ensure all dragosroua.com images use wp subdomain
   // Special case: Replace blog-box-promo.png with local WebP version
   optimizedContent = optimizedContent.replace(
