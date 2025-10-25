@@ -40,7 +40,8 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     /href=["']https?:\/\/www\.dragosroua\.com\/?([^"']*)/g, 
     (match, path) => {
       localLinksOptimized++;
-      return `href="https://dragosroua.com/${path}`;
+      const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+      return `href="https://dragosroua.com/${cleanPath}"`;
     }
   );
   
@@ -49,8 +50,19 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     /href=["']http:\/\/dragosroua\.com\/?([^"']*)/g,
     (match, path) => {
       localLinksOptimized++;
-      console.log(`🔒 Converting HTTP to HTTPS: ${match} → href="https://dragosroua.com/${path}"`);
-      return `href="https://dragosroua.com/${path}`;
+      const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+      console.log(`🔒 Converting HTTP to HTTPS: ${match} → href="https://dragosroua.com/${cleanPath}"`);
+      return `href="https://dragosroua.com/${cleanPath}"`;
+    }
+  );
+  
+  // Clean URLs with leading spaces
+  optimizedContent = optimizedContent.replace(
+    /href=["']\s+([^"']*)/g,
+    (match, url) => {
+      localLinksOptimized++;
+      console.log(`🧹 Cleaning URL with leading spaces: ${match} → href="${url.trim()}"`);
+      return `href="${url.trim()}"`;
     }
   );
   
@@ -362,6 +374,39 @@ export function cleanCanonicalUrl(url) {
   return url
     .replace(/https?:\/\/wp\.dragosroua\.com\//g, 'https://dragosroua.com/')
     .replace(/https?:\/\/www\.dragosroua\.com\//g, 'https://dragosroua.com/');
+}
+
+// Clean Schema.org JSON-LD URLs to use correct domain
+export function cleanSchemaUrls(schemaData) {
+  if (!schemaData) return schemaData;
+  
+  // If it's already a string, parse it first
+  let schema;
+  if (typeof schemaData === 'string') {
+    try {
+      schema = JSON.parse(schemaData);
+    } catch (e) {
+      console.warn('Failed to parse schema JSON:', e);
+      return schemaData;
+    }
+  } else {
+    schema = schemaData;
+  }
+  
+  // Convert the schema object to string, replace URLs, then parse back
+  let schemaString = JSON.stringify(schema);
+  
+  // Replace wp.dragosroua.com URLs with dragosroua.com in schema
+  schemaString = schemaString
+    .replace(/https?:\/\/wp\.dragosroua\.com\//g, 'https://dragosroua.com/')
+    .replace(/https?:\/\/www\.dragosroua\.com\//g, 'https://dragosroua.com/');
+  
+  try {
+    return JSON.parse(schemaString);
+  } catch (e) {
+    console.warn('Failed to parse cleaned schema JSON:', e);
+    return schema;
+  }
 }
 
 // Decode HTML entities
