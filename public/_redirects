@@ -64,6 +64,10 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 # Generated: October 16, 2025
 # Format: source  target  status_code
 
+# APP REDIRECTS
+/iadd-iphone/  /productivity-apps/  301
+/iadd-iphone  /productivity-apps/  301
+
 # HIGH TRAFFIC REDIRECTS (1000+ hits)
 /77-tips-for-starting-an-online-business/  /77-business-tips-for-starting-an-online-business/  301
 /33-ways-to-start-your-day/  /33-tips-for-your-morning-routine/  301

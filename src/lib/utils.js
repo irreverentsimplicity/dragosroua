@@ -65,6 +65,34 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
       return `href="${url.trim()}"`;
     }
   );
+
+  // Fix case-sensitive URL issues
+  optimizedContent = optimizedContent.replace(
+    /href=["']https:\/\/dragosroua\.com\/7-things-I-learned-from-my-3-year-old-girl\/?["']/g,
+    () => {
+      localLinksOptimized++;
+      console.log(`🔧 Fixing case-sensitive URL: 7-things-I-learned (3-year) → 7-things-i-learned`);
+      return `href="https://dragosroua.com/7-things-i-learned-from-my-3-year-old-girl/"`;
+    }
+  );
+
+  optimizedContent = optimizedContent.replace(
+    /href=["']https:\/\/dragosroua\.com\/7-things-I-learned-from-my-4-year-old-girl\/?["']/g,
+    () => {
+      localLinksOptimized++;
+      console.log(`🔧 Fixing case-sensitive URL: 7-things-I-learned (4-year) → 7-things-i-learned`);
+      return `href="https://dragosroua.com/7-things-i-learned-from-my-4-year-old-girl/"`;
+    }
+  );
+
+  optimizedContent = optimizedContent.replace(
+    /href=["']https:\/\/dragosroua\.com\/category\/iPhone\/["']/g,
+    () => {
+      localLinksOptimized++;
+      console.log(`🔧 Fixing case-sensitive category URL: category/iPhone → category/iphone`);
+      return `href="https://dragosroua.com/category/iphone/"`;
+    }
+  );
   
   // 2. IMAGE OPTIMIZATION: Ensure all dragosroua.com images use wp subdomain
   // Special case: Replace blog-box-promo.png with local WebP version
