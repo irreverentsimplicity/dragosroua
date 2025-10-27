@@ -1,0 +1,395 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Define the daughter posts in chronological order
+const daughterPosts = [
+  {
+    title: "7 Things I Learned From My One Year Old Girl",
+    slug: "7-things-i-learned-from-my-one-year-old-girl",
+    age: "1 Year Old",
+    description: "One-year-old teaches seven profound lessons. Infant wisdom illuminates adult blindness—earliest development reveals essential truths.",
+    date: "June 10, 2007",
+    keyLesson: "Once you're down, there are literally a gazillion ways to get up again"
+  },
+  {
+    title: "7 Things I Learned From My 2 Year Old Girl", 
+    slug: "7-things-i-learned-from-my-2-year-old-girl",
+    age: "2 Years Old",
+    description: "Two-year-old reveals deeper truths. Toddler discoveries challenge conventional wisdom—pure curiosity unlocks profound insights.",
+    date: "March 14, 2008",
+    keyLesson: "The world is what you say it is"
+  },
+  {
+    title: "7 Things I Learned From My 3 Year Old Girl",
+    slug: "7-things-i-learned-from-my-3-year-old-girl", 
+    age: "3 Years Old",
+    description: "Three-year-old teaches seven essential lessons. Toddler wisdom cuts through complexity—young children see clearly what adults miss.",
+    date: "March 14, 2009",
+    keyLesson: "Making friends is the easiest thing in the world"
+  },
+  {
+    title: "7 Things I Learned From My 4 Year Old Girl",
+    slug: "7-things-i-learned-from-my-4-year-old-girl",
+    age: "4 Years Old", 
+    description: "Four-year-old shares profound wisdom. Preschooler insights reveal life's fundamentals—authentic curiosity teaches essential truths.",
+    date: "March 14, 2010",
+    keyLesson: "Questions are more important than answers"
+  },
+  {
+    title: "7 Things I Learned From My 5 Year Old Girl",
+    slug: "7-things-i-learned-from-my-5-year-old-girl",
+    age: "5 Years Old",
+    description: "Five-year-old reveals life's deeper patterns. Kindergarten wisdom challenges adult assumptions—fresh perspective illuminates truth.",
+    date: "March 14, 2011", 
+    keyLesson: "Learning is better when it's fun"
+  },
+  {
+    title: "7 Things I Learned From My 6 Year Old Daughter",
+    slug: "7-things-i-learned-from-my-6-year-old-daughter",
+    age: "6 Years Old",
+    description: "Six-year-old teaches advanced life lessons. Elementary insights reveal complex truths—growing minds offer profound perspectives.",
+    date: "March 14, 2012",
+    keyLesson: "Friendship changes but love stays the same"
+  },
+  {
+    title: "7 Gifts I Got From My 7 Year Old Daughter", 
+    slug: "7-gifts-i-got-from-my-7-year-old-daughter",
+    age: "7 Years Old",
+    description: "Seven-year-old shares seven precious gifts. Elementary school wisdom reveals life's treasures—mature insights from a young soul.",
+    date: "March 14, 2013",
+    keyLesson: "The best gifts are the ones you give"
+  }
+];
+---
+
+<BaseLayout 
+  title="7 Things I Learned From My Daughter Series | Dragos Roua"
+  description="A journey through fatherhood: seven annual posts documenting lessons learned from a growing daughter. From 1 to 7 years old, profound wisdom from a child's perspective."
+  canonical="https://dragosroua.com/7-things-i-learned-from-my-daughter-series/"
+>
+  <div class="daughter-series-page">
+    <header class="page-header">
+      <h1>7 Things I Learned From My Daughter Series</h1>
+      <p class="page-description">
+        If we're lucky enough, we get to witness the journey of the people we love for many years. 
+        This is a time travel page where a happy dad documents his little girl growing up, 
+        one birthday at a time, one lesson at a time.
+      </p>
+    </header>
+
+    <section class="posts-section">
+      <div class="posts-grid">
+        {daughterPosts.map((post, index) => (
+          <a href={`/${post.slug}/`} class="post-card">
+            <div class="card-header">
+              <div class="age-badge">{post.age}</div>
+              <div class="post-date">{post.date}</div>
+            </div>
+            <div class="post-content">
+              <h3 class="post-title">{post.title}</h3>
+              <p class="post-description">{post.description}</p>
+              <div class="key-lesson">
+                <span class="lesson-label">Key insight:</span>
+                <span class="lesson-text">"{post.keyLesson}"</span>
+              </div>
+            </div>
+            <div class="card-footer">
+              <span class="read-more">Read the lessons →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <div class="footer-content">
+        <h3>About This Series</h3>
+        <p>
+          Each March 14th (Bianca's birthday), I would sit down and reflect on the lessons my daughter 
+          had taught me over the past year. What started as a personal tradition became one of my most 
+          cherished writing projects. These posts capture not just a child's growth, but a father's 
+          journey of discovery through the eyes of unconditional love.
+        </p>
+        <p>
+          <strong>Related:</strong> You might also enjoy 
+          <a href="/7-things-i-learned-from-my-3-year-old-girl/">the 3-year-old post</a> (most popular) 
+          or browse all <a href="/category/parenting/">parenting posts</a>.
+        </p>
+      </div>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .daughter-series-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .page-description {
+    font-size: 1.2rem;
+    color: #4a5568;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .posts-section {
+    margin-bottom: 4rem;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .post-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 0;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    border-color: #cbd5e0;
+  }
+
+  .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .age-badge {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .post-date {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .post-content {
+    padding: 2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-title {
+    color: #2d3748;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    line-height: 1.3;
+  }
+
+  .post-card:hover .post-title {
+    color: #1a202c;
+  }
+
+  .post-description {
+    color: #4a5568;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0 0 1.5rem 0;
+    flex-grow: 1;
+  }
+
+  .key-lesson {
+    background: #f7fafc;
+    border-left: 4px solid #667eea;
+    padding: 1rem;
+    border-radius: 0 8px 8px 0;
+    margin-top: auto;
+  }
+
+  .lesson-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #667eea;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+  }
+
+  .lesson-text {
+    color: #2d3748;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .card-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #e2e8f0;
+    background: #f8f9fa;
+  }
+
+  .read-more {
+    color: #667eea;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+  }
+
+  .post-card:hover .read-more {
+    color: #5568d3;
+  }
+
+  .page-footer {
+    background: #f8f9fa;
+    border-radius: 16px;
+    padding: 3rem;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+  }
+
+  .footer-content h3 {
+    color: #2d3748;
+    font-size: 1.5rem;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .footer-content p {
+    color: #4a5568;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .footer-content a {
+    color: #667eea;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .footer-content a:hover {
+    color: #5568d3;
+    border-bottom-color: #5568d3;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .daughter-series-page {
+      padding: 1rem;
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-size: 2rem;
+    }
+
+    .page-description {
+      font-size: 1.1rem;
+    }
+
+    .posts-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .post-card {
+      margin-bottom: 0;
+    }
+
+    .card-header {
+      padding: 1rem;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    .post-content {
+      padding: 1.5rem;
+    }
+
+    .post-title {
+      font-size: 1.2rem;
+    }
+
+    .card-footer {
+      padding: 1rem 1.5rem;
+    }
+
+    .page-footer {
+      padding: 2rem 1.5rem;
+    }
+
+    .footer-content h3 {
+      font-size: 1.25rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .posts-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .age-badge {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    .post-date {
+      font-size: 0.8rem;
+    }
+
+    .key-lesson {
+      padding: 0.8rem;
+    }
+
+    .lesson-text {
+      font-size: 0.9rem;
+    }
+  }
+</style>

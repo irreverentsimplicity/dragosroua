@@ -429,12 +429,8 @@ export function cleanSchemaUrls(schemaData) {
     .replace(/https?:\/\/wp\.dragosroua\.com\//g, 'https://dragosroua.com/')
     .replace(/https?:\/\/www\.dragosroua\.com\//g, 'https://dragosroua.com/');
   
-  try {
-    return JSON.parse(schemaString);
-  } catch (e) {
-    console.warn('Failed to parse cleaned schema JSON:', e);
-    return schema;
-  }
+  // Return the cleaned string, not the parsed object
+  return schemaString;
 }
 
 // Decode HTML entities
