@@ -56,11 +56,15 @@ const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
     <script type="application/ld+json" set:html={schema} />
   )}
   
-  <!-- Google Analytics - Ultra Deferred -->
-<script>
-  // Load GA only after page is fully interactive
-  window.addEventListener('load', function() {
-    var script = document.createElement('script');
+  <!-- Google Analytics - Load on Interaction -->
+<script type="module">
+  let gaLoaded = false;
+  
+  function loadGA() {
+    if (gaLoaded) return;
+    gaLoaded = true;
+    
+    const script = document.createElement('script');
     script.src = 'https://www.googletagmanager.com/gtag/js?id=G-L2YHBQ9ZSL';
     script.async = true;
     document.head.appendChild(script);
@@ -69,7 +73,17 @@ const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-L2YHBQ9ZSL');
+  }
+  
+  // Load GA on first user interaction OR after 3 seconds (whichever comes first)
+  const interactions = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+  
+  interactions.forEach(event => {
+    window.addEventListener(event, loadGA, { once: true, passive: true });
   });
+  
+  // Fallback: load after 3 seconds if no interaction
+  setTimeout(loadGA, 3000);
 </script>
   
   <style is:global>
