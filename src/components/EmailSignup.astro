@@ -1,11 +1,14 @@
 <div class="email-signup">
-  <h3>Let's stay in touch</h3>
-  <p>Get my best content on productivity, mindfulness, and digital nomading.</p>
+  <h3>Get Your FREE 5-Layer Location Independence Framework</h3>
+  <p class="lead-offer">Subscribe and get instant access to my decision-making guide — 15 years of digital nomad experience distilled into one actionable framework.</p>
+  <p class="bonus-line">Plus: weekly insights on productivity, location independence, and meaningful relationships.</p>
   
   <form 
     action="https://dragosroua.substack.com/api/v1/free" 
     method="post"
     class="signup-form"
+    id="email-form"
+    target="_blank"
   >
     <input 
       type="email" 
@@ -14,66 +17,195 @@
       required
       class="email-input"
     />
-    <button type="submit" class="submit-btn">Subscribe</button>
+    <button type="submit" class="submit-btn" id="submit-btn">
+      <span class="btn-text">Get Free Guide →</span>
+      <span class="btn-loading" style="display: none;">Subscribing...</span>
+    </button>
   </form>
+  
+  <div id="success-message" style="display: none;" class="success-message">
+    🎉 Success! Check your email to confirm your subscription.
+  </div>
+  
+  <p class="privacy-note">No spam. Unsubscribe anytime. Your data stays private.</p>
 </div>
 
 <style>
   .email-signup {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 12px;
-    padding: 2rem;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
     margin: 3rem 0;
     text-align: center;
     color: white;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+  }
+  
+  .lead-magnet-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
   }
   
   .email-signup h3 {
-    font-size: 1.8rem;
-    margin: 0 0 0.75rem;
+    font-size: 1.9rem;
+    margin: 0 0 1rem;
     color: white;
+    font-weight: 700;
+    line-height: 1.3;
   }
   
-  .email-signup p {
-    font-size: 1rem;
-    margin: 0 0 1.5rem;
-    opacity: 0.95;
+  .lead-offer {
+    font-size: 1.1rem;
+    margin: 0 0 0.75rem;
+    opacity: 0.98;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  
+  .bonus-line {
+    font-size: 0.95rem;
+    margin: 0 0 1.75rem;
+    opacity: 0.9;
+    font-style: italic;
   }
   
   .signup-form {
     display: flex;
     gap: 0.5rem;
-    max-width: 480px;
-    margin: 0 auto;
+    max-width: 520px;
+    margin: 0 auto 1rem;
   }
   
   .email-input {
     flex: 1;
-    padding: 0.75rem 1rem;
+    padding: 0.875rem 1.25rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .email-input:focus {
+    outline: 3px solid rgba(255, 255, 255, 0.5);
   }
   
   .submit-btn {
-    padding: 0.75rem 1.5rem;
+    padding: 0.875rem 2rem;
     background: #000;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
   }
   
   .submit-btn:hover {
     background: #1a1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  }
+  
+  .privacy-note {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin: 0;
+    font-style: italic;
+  }
+  
+  .success-message {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-weight: 600;
+    font-size: 1.1rem;
   }
   
   @media (max-width: 600px) {
+    .email-signup {
+      padding: 2rem 1.5rem;
+    }
+    
+    .email-signup h3 {
+      font-size: 1.5rem;
+    }
+    
+    .lead-offer {
+      font-size: 1rem;
+    }
+    
     .signup-form {
       flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .submit-btn {
+      padding: 1rem;
     }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('email-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = submitBtn?.querySelector('.btn-text');
+    const btnLoading = submitBtn?.querySelector('.btn-loading');
+    const successMessage = document.getElementById('success-message');
+    
+    if (!form || !submitBtn || !btnText || !btnLoading || !successMessage) return;
+    
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Show loading state
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline';
+      (submitBtn as HTMLButtonElement).disabled = true;
+      
+      // Get email value
+      const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement;
+      const email = emailInput?.value;
+      
+      if (!email) {
+        // Reset button state
+        btnText.style.display = 'inline';
+        btnLoading.style.display = 'none';
+        (submitBtn as HTMLButtonElement).disabled = false;
+        return;
+      }
+      
+      // Create a hidden iframe to submit the form
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.name = 'substack-iframe';
+      document.body.appendChild(iframe);
+      
+      // Update form target to submit through iframe
+      const originalTarget = form.target;
+      form.target = 'substack-iframe';
+      
+      // Submit the form normally (this will work through the iframe)
+      form.submit();
+      
+      // Clean up and show success after a short delay
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+        form.target = originalTarget;
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
+      }, 1000);
+    });
+  });
+</script>
