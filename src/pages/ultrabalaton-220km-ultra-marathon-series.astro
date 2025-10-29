@@ -2,6 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 // Define the UltraBalaton posts in chronological order
+// SEO and Schema data
+const pageTitle = "UltraBalaton 220km Ultra-Marathon Series | Dragos Roua";
+const pageDescription = "Complete journey through a 220km ultra-marathon around Lake Balaton. From preparation to aftermath, eight posts documenting the physical and mental transformation of extreme endurance.";
+const pageUrl = "https://dragosroua.com/ultrabalaton-220km-ultra-marathon-series/";
+const ogImage = "https://wp.dragosroua.com/wp-content/uploads/2015/06/Photo-Jun-01-11-14-25-AM-e1434032774846.jpg";
+
 const ultrabalatonPosts = [
   {
     title: "Big, Hairy, Audacious Goals - Ultrabalaton",
@@ -9,6 +15,7 @@ const ultrabalatonPosts = [
     phase: "Goal Setting",
     description: "BHAGs require audacity beyond reason. Ultrabalaton's 220km qualifies—big, hairy, audacious. Goals should scare you into action, not comfort.",
     date: "April 19, 2015",
+    datePublished: "2015-04-19",
     keyInsight: "The moving wall: physical and mental barriers that shift as you push against them"
   },
   {
@@ -17,6 +24,7 @@ const ultrabalatonPosts = [
     phase: "Preparation",
     description: "Preparing for 220km ultra-marathon reveals planning's limits. Training strategies, gear selection, mental frameworks—readiness illusion before reality strikes.",
     date: "June 2, 2015",
+    datePublished: "2015-06-02",
     keyInsight: "No amount of preparation can simulate the reality of 220km"
   },
   {
@@ -25,6 +33,7 @@ const ultrabalatonPosts = [
     phase: "Marathon 1",
     description: "First of five marathons—starting strong before reality hits. Initial optimism masks the distance ahead—naivety serves as temporary fuel.",
     date: "June 3, 2015",
+    datePublished: "2015-06-03",
     keyInsight: "Count your expirations: meditation as survival tool during extreme endurance"
   },
   {
@@ -33,6 +42,7 @@ const ultrabalatonPosts = [
     phase: "Marathon 2", 
     description: "Second marathon meets exhaustion approaching. Confidence from first marathon collides with accumulating fatigue—the pattern emerges clearly.",
     date: "June 4, 2015",
+    datePublished: "2015-06-04",
     keyInsight: "Heat dissipation: understanding the body as an energy-producing mechanism"
   },
   {
@@ -41,6 +51,7 @@ const ultrabalatonPosts = [
     phase: "Marathon 3",
     description: "Third marathon brings reckoning—optimism fades, reality solidifies. Understanding you're only halfway triggers the real mental battle.",
     date: "June 5, 2015", 
+    datePublished: "2015-06-05",
     keyInsight: "100km threshold: entering unknown territory beyond your limits"
   },
   {
@@ -49,6 +60,7 @@ const ultrabalatonPosts = [
     phase: "Marathon 4",
     description: "Fourth marathon of five—body breaking down, mind negotiating whether to continue. The psychological warfare that defines ultra-distance running.",
     date: "June 6, 2015",
+    datePublished: "2015-06-06",
     keyInsight: "Time calculations become survival strategy when facing the cut-off"
   },
   {
@@ -57,6 +69,7 @@ const ultrabalatonPosts = [
     phase: "Marathon 5",
     description: "Fifth of five marathons—exhaustion versus determination in darkness. The final 42km where mental strength becomes the only fuel remaining.",
     date: "June 7, 2015",
+    datePublished: "2015-06-07",
     keyInsight: "GPS watch battery dies: learning to navigate the final 25km without data"
   },
   {
@@ -65,15 +78,107 @@ const ultrabalatonPosts = [
     phase: "Recovery",
     description: "222 kilometers non-stop around Lake Balaton—the aftermath reveals what ultramarathons do to body and mind. Recovery tells the race's real story.",
     date: "June 11, 2015",
+    datePublished: "2015-06-11",
     keyInsight: "The person who starts an ultra and the person who finishes are completely different"
   }
 ];
+
+// Generate comprehensive schema markup
+const schemaMarkup = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": pageUrl,
+      "url": pageUrl,
+      "name": pageTitle,
+      "description": pageDescription,
+      "inLanguage": "en-US",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://dragosroua.com/",
+        "name": "Dragos Roua",
+        "url": "https://dragosroua.com/"
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://dragosroua.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Running",
+            "item": "https://dragosroua.com/category/running/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "UltraBalaton Series"
+          }
+        ]
+      },
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": ultrabalatonPosts.length,
+        "itemListElement": ultrabalatonPosts.map((post, index) => ({
+          "@type": "BlogPosting",
+          "position": index + 1,
+          "url": `https://dragosroua.com/${post.slug}/`,
+          "headline": post.title,
+          "description": post.description,
+          "datePublished": post.datePublished,
+          "author": {
+            "@type": "Person",
+            "name": "Dragos Roua",
+            "url": "https://dragosroua.com/about/"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Dragos Roua",
+            "url": "https://dragosroua.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://dragosroua.com/images/dragos-avatar.webp"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://dragosroua.com/${post.slug}/`
+          },
+          "articleSection": "Running",
+          "keywords": "ultramarathon, endurance, running, Lake Balaton, ultra running, 220km, marathon"
+        }))
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Dragos Roua",
+        "url": "https://dragosroua.com/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Dragos Roua",
+        "url": "https://dragosroua.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://dragosroua.com/images/dragos-avatar.webp"
+        }
+      }
+    }
+  ]
+};
 ---
 
 <BaseLayout 
-  title="UltraBalaton 220km Ultra-Marathon Series | Dragos Roua"
-  description="Complete journey through a 220km ultra-marathon around Lake Balaton. From preparation to aftermath, eight posts documenting the physical and mental transformation of extreme endurance."
-  canonical="https://dragosroua.com/ultrabalaton-220km-ultra-marathon-series/"
+  title={pageTitle}
+  description={pageDescription}
+  ogImage={ogImage}
+  canonical={pageUrl}
+  schema={JSON.stringify(schemaMarkup)}
 >
   <div class="ultrabalaton-series-page">
     <header class="page-header">

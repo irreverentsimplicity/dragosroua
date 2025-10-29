@@ -1,6 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+// SEO and Schema data
+const pageTitle = "7 Things I Learned From My Daughter Series | Dragos Roua";
+const pageDescription = "A journey through fatherhood: seven annual posts documenting lessons learned from a growing daughter. From 1 to 7 years old, profound wisdom from a child's perspective.";
+const pageUrl = "https://dragosroua.com/7-things-i-learned-from-my-daughter-series/";
+const ogImage = "https://wp.dragosroua.com/wp-content/uploads/2025/10/rovi-one-year.webp";
+
 // Define the daughter posts in chronological order
 const daughterPosts = [
   {
@@ -9,6 +15,7 @@ const daughterPosts = [
     age: "1 Year Old",
     description: "One-year-old teaches seven profound lessons. Infant wisdom illuminates adult blindness—earliest development reveals essential truths.",
     date: "June 10, 2007",
+    datePublished: "2007-06-10",
     keyLesson: "Once you're down, there are literally a gazillion ways to get up again"
   },
   {
@@ -17,6 +24,7 @@ const daughterPosts = [
     age: "2 Years Old",
     description: "Two-year-old reveals deeper truths. Toddler discoveries challenge conventional wisdom—pure curiosity unlocks profound insights.",
     date: "March 14, 2008",
+    datePublished: "2008-03-14",
     keyLesson: "The world is what you say it is"
   },
   {
@@ -25,6 +33,7 @@ const daughterPosts = [
     age: "3 Years Old",
     description: "Three-year-old teaches seven essential lessons. Toddler wisdom cuts through complexity—young children see clearly what adults miss.",
     date: "March 14, 2009",
+    datePublished: "2009-03-14",
     keyLesson: "Making friends is the easiest thing in the world"
   },
   {
@@ -33,6 +42,7 @@ const daughterPosts = [
     age: "4 Years Old", 
     description: "Four-year-old shares profound wisdom. Preschooler insights reveal life's fundamentals—authentic curiosity teaches essential truths.",
     date: "March 14, 2010",
+    datePublished: "2010-03-14",
     keyLesson: "Questions are more important than answers"
   },
   {
@@ -41,6 +51,7 @@ const daughterPosts = [
     age: "5 Years Old",
     description: "Five-year-old reveals life's deeper patterns. Kindergarten wisdom challenges adult assumptions—fresh perspective illuminates truth.",
     date: "March 14, 2011", 
+    datePublished: "2011-03-14",
     keyLesson: "Learning is better when it's fun"
   },
   {
@@ -49,6 +60,7 @@ const daughterPosts = [
     age: "6 Years Old",
     description: "Six-year-old teaches advanced life lessons. Elementary insights reveal complex truths—growing minds offer profound perspectives.",
     date: "March 14, 2012",
+    datePublished: "2012-03-14",
     keyLesson: "Friendship changes but love stays the same"
   },
   {
@@ -57,15 +69,107 @@ const daughterPosts = [
     age: "7 Years Old",
     description: "Seven-year-old shares seven precious gifts. Elementary school wisdom reveals life's treasures—mature insights from a young soul.",
     date: "March 14, 2013",
+    datePublished: "2013-03-14",
     keyLesson: "The best gifts are the ones you give"
   }
 ];
+
+// Generate comprehensive schema markup
+const schemaMarkup = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": pageUrl,
+      "url": pageUrl,
+      "name": pageTitle,
+      "description": pageDescription,
+      "inLanguage": "en-US",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://dragosroua.com/",
+        "name": "Dragos Roua",
+        "url": "https://dragosroua.com/"
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://dragosroua.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Parenting",
+            "item": "https://dragosroua.com/category/parenting/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Daughter Series"
+          }
+        ]
+      },
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": daughterPosts.length,
+        "itemListElement": daughterPosts.map((post, index) => ({
+          "@type": "BlogPosting",
+          "position": index + 1,
+          "url": `https://dragosroua.com/${post.slug}/`,
+          "headline": post.title,
+          "description": post.description,
+          "datePublished": post.datePublished,
+          "author": {
+            "@type": "Person",
+            "name": "Dragos Roua",
+            "url": "https://dragosroua.com/about/"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Dragos Roua",
+            "url": "https://dragosroua.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://dragosroua.com/images/dragos-avatar.webp"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://dragosroua.com/${post.slug}/`
+          },
+          "articleSection": "Parenting",
+          "keywords": "parenting, fatherhood, children, life lessons, personal development, family"
+        }))
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Dragos Roua",
+        "url": "https://dragosroua.com/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Dragos Roua",
+        "url": "https://dragosroua.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://dragosroua.com/images/dragos-avatar.webp"
+        }
+      }
+    }
+  ]
+};
 ---
 
 <BaseLayout 
-  title="7 Things I Learned From My Daughter Series | Dragos Roua"
-  description="A journey through fatherhood: seven annual posts documenting lessons learned from a growing daughter. From 1 to 7 years old, profound wisdom from a child's perspective."
-  canonical="https://dragosroua.com/7-things-i-learned-from-my-daughter-series/"
+  title={pageTitle}
+  description={pageDescription}
+  ogImage={ogImage}
+  canonical={pageUrl}
+  schema={JSON.stringify(schemaMarkup)}
 >
   <div class="daughter-series-page">
     <header class="page-header">
