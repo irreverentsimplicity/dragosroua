@@ -98,6 +98,8 @@ const tags = post.tags?.nodes || [];
     
     <div class="wp-content" set:html={processedContent} />
     
+    <EmailSignup />
+    
     <!-- Share buttons -->
     <ShareButtons 
       url={`https://dragosroua.com${post.uri}`}
@@ -171,8 +173,6 @@ const tags = post.tags?.nodes || [];
         )}
       </div>
     )}
-    
-    <EmailSignup />
   </article>
 </BaseLayout>
 
