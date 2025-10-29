@@ -31,22 +31,100 @@ export async function GET() {
     getAllTags()
   ]);
 
-  // Filter and prioritize taxonomy pages
-  const strategicCategoryPages = categories
-    .filter(cat => strategicCategories[cat.slug] && cat.count >= 3) // Only include categories with 3+ posts
-    .map(cat => ({
-      url: `/category/${cat.slug}/`,
-      priority: strategicCategories[cat.slug],
-      lastmod: new Date().toISOString().split('T')[0]
-    }));
+  // Generate archive pages (year/month combinations)
+  const archivePages = [];
+  const dateGroups = new Map();
+  
+  posts.forEach(post => {
+    const date = new Date(post.date);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const key = `${year}/${month}`;
+    
+    if (!dateGroups.has(key)) {
+      dateGroups.set(key, []);
+    }
+    dateGroups.get(key).push(post);
+  });
+  
+  // Create archive page entries
+  dateGroups.forEach((monthPosts, dateKey) => {
+    const [year, month] = dateKey.split('/');
+    archivePages.push({
+      url: `/${year}/${month}/`,
+      priority: 0.4,
+      lastmod: new Date(Math.max(...monthPosts.map(p => new Date(p.date)))).toISOString().split('T')[0],
+      changefreq: 'yearly'
+    });
+  });
 
-  const strategicTagPages = tags
-    .filter(tag => strategicTags[tag.slug] && tag.count >= 5) // Only include tags with 5+ posts
-    .map(tag => ({
-      url: `/tag/${tag.slug}/`,
-      priority: strategicTags[tag.slug],
-      lastmod: new Date().toISOString().split('T')[0]
-    }));
+  // Generate blog pagination pages (assuming 20 posts per page)
+  const postsPerPage = 20;
+  const totalPages = Math.ceil(posts.length / postsPerPage);
+  const blogPages = [];
+  
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1) {
+      // Main blog page (already included in static pages)
+      continue;
+    }
+    blogPages.push({
+      url: `/blog/${i}/`,
+      priority: 0.5,
+      lastmod: new Date().toISOString().split('T')[0],
+      changefreq: 'weekly'
+    });
+  }
+
+  // Generate ALL category pages (not just strategic ones)
+  const allCategoryPages = [];
+  categories.forEach(category => {
+    if (category.count > 0) {
+      // Main category page
+      allCategoryPages.push({
+        url: `/category/${category.slug}/`,
+        priority: strategicCategories[category.slug] || 0.4,
+        lastmod: new Date().toISOString().split('T')[0],
+        changefreq: 'weekly'
+      });
+      
+      // Category pagination pages
+      const categoryPagesCount = Math.ceil(category.count / postsPerPage);
+      for (let i = 2; i <= categoryPagesCount; i++) {
+        allCategoryPages.push({
+          url: `/category/${category.slug}/${i}/`,
+          priority: 0.3,
+          lastmod: new Date().toISOString().split('T')[0],
+          changefreq: 'monthly'
+        });
+      }
+    }
+  });
+
+  // Generate ALL tag pages (not just strategic ones)
+  const allTagPages = [];
+  tags.forEach(tag => {
+    if (tag.count > 0) {
+      // Main tag page
+      allTagPages.push({
+        url: `/tag/${tag.slug}/`,
+        priority: strategicTags[tag.slug] || 0.3,
+        lastmod: new Date().toISOString().split('T')[0],
+        changefreq: 'monthly'
+      });
+      
+      // Tag pagination pages
+      const tagPagesCount = Math.ceil(tag.count / postsPerPage);
+      for (let i = 2; i <= tagPagesCount; i++) {
+        allTagPages.push({
+          url: `/tag/${tag.slug}/${i}/`,
+          priority: 0.2,
+          lastmod: new Date().toISOString().split('T')[0],
+          changefreq: 'monthly'
+        });
+      }
+    }
+  });
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -92,11 +170,11 @@ export async function GET() {
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-  ${[...strategicCategoryPages, ...strategicTagPages].map(page => `
+  ${[...archivePages, ...blogPages, ...allCategoryPages, ...allTagPages].map(page => `
   <url>
     <loc>https://dragosroua.com${page.url}</loc>
     <lastmod>${page.lastmod}</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`).join('')}
   ${posts.map(post => `
