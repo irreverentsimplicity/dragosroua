@@ -47,6 +47,18 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 # Top posts redirect to categories
 /top-posts-total/  /categories/  301
 
+# Tag redirects for non-existent tags
+/tag/promo/  /advertise/  301
+/tag/millionaire/  /work-with-me/  301
+/tag/sale/2/  /work-with-me/  301
+/tag/promotion/2/  /work-with-me/  301
+
+# Category pagination redirects for non-existent pages
+/category/gtd/6/  /work-with-me/  301
+
+# Individual post redirects for removed content
+/prague-toy-museum-barbie-action-man/  /work-with-me/  301
+
 # Hub pages redirect to categories
 /financial-resilience/  /category/financial-resilience/  301
 /location-independence/  /category/location-independence/  301
