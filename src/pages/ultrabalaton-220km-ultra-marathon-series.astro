@@ -194,13 +194,13 @@ const schemaMarkup = {
     <section class="posts-section">
       <div class="posts-grid">
         {ultrabalatonPosts.map((post, index) => (
-          <a href={`/${post.slug}/`} class="post-card">
+          <a href={`/${post.slug}/`} class="post-card" aria-label={`Read ${post.title}`}>
             <div class="card-header">
               <div class="phase-badge">{post.phase}</div>
               <div class="post-date">{post.date}</div>
             </div>
             <div class="post-content">
-              <h3 class="post-title">{post.title}</h3>
+              <h2 class="post-title">{post.title}</h2>
               <p class="post-description">{post.description}</p>
               <div class="key-insight">
                 <span class="insight-label">Key insight:</span>
@@ -217,7 +217,7 @@ const schemaMarkup = {
 
     <footer class="page-footer">
       <div class="footer-content">
-        <h3>About This Ultra-Marathon</h3>
+        <h2>About This Ultra-Marathon</h2>
         <p>
           UltraBalaton 2015 was my longest point-to-point ultra-marathon. While I had experience with 24-hour and 48-hour loop races, 
           this 220km journey around Lake Balaton was different—a single, massive line from start to finish. The race took me 31 hours 
@@ -262,7 +262,7 @@ const schemaMarkup = {
 
   .page-description {
     font-size: 1.2rem;
-    color: #4a5568;
+    color: #2d3748; /* Improved contrast from #4a5568 */
     line-height: 1.6;
     margin: 0;
   }
@@ -343,7 +343,7 @@ const schemaMarkup = {
   }
 
   .post-description {
-    color: #4a5568;
+    color: #2d3748; /* Improved contrast from #4a5568 */
     font-size: 1rem;
     line-height: 1.5;
     margin: 0 0 1.5rem 0;
@@ -382,14 +382,22 @@ const schemaMarkup = {
   }
 
   .read-more {
-    color: #667eea;
+    color: #4c51bf; /* Improved contrast from #667eea */
     font-weight: 600;
     font-size: 0.9rem;
     transition: color 0.2s ease;
+    text-decoration: underline;
+    text-decoration-color: transparent;
   }
 
   .post-card:hover .read-more {
-    color: #5568d3;
+    color: #3730a3; /* Improved contrast from #5568d3 */
+    text-decoration-color: #3730a3;
+  }
+
+  .post-card:focus-within .read-more {
+    color: #3730a3;
+    text-decoration-color: #3730a3;
   }
 
   .page-footer {
@@ -407,7 +415,7 @@ const schemaMarkup = {
   }
 
   .footer-content p {
-    color: #4a5568;
+    color: #2d3748; /* Improved contrast from #4a5568 */
     font-size: 1rem;
     line-height: 1.6;
     margin: 0 0 1rem 0;
@@ -421,15 +429,22 @@ const schemaMarkup = {
   }
 
   .footer-content a {
-    color: #667eea;
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.2s ease;
+    color: #4c51bf; /* Improved contrast from #667eea */
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 0.2s ease;
+    font-weight: 500;
   }
 
   .footer-content a:hover {
-    color: #5568d3;
-    border-bottom-color: #5568d3;
+    color: #3730a3; /* Improved contrast from #5568d3 */
+    text-decoration-color: #3730a3;
+  }
+
+  .footer-content a:focus {
+    outline: 2px solid #4c51bf;
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 
   /* Responsive Design */
