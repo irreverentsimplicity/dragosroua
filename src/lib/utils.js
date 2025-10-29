@@ -727,3 +727,148 @@ export function getOptimizedImage(featuredImage, targetWidth = 300, postTitle = 
     height: node.mediaDetails?.height || 200
   };
 }
+
+// Series Configuration System
+export const seriesConfig = {
+  ultrabalaton: {
+    enabled: true,
+    title: "🏃‍♂️ UltraBalaton 220km Series",
+    hubUrl: "/ultrabalaton-220km-ultra-marathon-series/",
+    showNavigation: true,
+    navigationPlacement: "bottom", // "top", "bottom", "both"
+    posts: [
+      {
+        title: "Big, Hairy, Audacious Goals - Ultrabalaton",
+        slug: "big-hairy-audacious-goals-ultrabalaton",
+        phase: "Goal Setting",
+        order: 1
+      },
+      {
+        title: "The Story Of My First 220km Race - Ultrabalaton - The Preparation", 
+        slug: "the-story-of-my-first-220km-race-ultrabalaton-the-preparation",
+        phase: "Preparation",
+        order: 2
+      },
+      {
+        title: "The Story Of My First 220km Race - Ultrabalaton - The First Marathon",
+        slug: "the-story-of-my-first-220km-race-ultrabalaton-the-first-marathon", 
+        phase: "Marathon 1",
+        order: 3
+      },
+      {
+        title: "The Story Of My First 220km Race - Ultrabalaton - The Second Marathon",
+        slug: "the-story-of-my-first-220km-race-ultrabalaton-the-second-marathon",
+        phase: "Marathon 2", 
+        order: 4
+      },
+      {
+        title: "The Story Of My First 220km Race - Ultrabalaton - The Third Marathon",
+        slug: "the-story-of-my-first-220km-race-ultrabalaton-the-third-marathon",
+        phase: "Marathon 3",
+        order: 5
+      },
+      {
+        title: "The Story Of My First 220km Race - Ultrabalaton - The Fourth Marathon",
+        slug: "the-story-of-my-first-220km-race-ultrabalaton-the-fourth-marathon",
+        phase: "Marathon 4",
+        order: 6
+      },
+      {
+        title: "The Story Of My First 220km Race - Ultrabalaton - The Fifth Marathon", 
+        slug: "the-story-of-my-first-220km-race-ultrabalaton-the-fifth-marathon",
+        phase: "Marathon 5",
+        order: 7
+      },
+      {
+        title: "Ultrabalaton - The Aftermath Of A 222 Kilometers Race",
+        slug: "ultrabalaton-the-aftermath-of-a-222-kilometers-race",
+        phase: "Recovery",
+        order: 8
+      }
+    ]
+  },
+  daughter: {
+    enabled: true,
+    title: "👧 7 Things I Learned From My Daughter Series",
+    hubUrl: "/7-things-i-learned-from-my-daughter-series/",
+    showNavigation: true,
+    navigationPlacement: "bottom", // "top", "bottom", "both"
+    posts: [
+      {
+        title: "7 Things I Learned From My One Year Old Girl",
+        slug: "7-things-i-learned-from-my-one-year-old-girl",
+        phase: "1 Year Old",
+        order: 1
+      },
+      {
+        title: "7 Things I Learned From My 2 Year Old Girl", 
+        slug: "7-things-i-learned-from-my-2-year-old-girl",
+        phase: "2 Years Old",
+        order: 2
+      },
+      {
+        title: "7 Things I Learned From My 3 Year Old Girl",
+        slug: "7-things-i-learned-from-my-3-year-old-girl",
+        phase: "3 Years Old",
+        order: 3
+      },
+      {
+        title: "7 Things I Learned From My 4 Year Old Girl",
+        slug: "7-things-i-learned-from-my-4-year-old-girl",
+        phase: "4 Years Old",
+        order: 4
+      },
+      {
+        title: "7 Things I Learned From My 5 Year Old Girl",
+        slug: "7-things-i-learned-from-my-5-year-old-girl",
+        phase: "5 Years Old",
+        order: 5
+      },
+      {
+        title: "7 Things I Learned From My 6 Year Old Daughter",
+        slug: "7-things-i-learned-from-my-6-year-old-daughter",
+        phase: "6 Years Old",
+        order: 6
+      },
+      {
+        title: "7 Gifts I Got From My 7 Year Old Daughter", 
+        slug: "7-gifts-i-got-from-my-7-year-old-daughter",
+        phase: "7 Years Old",
+        order: 7
+      }
+    ]
+  }
+};
+
+// Generic function to get series info for any series
+export function getSeriesInfo(postSlug) {
+  for (const [seriesKey, series] of Object.entries(seriesConfig)) {
+    if (!series.enabled || !series.showNavigation) continue;
+    
+    const post = series.posts.find(p => p.slug === postSlug);
+    if (post) {
+      const currentIndex = post.order - 1;
+      const nextPost = currentIndex < series.posts.length - 1 ? series.posts[currentIndex + 1] : null;
+      const previousPost = currentIndex > 0 ? series.posts[currentIndex - 1] : null;
+      
+      return {
+        seriesKey,
+        seriesTitle: series.title,
+        hubUrl: series.hubUrl,
+        navigationPlacement: series.navigationPlacement,
+        current: post,
+        next: nextPost,
+        previous: previousPost,
+        total: series.posts.length,
+        series: series.posts
+      };
+    }
+  }
+  return null;
+}
+
+// Legacy function for backward compatibility
+export function getUltrabalatonSeriesInfo(postSlug) {
+  const seriesInfo = getSeriesInfo(postSlug);
+  return seriesInfo?.seriesKey === 'ultrabalaton' ? seriesInfo : null;
+}

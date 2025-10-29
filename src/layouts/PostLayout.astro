@@ -3,7 +3,8 @@ import BaseLayout from './BaseLayout.astro';
 import SubstackSubscribe from '../components/SubstackSubscribe.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import ShareButtons from '../components/ShareButtons.astro';
-import { optimizeContentLinksAndImages, getResponsiveImage, updateWordPressImageUrls, cleanCanonicalUrl, cleanSchemaUrls } from '../lib/utils';
+import SeriesNav from '../components/SeriesNav.astro';
+import { optimizeContentLinksAndImages, getResponsiveImage, updateWordPressImageUrls, cleanCanonicalUrl, cleanSchemaUrls, getSeriesInfo } from '../lib/utils';
 
 interface Props {
   post: any;
@@ -26,6 +27,10 @@ const heroImage = getResponsiveImage(post.featuredImage, post.title);
 // Get categories and tags
 const categories = post.categories?.nodes || [];
 const tags = post.tags?.nodes || [];
+
+// Check if this is part of any series
+const postSlug = post.uri.replace(/^\/|\/$/g, ''); // Remove leading/trailing slashes
+const seriesInfo = getSeriesInfo(postSlug);
 ---
 
 <BaseLayout 
@@ -47,6 +52,19 @@ const tags = post.tags?.nodes || [];
         })}
       </time>
     </div>
+
+    {/* Series Navigation - Top */}
+    {seriesInfo && (seriesInfo.navigationPlacement === "top" || seriesInfo.navigationPlacement === "both") && (
+      <SeriesNav 
+        seriesTitle={seriesInfo.seriesTitle}
+        hubUrl={seriesInfo.hubUrl}
+        current={seriesInfo.current}
+        next={seriesInfo.next}
+        previous={seriesInfo.previous}
+        total={seriesInfo.total}
+        series={seriesInfo.series}
+      />
+    )}
     
     {post.featuredImage?.node?.sourceUrl && (
       <img 
@@ -97,6 +115,19 @@ const tags = post.tags?.nodes || [];
     </div>
     
     <div class="wp-content" set:html={processedContent} />
+    
+    {/* Series Navigation - Bottom */}
+    {seriesInfo && (seriesInfo.navigationPlacement === "bottom" || seriesInfo.navigationPlacement === "both") && (
+      <SeriesNav 
+        seriesTitle={seriesInfo.seriesTitle}
+        hubUrl={seriesInfo.hubUrl}
+        current={seriesInfo.current}
+        next={seriesInfo.next}
+        previous={seriesInfo.previous}
+        total={seriesInfo.total}
+        series={seriesInfo.series}
+      />
+    )}
     
     <EmailSignup />
     

@@ -1,0 +1,408 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Define the UltraBalaton posts in chronological order
+const ultrabalatonPosts = [
+  {
+    title: "Big, Hairy, Audacious Goals - Ultrabalaton",
+    slug: "big-hairy-audacious-goals-ultrabalaton",
+    phase: "Goal Setting",
+    description: "BHAGs require audacity beyond reason. Ultrabalaton's 220km qualifies—big, hairy, audacious. Goals should scare you into action, not comfort.",
+    date: "April 19, 2015",
+    keyInsight: "The moving wall: physical and mental barriers that shift as you push against them"
+  },
+  {
+    title: "The Story Of My First 220km Race - Ultrabalaton - The Preparation", 
+    slug: "the-story-of-my-first-220km-race-ultrabalaton-the-preparation",
+    phase: "Preparation",
+    description: "Preparing for 220km ultra-marathon reveals planning's limits. Training strategies, gear selection, mental frameworks—readiness illusion before reality strikes.",
+    date: "June 2, 2015",
+    keyInsight: "No amount of preparation can simulate the reality of 220km"
+  },
+  {
+    title: "The Story Of My First 220km Race - Ultrabalaton - The First Marathon",
+    slug: "the-story-of-my-first-220km-race-ultrabalaton-the-first-marathon", 
+    phase: "Marathon 1",
+    description: "First of five marathons—starting strong before reality hits. Initial optimism masks the distance ahead—naivety serves as temporary fuel.",
+    date: "June 3, 2015",
+    keyInsight: "Count your expirations: meditation as survival tool during extreme endurance"
+  },
+  {
+    title: "The Story Of My First 220km Race - Ultrabalaton - The Second Marathon",
+    slug: "the-story-of-my-first-220km-race-ultrabalaton-the-second-marathon",
+    phase: "Marathon 2", 
+    description: "Second marathon meets exhaustion approaching. Confidence from first marathon collides with accumulating fatigue—the pattern emerges clearly.",
+    date: "June 4, 2015",
+    keyInsight: "Heat dissipation: understanding the body as an energy-producing mechanism"
+  },
+  {
+    title: "The Story Of My First 220km Race - Ultrabalaton - The Third Marathon",
+    slug: "the-story-of-my-first-220km-race-ultrabalaton-the-third-marathon",
+    phase: "Marathon 3",
+    description: "Third marathon brings reckoning—optimism fades, reality solidifies. Understanding you're only halfway triggers the real mental battle.",
+    date: "June 5, 2015", 
+    keyInsight: "100km threshold: entering unknown territory beyond your limits"
+  },
+  {
+    title: "The Story Of My First 220km Race - Ultrabalaton - The Fourth Marathon",
+    slug: "the-story-of-my-first-220km-race-ultrabalaton-the-fourth-marathon",
+    phase: "Marathon 4",
+    description: "Fourth marathon of five—body breaking down, mind negotiating whether to continue. The psychological warfare that defines ultra-distance running.",
+    date: "June 6, 2015",
+    keyInsight: "Time calculations become survival strategy when facing the cut-off"
+  },
+  {
+    title: "The Story Of My First 220km Race - Ultrabalaton - The Fifth Marathon", 
+    slug: "the-story-of-my-first-220km-race-ultrabalaton-the-fifth-marathon",
+    phase: "Marathon 5",
+    description: "Fifth of five marathons—exhaustion versus determination in darkness. The final 42km where mental strength becomes the only fuel remaining.",
+    date: "June 7, 2015",
+    keyInsight: "GPS watch battery dies: learning to navigate the final 25km without data"
+  },
+  {
+    title: "Ultrabalaton - The Aftermath Of A 222 Kilometers Race",
+    slug: "ultrabalaton-the-aftermath-of-a-222-kilometers-race",
+    phase: "Recovery",
+    description: "222 kilometers non-stop around Lake Balaton—the aftermath reveals what ultramarathons do to body and mind. Recovery tells the race's real story.",
+    date: "June 11, 2015",
+    keyInsight: "The person who starts an ultra and the person who finishes are completely different"
+  }
+];
+---
+
+<BaseLayout 
+  title="UltraBalaton 220km Ultra-Marathon Series | Dragos Roua"
+  description="Complete journey through a 220km ultra-marathon around Lake Balaton. From preparation to aftermath, eight posts documenting the physical and mental transformation of extreme endurance."
+  canonical="https://dragosroua.com/ultrabalaton-220km-ultra-marathon-series/"
+>
+  <div class="ultrabalaton-series-page">
+    <header class="page-header">
+      <h1>UltraBalaton 220km Ultra-Marathon Series</h1>
+      <p class="page-description">
+        My longest point-to-point ultra-marathon: 220 kilometers around the beautiful Lake Balaton in Hungary. 
+        While I had completed 24-hour and 48-hour loop races before, this was my first massive point-to-point challenge.
+        This series documents the complete journey from audacious goal-setting through preparation, 
+        the grueling 5-marathon race itself, and the lessons learned in recovery.
+      </p>
+    </header>
+
+    <section class="posts-section">
+      <div class="posts-grid">
+        {ultrabalatonPosts.map((post, index) => (
+          <a href={`/${post.slug}/`} class="post-card">
+            <div class="card-header">
+              <div class="phase-badge">{post.phase}</div>
+              <div class="post-date">{post.date}</div>
+            </div>
+            <div class="post-content">
+              <h3 class="post-title">{post.title}</h3>
+              <p class="post-description">{post.description}</p>
+              <div class="key-insight">
+                <span class="insight-label">Key insight:</span>
+                <span class="insight-text">"{post.keyInsight}"</span>
+              </div>
+            </div>
+            <div class="card-footer">
+              <span class="read-more">Read the story →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <div class="footer-content">
+        <h3>About This Ultra-Marathon</h3>
+        <p>
+          UltraBalaton 2015 was my longest point-to-point ultra-marathon. While I had experience with 24-hour and 48-hour loop races, 
+          this 220km journey around Lake Balaton was different—a single, massive line from start to finish. The race took me 31 hours 
+          and 28 minutes to complete 222 kilometers. This series captures the raw, unfiltered experience of pushing human endurance 
+          to its limits—the preparation, the race itself broken down by each marathon distance, and the aftermath.
+        </p>
+        <p>
+          <strong>Race Stats:</strong> 222km in 31:28:00 • 5 marathons + 11km • Average pace: 8:32/km • 
+          Temperature: 32-34°C during day • Finished in top 60% of ultra-marathon field
+        </p>
+        <p>
+          <strong>Related:</strong> You might also enjoy 
+          <a href="/big-hairy-audacious-goals-ultrabalaton/">the original goal-setting post</a> or browse all 
+          <a href="/category/running/">running posts</a>.
+        </p>
+      </div>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .ultrabalaton-series-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .page-description {
+    font-size: 1.2rem;
+    color: #4a5568;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .posts-section {
+    margin-bottom: 4rem;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .post-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 0;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    border-color: #cbd5e0;
+  }
+
+  .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .phase-badge {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .post-date {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .post-content {
+    padding: 2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-title {
+    color: #2d3748;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    line-height: 1.3;
+  }
+
+  .post-card:hover .post-title {
+    color: #1a202c;
+  }
+
+  .post-description {
+    color: #4a5568;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0 0 1.5rem 0;
+    flex-grow: 1;
+  }
+
+  .key-insight {
+    background: #f7fafc;
+    border-left: 4px solid #667eea;
+    padding: 1rem;
+    border-radius: 0 8px 8px 0;
+    margin-top: auto;
+  }
+
+  .insight-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #667eea;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+  }
+
+  .insight-text {
+    color: #2d3748;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .card-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #e2e8f0;
+    background: #f8f9fa;
+  }
+
+  .read-more {
+    color: #667eea;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+  }
+
+  .post-card:hover .read-more {
+    color: #5568d3;
+  }
+
+  .page-footer {
+    background: #f8f9fa;
+    border-radius: 16px;
+    padding: 3rem;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+  }
+
+  .footer-content h3 {
+    color: #2d3748;
+    font-size: 1.5rem;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .footer-content p {
+    color: #4a5568;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .footer-content a {
+    color: #667eea;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .footer-content a:hover {
+    color: #5568d3;
+    border-bottom-color: #5568d3;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .ultrabalaton-series-page {
+      padding: 1rem;
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-size: 2rem;
+    }
+
+    .page-description {
+      font-size: 1.1rem;
+    }
+
+    .posts-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .post-card {
+      margin-bottom: 0;
+    }
+
+    .card-header {
+      padding: 1rem;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    .post-content {
+      padding: 1.5rem;
+    }
+
+    .post-title {
+      font-size: 1.2rem;
+    }
+
+    .card-footer {
+      padding: 1rem 1.5rem;
+    }
+
+    .page-footer {
+      padding: 2rem 1.5rem;
+    }
+
+    .footer-content h3 {
+      font-size: 1.25rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .posts-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .phase-badge {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    .post-date {
+      font-size: 0.8rem;
+    }
+
+    .key-insight {
+      padding: 0.8rem;
+    }
+
+    .insight-text {
+      font-size: 0.9rem;
+    }
+  }
+</style>
