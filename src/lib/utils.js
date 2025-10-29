@@ -94,6 +94,16 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
     }
   );
   
+  // Remove Commission Junction tracking pixels and images
+  optimizedContent = optimizedContent.replace(
+    /<img[^>]*src=["']https?:\/\/(?:www\.)?tqlkg\.com[^"']*["'][^>]*>/gi,
+    () => {
+      localLinksOptimized++;
+      console.log(`🧹 Removing Commission Junction tracking pixel (tqlkg.com)`);
+      return '';
+    }
+  );
+  
   // 2. IMAGE OPTIMIZATION: Ensure all dragosroua.com images use wp subdomain
   // Special case: Replace blog-box-promo.png with local WebP version
   optimizedContent = optimizedContent.replace(
