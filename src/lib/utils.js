@@ -872,3 +872,136 @@ export function getUltrabalatonSeriesInfo(postSlug) {
   const seriesInfo = getSeriesInfo(postSlug);
   return seriesInfo?.seriesKey === 'ultrabalaton' ? seriesInfo : null;
 }
+
+// Enhanced schema generation for WordPress pages
+export function generatePageSchema(content, pageUrl, schemaType = 'WebPage') {
+  const baseSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": schemaType,
+        "@id": pageUrl,
+        "url": pageUrl,
+        "name": content.seo?.title || content.title,
+        "isPartOf": {
+          "@id": "https://dragosroua.com/#website"
+        },
+        "datePublished": content.date || "2019-12-14T22:22:02+00:00",
+        "dateModified": new Date().toISOString(),
+        "description": content.seo?.metaDesc || content.excerpt || "",
+        "inLanguage": "en-US",
+        "potentialAction": [
+          {
+            "@type": "ReadAction",
+            "target": [pageUrl]
+          }
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://dragosroua.com/#website",
+        "url": "https://dragosroua.com/",
+        "name": "Dragos Roua",
+        "description": "Building addTaskManager, the best iOS productivity app for ADHD minds",
+        "publisher": {
+          "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2"
+        },
+        "potentialAction": [
+          {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://dragosroua.com/?s={search_term_string}"
+            },
+            "query-input": {
+              "@type": "PropertyValueSpecification",
+              "valueRequired": true,
+              "valueName": "search_term_string"
+            }
+          }
+        ],
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": ["Person", "Organization"],
+        "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2",
+        "name": "Dragos Roua",
+        "image": {
+          "@type": "ImageObject",
+          "inLanguage": "en-US",
+          "@id": "https://dragosroua.com/#/schema/person/image/",
+          "url": "https://dragosroua.com/images/dragos-hat.png",
+          "contentUrl": "https://dragosroua.com/images/dragos-hat.png",
+          "width": 94,
+          "height": 65,
+          "caption": "Dragos Roua"
+        },
+        "logo": {
+          "@id": "https://dragosroua.com/#/schema/person/image/"
+        },
+        "description": "Story-teller, geek, light seeker and ultra-runner. Not necessarily in that order.",
+        "sameAs": ["http://dragosroua.com"]
+      }
+    ]
+  };
+
+  // Enhance schema based on page slug/type
+  const slug = content.slug;
+  const mainEntity = baseSchema["@graph"][0];
+
+  if (slug === 'work-with-me') {
+    // Add Professional Service schema
+    mainEntity["@type"] = "Service";
+    mainEntity.serviceType = "Personal Coaching";
+    mainEntity.provider = {
+      "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2"
+    };
+    mainEntity.offers = {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "category": "Personal Development Coaching"
+    };
+  } else if (slug === 'about-me') {
+    // Enhance Person schema in the main entity
+    mainEntity["@type"] = "ProfilePage";
+    mainEntity.mainEntity = {
+      "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2"
+    };
+  } else if (slug === 'advertise') {
+    // Add advertising service schema
+    mainEntity["@type"] = "Service";
+    mainEntity.serviceType = "Advertising Partnership";
+    mainEntity.provider = {
+      "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2"
+    };
+  } else if (slug === 'productivity-apps') {
+    // Add SoftwareApplication schema for addTaskManager
+    baseSchema["@graph"].push({
+      "@type": "SoftwareApplication",
+      "@id": "https://dragosroua.com/productivity-apps/#addTaskManager",
+      "name": "addTaskManager",
+      "description": "The best iOS productivity app for ADHD minds with Assess-Decide-Do framework",
+      "operatingSystem": "iOS",
+      "applicationCategory": "ProductivityApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://itunes.apple.com/app/apple-store/id1492487688?mt=8"
+      },
+      "author": {
+        "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2"
+      }
+    });
+  } else if (slug === 'archives' || slug === 'categories') {
+    // Add CollectionPage schema
+    mainEntity["@type"] = "CollectionPage";
+    mainEntity.mainEntity = {
+      "@type": "ItemList",
+      "numberOfItems": slug === 'categories' ? 35 : 1300
+    };
+  }
+
+  return JSON.stringify(baseSchema);
+}

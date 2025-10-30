@@ -89,12 +89,100 @@ const categoryDescriptions = {
 const getDescription = (categoryName) => {
   return categoryDescriptions[categoryName] || `Insights and thoughts on ${categoryName.toLowerCase()}`;
 };
+
+// Schema.org structured data for categories page
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://dragosroua.com/categories/",
+      "url": "https://dragosroua.com/categories/",
+      "name": "All Categories | Dragos Roua",
+      "isPartOf": {
+        "@id": "https://dragosroua.com/#website"
+      },
+      "datePublished": "2019-12-14T22:22:02+00:00",
+      "dateModified": new Date().toISOString(),
+      "description": "Explore content across 35+ categories - from productivity and programming to mindfulness and marathons. Over 1,300 posts organized for easy browsing.",
+      "inLanguage": "en-US",
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": categories.length,
+        "itemListElement": categories.map((category, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "item": {
+            "@type": "CollectionPage",
+            "@id": `https://dragosroua.com/category/${category.slug}/`,
+            "name": category.name,
+            "description": getDescription(category.name),
+            "url": `https://dragosroua.com/category/${category.slug}/`,
+            "numberOfItems": category.count
+          }
+        }))
+      },
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": ["https://dragosroua.com/categories/"]
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://dragosroua.com/#website",
+      "url": "https://dragosroua.com/",
+      "name": "Dragos Roua",
+      "description": "Building addTaskManager, the best iOS productivity app for ADHD minds",
+      "publisher": {
+        "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2"
+      },
+      "potentialAction": [
+        {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://dragosroua.com/?s={search_term_string}"
+          },
+          "query-input": {
+            "@type": "PropertyValueSpecification",
+            "valueRequired": true,
+            "valueName": "search_term_string"
+          }
+        }
+      ],
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": ["Person", "Organization"],
+      "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2",
+      "name": "Dragos Roua",
+      "image": {
+        "@type": "ImageObject",
+        "inLanguage": "en-US",
+        "@id": "https://dragosroua.com/#/schema/person/image/",
+        "url": "https://dragosroua.com/images/dragos-hat.png",
+        "contentUrl": "https://dragosroua.com/images/dragos-hat.png",
+        "width": 94,
+        "height": 65,
+        "caption": "Dragos Roua"
+      },
+      "logo": {
+        "@id": "https://dragosroua.com/#/schema/person/image/"
+      },
+      "description": "Story-teller, geek, light seeker and ultra-runner. Not necessarily in that order.",
+      "sameAs": ["http://dragosroua.com"]
+    }
+  ]
+};
 ---
 
 <BaseLayout 
   title="All Categories | Dragos Roua"
   description="Explore content across 35+ categories - from productivity and programming to mindfulness and marathons. Over 1,300 posts organized for easy browsing."
   canonical="https://dragosroua.com/categories/"
+  schema={JSON.stringify(schema)}
 >
   <div class="categories-page">
     <header class="page-header">

@@ -6,12 +6,70 @@ const lastUpdated = new Date().toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric'
 });
+
+// Schema.org structured data for privacy policy page
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://dragosroua.com/privacy-policy/",
+      "url": "https://dragosroua.com/privacy-policy/",
+      "name": "Privacy Policy | Dragos Roua",
+      "isPartOf": {
+        "@id": "https://dragosroua.com/#website"
+      },
+      "datePublished": "2019-12-14T22:22:02+00:00",
+      "dateModified": new Date().toISOString(),
+      "description": "Privacy Policy for dragosroua.com. Learn how we collect, use, and protect your personal information.",
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": ["https://dragosroua.com/privacy-policy/"]
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://dragosroua.com/#website",
+      "url": "https://dragosroua.com/",
+      "name": "Dragos Roua",
+      "description": "Building addTaskManager, the best iOS productivity app for ADHD minds",
+      "publisher": {
+        "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2"
+      },
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": ["Person", "Organization"],
+      "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2",
+      "name": "Dragos Roua",
+      "image": {
+        "@type": "ImageObject",
+        "inLanguage": "en-US",
+        "@id": "https://dragosroua.com/#/schema/person/image/",
+        "url": "https://dragosroua.com/images/dragos-hat.png",
+        "contentUrl": "https://dragosroua.com/images/dragos-hat.png",
+        "width": 94,
+        "height": 65,
+        "caption": "Dragos Roua"
+      },
+      "logo": {
+        "@id": "https://dragosroua.com/#/schema/person/image/"
+      },
+      "description": "Story-teller, geek, light seeker and ultra-runner. Not necessarily in that order.",
+      "sameAs": ["http://dragosroua.com"]
+    }
+  ]
+};
 ---
 
 <BaseLayout 
   title="Privacy Policy | Dragos Roua"
   description="Privacy Policy for dragosroua.com. Learn how we collect, use, and protect your personal information."
   canonical="https://dragosroua.com/privacy-policy/"
+  schema={JSON.stringify(schema)}
 >
   <article class="legal-page">
     <h1>Privacy Policy</h1>
