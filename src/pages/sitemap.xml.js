@@ -126,6 +126,19 @@ export async function GET() {
     }
   });
 
+  // Log sitemap composition for debugging
+  console.log(`\n📋 Sitemap Generation Summary:`);
+  console.log(`   📄 Posts: ${posts.length}`);
+  console.log(`   📖 Pages: ${pages.length}`);
+  console.log(`   📅 Archive pages: ${archivePages.length}`);
+  console.log(`   📰 Blog pagination: ${blogPages.length}`);
+  console.log(`   🏷️  Category pages: ${allCategoryPages.length}`);
+  console.log(`   🔖 Tag pages: ${allTagPages.length}`);
+  console.log(`   🏠 Static pages: 8`); // homepage, blog, categories, ultrabalaton, daughter, privacy, terms
+  
+  const totalUrls = posts.length + pages.length + archivePages.length + blogPages.length + allCategoryPages.length + allTagPages.length + 8;
+  console.log(`   ✨ Total URLs: ${totalUrls}\n`);
+
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>

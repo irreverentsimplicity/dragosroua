@@ -5,8 +5,10 @@ import { getAllCategories } from '../lib/wordpress';
 // Fetch all categories with post counts
 const allCategories = await getAllCategories();
 
-// Filter categories to only show those with 10+ posts
-const categories = allCategories.filter(category => category.count >= 10);
+// Filter categories to only show those with 10+ posts (except AI which we want to include)
+const categories = allCategories.filter(category => 
+  category.count >= 10 || category.name === 'Artificial Intelligence'
+);
 
 // Define category groupings - handle both "and" and "&" variations
 const coreTopicsOrder = [
@@ -15,6 +17,7 @@ const coreTopicsOrder = [
   'Location Independence',
   'Financial Resilience',
   'Meaningful Relationships',
+  'Artificial Intelligence',
   'Digital Tools',
   'Productivity and Effectiveness',
   'Productivity & Effectiveness', // Alternative with &
@@ -57,6 +60,7 @@ const categoryDescriptions = {
   'Location Independence': 'Living and working from anywhere',
   'Financial Resilience': 'Real talk about money and wealth building',
   'Meaningful Relationships': 'Thoughts on human connection in a digital world',
+  'Artificial Intelligence': 'AI thoughts from the trenches of building with it',
   'Digital Tools': 'Tools that actually earn their place',
   'Productivity and Effectiveness': 'Battle-tested productivity strategies',
   'Productivity & Effectiveness': 'Battle-tested productivity strategies',
