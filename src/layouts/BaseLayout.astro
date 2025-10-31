@@ -53,7 +53,7 @@ const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
   
   <!-- Schema.org -->
   {schema && (
-    <script type="application/ld+json" set:html={schema} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
   )}
   
   <!-- Google Analytics - Load on Interaction -->
