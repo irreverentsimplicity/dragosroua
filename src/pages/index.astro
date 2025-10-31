@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import { getAllPages } from '../lib/wordpress';
-import { updateWordPressImageUrls } from '../lib/utils';
+import { updateWordPressImageUrls, cleanSchemaUrls } from '../lib/utils';
 
 // Get the specific homepage by slug for SEO data
 const pages = await getAllPages();
@@ -17,7 +17,7 @@ const seo = homepage.seo || {};
 const title = 'The personal blog of Dragos Roua';
 const description = seo.metaDesc || 'Building addTaskManager, the best iOS productivity app for ADHD minds';
 const ogImage = updateWordPressImageUrls(seo.opengraphImage?.sourceUrl) || '/images/default-featured-1200-630.png';
-const schema = seo.schema?.raw || null;
+const schema = seo.schema?.raw ? cleanSchemaUrls(seo.schema.raw) : null;
 ---
 
 <BaseLayout 
