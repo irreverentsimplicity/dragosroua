@@ -87,7 +87,7 @@ const enhancedSchema = content.seo?.schema?.raw || generatePageSchema(content, p
   <BaseLayout 
     title={content.seo?.title || content.title}
     description={content.seo?.metaDesc || ''}
-    ogImage={updateWordPressImageUrls(content.seo?.opengraphImage?.sourceUrl || content.featuredImage?.node?.sourceUrl) || '/images/default-featured-1200-630.png'}
+    ogImage={updateWordPressImageUrls(content.seo?.opengraphImage?.sourceUrl || content.featuredImage?.node?.sourceUrl) || 'https://dragosroua.com/images/default-featured-1200-630.png'}
     canonical={cleanCanonicalUrl(content.seo?.canonical) || pageUrl}
     schema={enhancedSchema}
   >

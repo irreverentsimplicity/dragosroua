@@ -17,7 +17,7 @@ const { post, nextPost, previousPost } = Astro.props;
 const seo = post.seo || {};
 const title = seo.title || post.title;
 const description = seo.metaDesc || post.content?.replace(/<[^>]*>/g, '').substring(0, 160) || '';
-const ogImage = updateWordPressImageUrls(seo.opengraphImage?.sourceUrl || post.featuredImage?.node?.sourceUrl) || '/images/default-featured-1200-630.png';
+const ogImage = updateWordPressImageUrls(seo.opengraphImage?.sourceUrl || post.featuredImage?.node?.sourceUrl) || 'https://dragosroua.com/images/default-featured-1200-630.png';
 const canonical = cleanCanonicalUrl(seo.canonical) || `https://dragosroua.com${post.uri}`;
 const schema = seo.schema?.raw ? cleanSchemaUrls(seo.schema.raw) : null;
 
