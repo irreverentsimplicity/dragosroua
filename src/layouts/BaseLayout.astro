@@ -8,9 +8,11 @@ interface Props {
   ogImage?: string;
   canonical?: string;
   schema?: any;
+  prevPage?: string;
+  nextPage?: string;
 }
 
-const { title, description, ogImage, canonical, schema } = Astro.props;
+const { title, description, ogImage, canonical, schema, prevPage, nextPage } = Astro.props;
 const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).href;
 const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
 ---
@@ -29,6 +31,15 @@ const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
   <title>{title}</title>
   {description && <meta name="description" content={description}>}
   <link rel="canonical" href={canonicalURL}>
+  
+  <!-- Pagination Meta Tags -->
+  {prevPage && <link rel="prev" href={prevPage}>}
+  {nextPage && <link rel="next" href={nextPage}>}
+  
+  <!-- Enhanced SEO Meta Tags -->
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="author" content="Dragos Roua">
+  <meta name="generator" content="Astro + WordPress">
   <!-- Preload critical images (homepage only) -->
     {Astro.url.pathname === '/' && (
     <>
@@ -43,6 +54,8 @@ const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
   <meta property="og:title" content={title}>
   {description && <meta property="og:description" content={description}>}
   <meta property="og:image" content={ogImageURL}>
+  <meta property="og:site_name" content="Dragos Roua">
+  <meta property="og:locale" content="en_US">
   
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
@@ -50,6 +63,8 @@ const ogImageURL = ogImage || `${Astro.site}og-default.jpg`;
   <meta name="twitter:title" content={title}>
   {description && <meta name="twitter:description" content={description}>}
   <meta name="twitter:image" content={ogImageURL}>
+  <meta name="twitter:site" content="@dragosroua">
+  <meta name="twitter:creator" content="@dragosroua">
   
   <!-- Schema.org -->
   {schema && (

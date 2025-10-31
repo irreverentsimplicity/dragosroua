@@ -1005,3 +1005,120 @@ export function generatePageSchema(content, pageUrl, schemaType = 'WebPage') {
 
   return JSON.stringify(baseSchema);
 }
+
+/**
+ * Generate intelligent meta description for tag pages
+ */
+export function generateTagDescription(tag, posts = []) {
+  // Use existing description if available
+  if (tag.description && tag.description.trim() && tag.description !== `Posts tagged with ${tag.name}`) {
+    return tag.description.trim();
+  }
+  
+  const postCount = tag.count || posts.length;
+  
+  // Create intelligent description based on tag content and post count
+  if (posts.length >= 3) {
+    const recentPostTitles = posts.slice(0, 2).map(p => {
+      // Clean HTML from title and truncate if needed
+      const cleanTitle = p.title.replace(/<[^>]*>/g, '').trim();
+      return cleanTitle.length > 50 ? cleanTitle.substring(0, 47) + '...' : cleanTitle;
+    });
+    
+    return `Explore ${postCount} articles about ${tag.name} including "${recentPostTitles[0]}", "${recentPostTitles[1]}", and more insights on ${tag.name.toLowerCase()}.`;
+  } else if (posts.length > 0) {
+    return `Discover ${postCount} ${postCount === 1 ? 'article' : 'articles'} about ${tag.name} covering insights, tips, and practical advice on ${tag.name.toLowerCase()}.`;
+  }
+  
+  // Fallback for tags with no posts or posts not loaded
+  return `Articles and insights about ${tag.name} from Dragos Roua's personal development and productivity blog.`;
+}
+
+/**
+ * Generate Schema.org markup for tag archive pages
+ */
+export function generateTagSchema(tag, posts = [], page = {}, canonicalURL = '') {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": `${tag.name} Articles${page.currentPage > 1 ? ` - Page ${page.currentPage}` : ''}`,
+    "description": generateTagDescription(tag, posts),
+    "url": canonicalURL,
+    "inLanguage": "en-US",
+    "isPartOf": {
+      "@type": "WebSite",
+      "@id": "https://dragosroua.com/#website"
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://dragosroua.com/"
+        },
+        {
+          "@type": "ListItem", 
+          "position": 2,
+          "name": "Tags",
+          "item": "https://dragosroua.com/tags/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": tag.name,
+          "item": `https://dragosroua.com/tag/${tag.slug}/`
+        }
+      ]
+    }
+  };
+
+  // Add main entity with post list if posts are available
+  if (posts && posts.length > 0) {
+    schema.mainEntity = {
+      "@type": "ItemList",
+      "numberOfItems": tag.count || posts.length,
+      "itemListElement": posts.map((post, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "BlogPosting",
+          "name": post.title?.replace(/<[^>]*>/g, '').trim() || 'Untitled',
+          "url": `https://dragosroua.com${post.uri}`,
+          "datePublished": post.date,
+          "author": {
+            "@type": "Person",
+            "name": "Dragos Roua",
+            "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2"
+          }
+        }
+      }))
+    };
+  }
+
+  return schema;
+}
+
+/**
+ * Generate breadcrumb data for tag pages
+ */
+export function generateTagBreadcrumbs(tag) {
+  return [
+    {
+      name: "Home",
+      url: "/",
+      position: 1
+    },
+    {
+      name: "Tags", 
+      url: "/tags/",
+      position: 2
+    },
+    {
+      name: tag.name,
+      url: `/tag/${tag.slug}/`,
+      position: 3
+    }
+  ];
+}
