@@ -52,6 +52,8 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 /tag/millionaire/  /work-with-me/  301
 /tag/sale/2/  /work-with-me/  301
 /tag/promotion/2/  /work-with-me/  301
+/tag/exercise/  /work-with-me/  301
+/tag/myspace/  /about-me/  301
 
 # Category pagination redirects for non-existent pages
 /category/gtd/6/  /work-with-me/  301
@@ -64,9 +66,16 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 /location-independence/  /category/location-independence/  301
 /meaningful-relationships/  /category/meaningful-relationships/  301
 
-# Archive date redirects - redirect to main blog
-/20[0-9][0-9]/[0-1][0-9]/  /blog/  301
-/20[0-9][0-9]/[0-1][0-9]  /blog/  301
+# Archive date redirects with pagination - remove /page/ segment
+# Date archives exist (e.g., /2021/11/) but don't have pagination
+# So /2021/11/page/2/ should redirect to /2021/11/
+/:year/:month/page/:num  /:year/:month/  301
+
+# Pagination structure redirects - remove /page/ segment from URLs
+# Old WordPress structure had /page/N/, new Astro structure uses /N/
+/blog/page/:num/  /blog/:num/  301
+/category/:cat/page/:num/  /category/:cat/:num/  301
+/tag/:slug/page/:num/  /tag/:slug/:num/  301
 
 # WordPress downloads redirect to work-with-me (must come BEFORE general uploads redirect)
 # NOTE: Cross-domain redirects (wp.dragosroua.com -> dragosroua.com) must be configured in Cloudflare dashboard

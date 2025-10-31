@@ -1,0 +1,284 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllTags } from '../lib/wordpress';
+
+// Fetch all tags with post counts
+const allTags = await getAllTags();
+
+// Filter tags to only show those with 5+ posts
+const tags = allTags.filter(tag => tag.count >= 5);
+
+// Sort tags by post count (descending) then alphabetically
+tags.sort((a, b) => {
+  if (b.count !== a.count) {
+    return b.count - a.count;
+  }
+  return a.name.localeCompare(b.name);
+});
+
+// Schema.org structured data for tags page
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://dragosroua.com/tags/",
+      "url": "https://dragosroua.com/tags/",
+      "name": "All Tags | Dragos Roua",
+      "isPartOf": {
+        "@id": "https://dragosroua.com/#website"
+      },
+      "datePublished": "2019-12-14T22:22:02+00:00",
+      "dateModified": new Date().toISOString(),
+      "description": "Browse content by tags - discover articles organized by specific topics, themes, and keywords across 1,300+ posts.",
+      "inLanguage": "en-US",
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": tags.length,
+        "itemListElement": tags.map((tag, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "item": {
+            "@type": "CollectionPage",
+            "@id": `https://dragosroua.com/tag/${tag.slug}/`,
+            "name": tag.name,
+            "url": `https://dragosroua.com/tag/${tag.slug}/`,
+            "numberOfItems": tag.count
+          }
+        }))
+      },
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": ["https://dragosroua.com/tags/"]
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://dragosroua.com/#website",
+      "url": "https://dragosroua.com/",
+      "name": "Dragos Roua",
+      "description": "Building addTaskManager, the best iOS productivity app for ADHD minds",
+      "publisher": {
+        "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2"
+      },
+      "potentialAction": [
+        {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://dragosroua.com/?s={search_term_string}"
+          },
+          "query-input": {
+            "@type": "PropertyValueSpecification",
+            "valueRequired": true,
+            "valueName": "search_term_string"
+          }
+        }
+      ],
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": ["Person", "Organization"],
+      "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2",
+      "name": "Dragos Roua",
+      "image": {
+        "@type": "ImageObject",
+        "inLanguage": "en-US",
+        "@id": "https://dragosroua.com/#/schema/person/image/",
+        "url": "https://dragosroua.com/images/dragos-hat.png",
+        "contentUrl": "https://dragosroua.com/images/dragos-hat.png",
+        "width": 94,
+        "height": 65,
+        "caption": "Dragos Roua"
+      },
+      "logo": {
+        "@id": "https://dragosroua.com/#/schema/person/image/"
+      },
+      "description": "Story-teller, geek, light seeker and ultra-runner. Not necessarily in that order.",
+      "sameAs": ["http://dragosroua.com"]
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="All Tags | Dragos Roua"
+  description="Browse content by tags - discover articles organized by specific topics, themes, and keywords across 1,300+ posts."
+  canonical="https://dragosroua.com/tags/"
+  schema={schema}
+>
+  <div class="tags-page">
+    <header class="page-header">
+      <h1>Browse by Tags</h1>
+      <p class="page-description">
+        Discover content across {tags.length} tags - explore articles by specific topics, themes, and keywords.
+      </p>
+    </header>
+
+    <div class="tags-cloud">
+      {tags.map((tag) => (
+        <a
+          href={`/tag/${tag.slug}/`}
+          class="tag-item"
+          style={`font-size: ${Math.min(1 + (tag.count / 100), 2.5)}rem;`}
+        >
+          <span class="tag-name">{tag.name}</span>
+          <span class="tag-count">{tag.count}</span>
+        </a>
+      ))}
+    </div>
+
+    <footer class="page-footer">
+      <p>Looking for broader topics? Check out <a href="/categories/">all categories</a> or <a href="/blog/">browse all posts</a>.</p>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .tags-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 2rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    margin-bottom: 1rem;
+  }
+
+  .page-description {
+    font-size: 1.1rem;
+    color: #4a5568;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+    margin-bottom: 3rem;
+  }
+
+  .tag-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .tag-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #667eea;
+    background: #f7fafc;
+  }
+
+  .tag-name {
+    color: #2d3748;
+    font-weight: 600;
+  }
+
+  .tag-item:hover .tag-name {
+    color: #667eea;
+  }
+
+  .tag-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75rem;
+    height: 1.75rem;
+    padding: 0 0.5rem;
+    background: #667eea;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 9999px;
+  }
+
+  .page-footer {
+    text-align: center;
+    padding: 2rem 0;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .page-footer p {
+    color: #4a5568;
+    margin: 0;
+  }
+
+  .page-footer a {
+    color: #667eea;
+    text-decoration: none;
+  }
+
+  .page-footer a:hover {
+    color: #5568d3;
+    text-decoration: underline;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    .tags-page {
+      max-width: 1200px;
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tags-page {
+      padding: 1rem;
+    }
+
+    .page-header h1 {
+      font-size: 2rem;
+    }
+
+    .page-description {
+      font-size: 1rem;
+    }
+
+    .tags-cloud {
+      gap: 0.75rem;
+      padding: 1.5rem 0;
+    }
+
+    .tag-item {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .tags-cloud {
+      gap: 0.5rem;
+    }
+
+    .tag-item {
+      padding: 0.35rem 0.7rem;
+    }
+  }
+</style>
