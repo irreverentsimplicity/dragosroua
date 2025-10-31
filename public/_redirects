@@ -69,7 +69,7 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 # Archive date redirects with pagination - remove /page/ segment
 # Date archives exist (e.g., /2021/11/) but don't have pagination
 # So /2021/11/page/2/ should redirect to /2021/11/
-/:year/:month/page/:num  /:year/:month/  301
+/:year/:month/page/:num/  /:year/:month/  301
 
 # Pagination structure redirects - remove /page/ segment from URLs
 # Old WordPress structure had /page/N/, new Astro structure uses /N/
