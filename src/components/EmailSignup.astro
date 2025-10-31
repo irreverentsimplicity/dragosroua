@@ -156,56 +156,6 @@
   }
 </style>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('email-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const btnText = submitBtn?.querySelector('.btn-text');
-    const btnLoading = submitBtn?.querySelector('.btn-loading');
-    const successMessage = document.getElementById('success-message');
-    
-    if (!form || !submitBtn || !btnText || !btnLoading || !successMessage) return;
-    
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Show loading state
-      btnText.style.display = 'none';
-      btnLoading.style.display = 'inline';
-      (submitBtn as HTMLButtonElement).disabled = true;
-      
-      // Get email value
-      const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement;
-      const email = emailInput?.value;
-      
-      if (!email) {
-        // Reset button state
-        btnText.style.display = 'inline';
-        btnLoading.style.display = 'none';
-        (submitBtn as HTMLButtonElement).disabled = false;
-        return;
-      }
-      
-      // Create a hidden iframe to submit the form
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.name = 'substack-iframe';
-      document.body.appendChild(iframe);
-      
-      // Update form target to submit through iframe
-      const originalTarget = form.target;
-      form.target = 'substack-iframe';
-      
-      // Submit the form normally (this will work through the iframe)
-      form.submit();
-      
-      // Clean up and show success after a short delay
-      setTimeout(() => {
-        document.body.removeChild(iframe);
-        form.target = originalTarget;
-        form.style.display = 'none';
-        successMessage.style.display = 'block';
-      }, 1000);
-    });
-  });
+<script is:inline>
+document.addEventListener('DOMContentLoaded',function(){const e=document.getElementById('email-form');if(!e)return;const t=e.querySelector('.submit-btn')||e.querySelector('#submit-btn'),n=t?.querySelector('.btn-text'),o=t?.querySelector('.btn-loading'),r=e.parentElement.querySelector('.success-message')||document.getElementById('success-message');if(!t||!n||!o||!r)return;e.addEventListener('submit',function(s){s.preventDefault();const i=e.querySelector('input[name="email"]');if(!i?.value)return;n.style.display='none',o.style.display='inline',t.disabled=!0;const l=document.createElement('iframe');l.style.display='none',l.name='substack-iframe-'+Date.now(),document.body.appendChild(l);const a=e.target;e.target=l.name,e.submit(),setTimeout(()=>{document.body.removeChild(l),e.target=a,e.style.display='none',r.style.display='block'},1e3)})});
 </script>
