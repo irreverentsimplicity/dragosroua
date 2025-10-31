@@ -54,6 +54,10 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 /tag/promotion/2/  /work-with-me/  301
 /tag/exercise/  /work-with-me/  301
 /tag/myspace/  /about-me/  301
+/tag/personal-beliefs/  /category/personal-development/  301
+/tag/picture/  /blog/  301
+/tag/secret/  /blog/  301
+/tag/time-projection/  /tag/financial-resilience/  301
 
 # Category pagination redirects for non-existent pages
 /category/gtd/6/  /work-with-me/  301
