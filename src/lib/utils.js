@@ -438,9 +438,10 @@ export function cleanSchemaUrls(schemaData) {
   schemaString = schemaString
     .replace(/https?:\/\/wp\.dragosroua\.com\//g, 'https://dragosroua.com/')
     .replace(/https?:\/\/www\.dragosroua\.com\//g, 'https://dragosroua.com/');
-  
-  // Return the cleaned string, not the parsed object
-  return schemaString;
+
+  // Return the cleaned object (parsed), not the string
+  // This prevents double-encoding when Astro renders it
+  return JSON.parse(schemaString);
 }
 
 // Decode HTML entities
