@@ -28,31 +28,37 @@ const trendingArticles = [
   {
     uri: '/50-ways-to-start-fresh/',
     title: '50 Ways to Start Fresh',
+    description: post1?.seo?.metaDesc ? generateExcerpt(post1.seo.metaDesc, 12) : 'Simple daily habits to reset your life',
     image: post1?.featuredImage?.node?.sourceUrl ? updateWordPressImageUrls(post1.featuredImage.node.sourceUrl) : 'https://dragosroua.com/images/default-featured-1200-630.png'
   },
   {
     uri: '/100-ways-to-live-a-better-life/',
     title: '100 Ways to Live a Better Life',
+    description: post2?.seo?.metaDesc ? generateExcerpt(post2.seo.metaDesc, 12) : 'Complete guide to personal transformation',
     image: post2?.featuredImage?.node?.sourceUrl ? updateWordPressImageUrls(post2.featuredImage.node.sourceUrl) : 'https://dragosroua.com/images/default-featured-1200-630.png'
   },
   {
     uri: '/33-ways-to-overcome-frustration/',
     title: '33 Ways to Overcome Frustration',
+    description: post3?.seo?.metaDesc ? generateExcerpt(post3.seo.metaDesc, 12) : 'Practical strategies for daily challenges',
     image: post3?.featuredImage?.node?.sourceUrl ? updateWordPressImageUrls(post3.featuredImage.node.sourceUrl) : 'https://dragosroua.com/images/default-featured-1200-630.png'
   },
   {
     uri: '/action-versus-reaction/',
     title: 'Action Versus Reaction',
+    description: post4?.seo?.metaDesc ? generateExcerpt(post4.seo.metaDesc, 12) : 'Choose conscious response over automatic behavior',
     image: post4?.featuredImage?.node?.sourceUrl ? updateWordPressImageUrls(post4.featuredImage.node.sourceUrl) : 'https://dragosroua.com/images/default-featured-1200-630.png'
   },
   {
     uri: '/100-ways-to-screw-up-your-life/',
     title: '100 Ways to Screw Up Your Life',
+    description: post5?.seo?.metaDesc ? generateExcerpt(post5.seo.metaDesc, 12) : 'Learn what not to do through reverse wisdom',
     image: post5?.featuredImage?.node?.sourceUrl ? updateWordPressImageUrls(post5.featuredImage.node.sourceUrl) : 'https://dragosroua.com/images/default-featured-1200-630.png'
   },
   {
     uri: '/category/financial-resilience/',
     title: 'Financial Resilience',
+    description: 'Building wealth and financial independence strategies',
     image: 'https://dragosroua.com/wp-content/uploads/2021/08/money-3097319_1920.jpg'
   }
 ];
@@ -291,7 +297,10 @@ const schema = customSchema;
               class="trending-card-image"
               loading="lazy"
             />
-            <h3 class="trending-card-title">{article.title}</h3>
+            <div class="trending-card-content">
+              <h3 class="trending-card-title">{article.title}</h3>
+              <p class="trending-card-desc">{article.description}</p>
+            </div>
           </a>
         </article>
       ))}
@@ -649,27 +658,41 @@ const schema = customSchema;
     gap: 16px;
     padding: 16px;
     text-decoration: none;
-    align-items: center;
+    align-items: flex-start;
   }
 
   .trending-card-image {
     width: 120px;
-    height: 80px;
+    height: 110px;
     object-fit: cover;
     border-radius: 8px;
+  }
+
+  .trending-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
   .trending-card-title {
     color: #2d3748;
     font-size: 1.1rem;
     font-weight: 600;
-    line-height: 1.4;
+    line-height: 1.3;
     margin: 0;
     transition: color 0.2s;
   }
 
+  .trending-card-desc {
+    color: #595959;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin: 0;
+  }
+
   .trending-card:hover .trending-card-title {
     color: #4338ca;
+    text-decoration: underline;
   }
 
   /* Mobile responsive */
@@ -802,11 +825,15 @@ const schema = customSchema;
 
     .trending-card-image {
       width: 100px;
-      height: 70px;
+      height: 90px;
     }
 
     .trending-card-title {
       font-size: 1rem;
+    }
+
+    .trending-card-desc {
+      font-size: 0.85rem;
     }
   }
 
