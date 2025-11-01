@@ -99,6 +99,10 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 /wp-content/uploads/downloads/*  /work-with-me/  301
 https://wp.dragosroua.com/wp-content/uploads/downloads/*  /work-with-me/  301
 
+# Specific ebook PDF redirects to /books/
+/wp-content/uploads/2010/01/100-ways-to-improve-your-life-ebook-excerpt1.pdf  /books/  301
+https://wp.dragosroua.com/wp-content/uploads/2010/01/100-ways-to-improve-your-life-ebook-excerpt1.pdf  /books/  301
+
 # WordPress uploads redirect (fallback for any missed cases)
 /wp-content/uploads/*  https://wp.dragosroua.com/wp-content/uploads/:splat  301
 
