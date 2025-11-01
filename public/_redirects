@@ -77,6 +77,7 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 
 # Individual post redirects for typo fixes
 /zen-meaning-zentasktic/  /zen-meaning-addtaskmanager/  301
+/the-chevalier-in-the-supermarket/  /the-knight-in-the-supermarket/  301
 
 # Hub pages redirect to categories
 /financial-resilience/  /category/financial-resilience/  301
