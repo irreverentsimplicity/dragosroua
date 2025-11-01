@@ -44,6 +44,10 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 /being-a-digital-nomad-the-workshop/  /work-with-me/  301
 /lets-do-this/  /work-with-me/  301
 
+# Promo code pages - redirect to /advertise/
+/may-mariner-promo-code/  /advertise/  301
+/august-mariner-promo-code/  /advertise/  301
+
 # Top posts redirect to categories
 /top-posts-total/  /categories/  301
 
@@ -58,12 +62,20 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 /tag/picture/  /blog/  301
 /tag/secret/  /blog/  301
 /tag/time-projection/  /tag/financial-resilience/  301
+/tag/mac-groumet-de-luxe/  /category/digital-tools/  301
+/tag/accessibility/  /tag/curiosity/  301
+
+# Category redirects (including pagination)
+/category/running-2/*  /category/running/:splat  301
 
 # Category pagination redirects for non-existent pages
 /category/gtd/6/  /work-with-me/  301
 
 # Individual post redirects for removed content
 /prague-toy-museum-barbie-action-man/  /work-with-me/  301
+
+# Individual post redirects for typo fixes
+/zen-meaning-zentasktic/  /zen-meaning-addtaskmanager/  301
 
 # Hub pages redirect to categories
 /financial-resilience/  /category/financial-resilience/  301
