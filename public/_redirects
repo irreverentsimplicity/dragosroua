@@ -47,6 +47,7 @@ http://www.dragosroua.com/* https://dragosroua.com/:splat 301
 # Promo code pages - redirect to /advertise/
 /may-mariner-promo-code/  /advertise/  301
 /august-mariner-promo-code/  /advertise/  301
+/july-mariner-promo-code/ /advertise/  301
 
 # Top posts redirect to categories
 /top-posts-total/  /categories/  301
