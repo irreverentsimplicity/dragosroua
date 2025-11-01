@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import EmailSignup from '../components/EmailSignup.astro';
 import { getAllPages, getAllPosts } from '../lib/wordpress';
 import { updateWordPressImageUrls, cleanSchemaUrls, generateExcerpt } from '../lib/utils';
 
@@ -11,6 +10,52 @@ const homepage = pages.find((page: { slug: string; }) => page.slug === '22416-2'
 // Get recent posts for blog preview
 const allPosts = await getAllPosts();
 const recentPosts = allPosts.slice(0, 3);
+
+// Helper function to find post by slug
+const findPostBySlug = (slug: string) => {
+  return allPosts.find(post => post.uri === `/${slug}/` || post.uri === slug);
+};
+
+// Fetch trending posts to get their actual featured images
+const post1 = findPostBySlug('50-ways-to-start-fresh');
+const post2 = findPostBySlug('100-ways-to-live-a-better-life');
+const post3 = findPostBySlug('33-ways-to-overcome-frustration');
+const post4 = findPostBySlug('action-versus-reaction');
+const post5 = findPostBySlug('100-ways-to-screw-up-your-life');
+
+// Trending articles (manually curated with real images)
+const trendingArticles = [
+  {
+    uri: '/50-ways-to-start-fresh/',
+    title: '50 Ways to Start Fresh',
+    image: post1?.featuredImage?.node?.sourceUrl ? updateWordPressImageUrls(post1.featuredImage.node.sourceUrl) : 'https://dragosroua.com/images/default-featured-1200-630.png'
+  },
+  {
+    uri: '/100-ways-to-live-a-better-life/',
+    title: '100 Ways to Live a Better Life',
+    image: post2?.featuredImage?.node?.sourceUrl ? updateWordPressImageUrls(post2.featuredImage.node.sourceUrl) : 'https://dragosroua.com/images/default-featured-1200-630.png'
+  },
+  {
+    uri: '/33-ways-to-overcome-frustration/',
+    title: '33 Ways to Overcome Frustration',
+    image: post3?.featuredImage?.node?.sourceUrl ? updateWordPressImageUrls(post3.featuredImage.node.sourceUrl) : 'https://dragosroua.com/images/default-featured-1200-630.png'
+  },
+  {
+    uri: '/action-versus-reaction/',
+    title: 'Action Versus Reaction',
+    image: post4?.featuredImage?.node?.sourceUrl ? updateWordPressImageUrls(post4.featuredImage.node.sourceUrl) : 'https://dragosroua.com/images/default-featured-1200-630.png'
+  },
+  {
+    uri: '/100-ways-to-screw-up-your-life/',
+    title: '100 Ways to Screw Up Your Life',
+    image: post5?.featuredImage?.node?.sourceUrl ? updateWordPressImageUrls(post5.featuredImage.node.sourceUrl) : 'https://dragosroua.com/images/default-featured-1200-630.png'
+  },
+  {
+    uri: '/category/financial-resilience/',
+    title: 'Financial Resilience',
+    image: 'https://dragosroua.com/wp-content/uploads/2021/08/money-3097319_1920.jpg'
+  }
+];
 
 if (!homepage) {
   throw new Error('Homepage not found! Check if page with slug "22416-2" exists.');
@@ -229,7 +274,25 @@ const schema = customSchema;
     </div>
   </section>
 
-	<EmailSignup />
+  <!-- Trending Now Section -->
+  <section class="trending-section">
+    <h2>Trending now</h2>
+    <div class="trending-grid">
+      {trendingArticles.map((article) => (
+        <article class="trending-card">
+          <a href={article.uri} class="trending-card-link">
+            <img
+              src={article.image}
+              alt={article.title}
+              class="trending-card-image"
+              loading="lazy"
+            />
+            <h3 class="trending-card-title">{article.title}</h3>
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
 
 </BaseLayout>
 
@@ -543,7 +606,68 @@ const schema = customSchema;
     transform: translateY(-3px);
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
   }
-  
+
+  /* Trending Now Section */
+  .trending-section {
+    margin: 60px 0;
+  }
+
+  .trending-section h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #2d3748;
+    text-align: center;
+    margin: 0 0 40px 0;
+  }
+
+  .trending-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .trending-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .trending-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .trending-card-link {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+    padding: 16px;
+    text-decoration: none;
+    align-items: center;
+  }
+
+  .trending-card-image {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .trending-card-title {
+    color: #2d3748;
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+    transition: color 0.2s;
+  }
+
+  .trending-card:hover .trending-card-title {
+    color: #4338ca;
+  }
+
   /* Mobile responsive */
   @media (max-width: 768px) {
     .site-header {
@@ -650,8 +774,38 @@ const schema = customSchema;
     .social-links {
       justify-content: center;
     }
+
+    /* Trending Section Mobile */
+    .trending-section {
+      margin: 40px 0;
+    }
+
+    .trending-section h2 {
+      font-size: 2rem;
+      margin: 0 0 30px 0;
+    }
+
+    .trending-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .trending-card-link {
+      grid-template-columns: 100px 1fr;
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .trending-card-image {
+      width: 100px;
+      height: 70px;
+    }
+
+    .trending-card-title {
+      font-size: 1rem;
+    }
   }
-  
+
   @media (max-width: 480px) {
     .atm-buttons {
       flex-direction: column;
