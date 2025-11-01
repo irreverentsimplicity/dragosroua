@@ -172,22 +172,23 @@ const schema = customSchema;
     
     <!-- Row 2: Buttons (centered, side by side) -->
     <div class="atm-buttons">
-      <a 
-        href="https://itunes.apple.com/app/apple-store/id1492487688?mt=8" 
-        class="atm-button" 
-        target="_blank" 
+      <a
+        href="https://itunes.apple.com/app/apple-store/id1492487688?mt=8"
+        class="atm-button"
+        target="_blank"
         rel="noopener noreferrer"
+        aria-label="Download addTaskManager on the App Store for iPhone, iPad and Mac"
       >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
           <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
         </svg>
         Download on App Store
       </a>
-      
-      <a 
-		href="/productivity-apps/" 
+
+      <a
+		href="/productivity-apps/"
 		class="atm-button"
-		aria-label="Learn more about addTaskManager iOS productivity app"
+		aria-label="Learn more about addTaskManager features, pricing and screenshots"
 		>
 		Learn More
 		</a>
@@ -198,13 +199,15 @@ const schema = customSchema;
   <section class="blog-preview">
     <h2>Latest articles</h2>
     <div class="blog-grid">
-      {recentPosts.map((post) => (
+      {recentPosts.map((post) => {
+        const plainTitle = post.title.replace(/<[^>]*>/g, '');
+        return (
         <article class="blog-card">
           {post.featuredImage?.node?.sourceUrl && (
-            <a href={post.uri} class="blog-card-image-link">
+            <a href={post.uri} class="blog-card-image-link" aria-label={`Read article: ${plainTitle}`}>
               <img
                 src={updateWordPressImageUrls(post.featuredImage.node.sourceUrl)}
-                alt={post.featuredImage.node.altText || post.title}
+                alt={post.featuredImage.node.altText || plainTitle}
                 class="blog-card-image"
                 loading="lazy"
               />
@@ -212,18 +215,19 @@ const schema = customSchema;
           )}
           <div class="blog-card-content">
             <h3 class="blog-card-title">
-              <a href={post.uri} set:html={post.title} />
+              <a href={post.uri} set:html={post.title} aria-label={`Read article: ${plainTitle}`} />
             </h3>
             <p class="blog-card-excerpt">
               {post.seo?.metaDesc ? generateExcerpt(post.seo.metaDesc, 20) : generateExcerpt(post.content, 20)}
             </p>
-            <a href={post.uri} class="blog-card-link">Read more →</a>
+            <a href={post.uri} class="blog-card-link" aria-label={`Read full article: ${plainTitle}`}>Read more →</a>
           </div>
         </article>
-      ))}
+        );
+      })}
     </div>
     <div class="blog-cta">
-      <a href="/blog/" class="blog-cta-button">View All Articles</a>
+      <a href="/blog/" class="blog-cta-button" aria-label="View all blog articles and posts">View All Articles</a>
     </div>
   </section>
 
@@ -247,10 +251,10 @@ const schema = customSchema;
         
         <p>After years of trying every task management system, I built addTaskManager to solve my own chaos.</p>
         
-        <p>Previously founded multiple startups, wrote extensively about 
-		<a href="/category/personal-development/">personal development</a>, 
-		<a href="/category/financial-resilience/">financial resilience</a> and 
-		<a href="/category/meaningful-relationships/">meaningful relationships</a>, 
+        <p>Previously founded multiple startups, wrote extensively about
+		<a href="/category/personal-development/" aria-label="View all articles about personal development">personal development</a>,
+		<a href="/category/financial-resilience/" aria-label="View all articles about financial resilience">financial resilience</a> and
+		<a href="/category/meaningful-relationships/" aria-label="View all articles about meaningful relationships">meaningful relationships</a>,
 		and discovered that the best systems are the ones that adapt to how we actually think, not how we should think.</p>
         
         <p>When I'm not coding, you'll find me writing about the intersection of technology and mindfulness, or exploring the coffee shops of Saigon.</p>
@@ -280,7 +284,7 @@ const schema = customSchema;
     <div class="trending-grid">
       {trendingArticles.map((article) => (
         <article class="trending-card">
-          <a href={article.uri} class="trending-card-link">
+          <a href={article.uri} class="trending-card-link" aria-label={`Read trending article: ${article.title}`}>
             <img
               src={article.image}
               alt={article.title}
