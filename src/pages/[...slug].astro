@@ -2,7 +2,7 @@
 import PostLayout from '../layouts/PostLayout.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getAllPosts, getAllPages, getSlugFromUri } from '../lib/wordpress';
-import { optimizeContentLinksAndImages, getResponsiveImage, updateWordPressImageUrls, cleanCanonicalUrl, resetOptimizationStats, getOptimizationStats, generatePageSchema } from '../lib/utils';
+import { optimizeContentLinksAndImages, getResponsiveImage, updateWordPressImageUrls, cleanCanonicalUrl, cleanSchemaUrls, resetOptimizationStats, getOptimizationStats, generatePageSchema } from '../lib/utils';
 
 export async function getStaticPaths() {
   console.log('\n🔨 Building all content...\n');
@@ -75,7 +75,7 @@ const { content, isPost, nextPost, previousPost } = Astro.props;
 
 // Generate enhanced schema for pages
 const pageUrl = `https://dragosroua.com${content.uri}`;
-const enhancedSchema = content.seo?.schema?.raw || generatePageSchema(content, pageUrl);
+const enhancedSchema = cleanSchemaUrls(content.seo?.schema?.raw || generatePageSchema(content, pageUrl));
 
 // Use PostLayout for posts (includes iOS ad + Substack)
 // Use BaseLayout for pages (cleaner, for product tables)

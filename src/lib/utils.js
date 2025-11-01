@@ -372,20 +372,47 @@ export function optimizeContentLinksAndImages(content, postTitle = '') {
 
   // 10. LEGACY OPTIMIZATION: Convert any remaining absolute internal links to relative
   optimizedContent = optimizedContent.replace(
-    /href=["']https?:\/\/dragosroua\.com\//g, 
+    /href=["']https?:\/\/dragosroua\.com\//g,
     'href="/'
   );
-  
+
+  // 11. HTML CLEANUP: Fix malformed href attributes with double quotes
+  optimizedContent = optimizedContent.replace(
+    /href=(["'])([^"']*?)\1"/g,
+    (match, quote, url) => {
+      console.log(`🧹 Fixing malformed href: ${match} → href=${quote}${url}${quote}`);
+      return `href=${quote}${url}${quote}`;
+    }
+  );
+
+  // 12. HTML CLEANUP: Remove target="_blank" from internal links
+  optimizedContent = optimizedContent.replace(
+    /<a\s+([^>]*?)href=(["'])\/([^"']*?)\2([^>]*?)target=["']_blank["']([^>]*?)>/g,
+    (match, before, quote, url, middle, after) => {
+      console.log(`🧹 Removing target="_blank" from internal link: /${url}`);
+      return `<a ${before}href=${quote}/${url}${quote}${middle}${after}>`;
+    }
+  );
+
+  // Also catch reverse order (target before href)
+  optimizedContent = optimizedContent.replace(
+    /<a\s+([^>]*?)target=["']_blank["']([^>]*?)href=(["'])\/([^"']*?)\3([^>]*?)>/g,
+    (match, before, middle, quote, url, after) => {
+      console.log(`🧹 Removing target="_blank" from internal link: /${url}`);
+      return `<a ${before}${middle}href=${quote}/${url}${quote}${after}>`;
+    }
+  );
+
   // Update global stats
   optimizationStats.linksOptimized += localLinksOptimized;
   optimizationStats.imagesOptimized += localImagesOptimized;
   optimizationStats.postsProcessed++;
-  
+
   // Log if optimizations were made for this post
   if (localLinksOptimized > 0 || localImagesOptimized > 0) {
     console.log(`🔧 Optimized "${postTitle || 'content'}": ${localLinksOptimized} links, ${localImagesOptimized} images`);
   }
-  
+
   return optimizedContent;
 }
 
@@ -1237,6 +1264,186 @@ export function generateCategoryBreadcrumbs(category) {
       name: category.name,
       url: `/category/${category.slug}/`,
       position: 3
+    }
+  ];
+}
+
+/**
+ * Generate schema for blog pagination pages
+ */
+export function generateBlogSchema(posts = [], page = {}, canonicalURL = '') {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": `Blog${page.currentPage > 1 ? ` - Page ${page.currentPage}` : ''} - Dragos Roua`,
+    "description": "All blog posts about personal development, financial resilience, and meaningful relationships",
+    "url": canonicalURL,
+    "inLanguage": "en-US",
+    "isPartOf": {
+      "@type": "WebSite",
+      "@id": "https://dragosroua.com/#website"
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://dragosroua.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://dragosroua.com/blog/"
+        }
+      ]
+    }
+  };
+
+  // Add ItemList with posts if available
+  if (posts && posts.length > 0) {
+    schema.mainEntity = {
+      "@type": "ItemList",
+      "numberOfItems": page.total || posts.length,
+      "itemListElement": posts.map((post, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "BlogPosting",
+          "name": post.title?.replace(/<[^>]*>/g, '').trim() || 'Untitled',
+          "url": `https://dragosroua.com${post.uri}`,
+          "datePublished": post.date,
+          "author": {
+            "@type": "Person",
+            "name": "Dragos Roua",
+            "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2"
+          }
+        }
+      }))
+    };
+  }
+
+  return schema;
+}
+
+/**
+ * Generate breadcrumb data for blog pages
+ */
+export function generateBlogBreadcrumbs() {
+  return [
+    {
+      name: "Home",
+      url: "/",
+      position: 1
+    },
+    {
+      name: "Blog",
+      url: "/blog/",
+      position: 2
+    }
+  ];
+}
+
+/**
+ * Generate schema for date archive pages
+ */
+export function generateArchiveSchema(year, month, monthName, posts = [], canonicalURL = '') {
+  const archiveTitle = `${monthName} ${year}`;
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": `Archive: ${archiveTitle} - Dragos Roua`,
+    "description": `Blog posts from ${archiveTitle} - ${posts.length} posts about personal development, financial resilience, and meaningful relationships`,
+    "url": canonicalURL,
+    "inLanguage": "en-US",
+    "isPartOf": {
+      "@type": "WebSite",
+      "@id": "https://dragosroua.com/#website"
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://dragosroua.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Archives",
+          "item": "https://dragosroua.com/archives/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": year.toString(),
+          "item": `https://dragosroua.com/${year}/`
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": monthName,
+          "item": `https://dragosroua.com/${year}/${month.toString().padStart(2, '0')}/`
+        }
+      ]
+    }
+  };
+
+  // Add ItemList with posts if available
+  if (posts && posts.length > 0) {
+    schema.mainEntity = {
+      "@type": "ItemList",
+      "numberOfItems": posts.length,
+      "itemListElement": posts.map((post, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "BlogPosting",
+          "name": post.title?.replace(/<[^>]*>/g, '').trim() || 'Untitled',
+          "url": `https://dragosroua.com${post.uri}`,
+          "datePublished": post.date,
+          "author": {
+            "@type": "Person",
+            "name": "Dragos Roua",
+            "@id": "https://dragosroua.com/#/schema/person/bbca0f916c763e8343efcaee8af6caf2"
+          }
+        }
+      }))
+    };
+  }
+
+  return schema;
+}
+
+/**
+ * Generate breadcrumb data for archive pages
+ */
+export function generateArchiveBreadcrumbs(year, month, monthName) {
+  return [
+    {
+      name: "Home",
+      url: "/",
+      position: 1
+    },
+    {
+      name: "Archives",
+      url: "/archives/",
+      position: 2
+    },
+    {
+      name: year.toString(),
+      url: `/${year}/`,
+      position: 3
+    },
+    {
+      name: monthName,
+      url: `/${year}/${month.toString().padStart(2, '0')}/`,
+      position: 4
     }
   ];
 }

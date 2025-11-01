@@ -305,6 +305,9 @@ const schema = customSchema;
         </article>
       ))}
     </div>
+    <div class="blog-cta">
+      <a href="/top-posts/" class="blog-cta-button" aria-label="View all top posts and most popular articles">View All Top Posts</a>
+    </div>
   </section>
 
 </BaseLayout>
@@ -637,6 +640,7 @@ const schema = customSchema;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
+    margin-bottom: 40px;
   }
 
   .trending-card {
@@ -815,6 +819,7 @@ const schema = customSchema;
     .trending-grid {
       grid-template-columns: 1fr;
       gap: 16px;
+      margin-bottom: 30px;
     }
 
     .trending-card-link {

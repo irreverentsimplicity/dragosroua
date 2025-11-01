@@ -1,29 +1,56 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllPosts } from '../../lib/wordpress';
-import { generateExcerpt, getOptimizedImage } from '../../lib/utils';
+import { generateExcerpt, getOptimizedImage, generateBlogSchema, generateBlogBreadcrumbs } from '../../lib/utils';
 
 export async function getStaticPaths({ paginate }) {
   const posts = await getAllPosts();
-  
+
   // Sort by date, newest first
-  const sortedPosts = posts.sort((a, b) => 
+  const sortedPosts = posts.sort((a, b) =>
     new Date(b.date).getTime() - new Date(a.date).getTime()
   );
-  
+
   return paginate(sortedPosts, {
     pageSize: 20
   });
 }
 
 const { page } = Astro.props;
+
+// Generate enhanced SEO data
+const canonicalURL = `https://dragosroua.com/blog/${page.currentPage > 1 ? `${page.currentPage}/` : ''}`;
+const blogSchema = generateBlogSchema(page.data, page, canonicalURL);
+const breadcrumbs = generateBlogBreadcrumbs();
 ---
 
-<BaseLayout 
+<BaseLayout
   title={`Blog - Page ${page.currentPage} - Dragos Roua`}
   description="All blog posts about personal development, financial resilience, and meaningful relationships"
-  canonical={`https://dragosroua.com/blog/${page.currentPage > 1 ? `${page.currentPage}/` : ''}`}
+  canonical={canonicalURL}
+  schema={blogSchema}
+  prevPage={page.url.prev ? `https://dragosroua.com${page.url.prev}` : undefined}
+  nextPage={page.url.next ? `https://dragosroua.com${page.url.next}` : undefined}
 >
+  <!-- Breadcrumb Navigation -->
+  <nav aria-label="Breadcrumb" class="breadcrumb">
+    <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+      {breadcrumbs.map((crumb, index) => (
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          {index < breadcrumbs.length - 1 ? (
+            <a itemprop="item" href={crumb.url}>
+              <span itemprop="name">{crumb.name}</span>
+            </a>
+          ) : (
+            <span itemprop="name" aria-current="page">{crumb.name}</span>
+          )}
+          <meta itemprop="position" content={crumb.position.toString()}>
+          {index < breadcrumbs.length - 1 && <span class="breadcrumb-separator" aria-hidden="true"> › </span>}
+        </li>
+      ))}
+    </ol>
+  </nav>
+
   <div class="blog-header">
     <h1>Blog</h1>
     <p class="blog-subtitle">Personal development, financial resilience and meaningful relationships - all this while coding or rambling about technology</p>
@@ -114,6 +141,56 @@ const { page } = Astro.props;
 </BaseLayout>
 
 <style>
+  /* Breadcrumb Navigation */
+  .breadcrumb {
+    margin: 1rem 0 2rem;
+    padding: 0.75rem 1rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+  }
+
+  .breadcrumb ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+  }
+
+  .breadcrumb li {
+    display: flex;
+    align-items: center;
+  }
+
+  .breadcrumb a {
+    color: #4338ca;
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+
+  .breadcrumb a:hover {
+    background-color: #e9ecef;
+    text-decoration: underline;
+  }
+
+  .breadcrumb span[aria-current="page"] {
+    color: #495057;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .breadcrumb-separator {
+    color: #6c757d;
+    margin: 0 0.25rem;
+    font-weight: normal;
+  }
+
   .blog-header {
     text-align: center;
     margin-bottom: 3rem;
@@ -262,23 +339,32 @@ const { page } = Astro.props;
   }
   
   @media (max-width: 768px) {
+    .breadcrumb {
+      margin: 0.5rem 0 1.5rem;
+      padding: 0.5rem 0.75rem;
+    }
+
+    .breadcrumb ol {
+      font-size: 0.85rem;
+    }
+
     .blog-header h1 {
       font-size: 2.5rem;
     }
-    
+
     .post-card {
       grid-template-columns: 1fr;
       gap: 1rem;
     }
-    
+
     .post-image {
       height: 200px;
     }
-    
+
     .post-card-title {
       font-size: 1.3rem;
     }
-    
+
     .pagination-controls {
       flex-wrap: wrap;
       justify-content: center;
